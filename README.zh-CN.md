@@ -1,8 +1,8 @@
 # js-repo-template
 
-- [中文说明](README.zh-CN.md)
+- [README in English](README.md)
 
-A template for creating npm package repo.
+这是一个 npm 仓库模板。
 
 [![CircleCI][circleci-img]][circleci-url]
 [![NPM Version][npm-img]][npm-url]
@@ -18,41 +18,37 @@ A template for creating npm package repo.
 [download-img]: https://img.shields.io/npm/dm/js-repo-template.svg?style=flat-square
 [download-url]: https://npmjs.org/package/js-repo-template
 
-## Example
+## 示例
 
-Show an easy example can attract readers quickly.
+展示一个简单的示例可以快速吸引读者。
 
-## Features
+## 特性
 
-Introduce some major features of this project.
+介绍一下这个项目主要的几个特性吧。
 
-- Feature 1
-- Feature 2
-- Feature 3
-
-## Install
+## 安装
 
 ``` shell
 npm install --save-dev js-repo-template
 ```
 
-## Options
+## 选项
 
 #### name
 
-Name of something.
+某个功能的名称。
 
 - Type: `string`
 - Default: `'hello'`
 
 #### auto
 
-Do something automatically.
+是否自动做某件事。
 
 - Type: `boolean`
 - Default: `'true'`
 
-## Develop
+## 开发
 
 ### dev
 
@@ -72,14 +68,14 @@ npm run build
 npm run test
 ```
 
-## Changelog
+## 修改日志
 
 See [Releases](https://github.com/necfe/js-repo-template/releases)
 
-## Contributing
+## 贡献指南
 
 See [Contributing Guide](https://github.com/vusion/DOCUMENTATION/issues/8)
 
-## License
+## 开源协议
 
 [MIT](LICENSE)
