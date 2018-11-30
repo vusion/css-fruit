@@ -2,4 +2,4 @@
 console.log('Simple repo!');
 
 // 否则的话
-module.exports = require('./src/index');
+export * from './src/index';
