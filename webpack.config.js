@@ -1,8 +1,10 @@
 const path = require('path');
 
 module.exports = {
+    // mode: 'development',
+    mode: 'production',
     entry: {
-        bundle: './index.ts',
+        propcss: './index.ts',
     },
     output: {
         path: path.resolve(__dirname, './dist'),
@@ -10,6 +12,10 @@ module.exports = {
         library: 'TSRepo',
         libraryTarget: 'umd',
     },
+    externals: {
+        'postcss-value-parser': 'postcss-value-parser',
+    },
+    target: 'node',
     resolve: {
         extensions: ['.js', '.ts', '.json'],
         alias: {
@@ -18,11 +24,7 @@ module.exports = {
     },
     module: {
         rules: [
-            {
-                test: /\.tsx?$/,
-                loader: 'ts-loader',
-                exclude: /node_modules/,
-            },
+            { test: /\.tsx?$/, loader: 'ts-loader', exclude: /node_modules/ },
         ],
     },
 };
