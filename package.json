@@ -1,5 +1,5 @@
 {
-  "name": "propcss",
+  "name": "css-fruit",
   "description": "A template for creating npm package repo",
   "version": "0.1.0",
   "author": "Rainfore <rainforest92@126.com>",
@@ -9,10 +9,10 @@
     "build": "webpack-cli",
     "test": "mocha --timeout 5000 ./test/unit.test.js"
   },
-  "main": "./dist/propcss.js",
-  "repository": "necfe/propcss",
+  "main": "./dist/css-fruit.js",
+  "repository": "vusion/css-fruit",
   "bugs": {
-    "url": "http://github.com/necfe/propcss/issues"
+    "url": "http://github.com/vusion/css-fruit/issues"
   },
   "license": "MIT",
   "keywords": [
@@ -28,7 +28,7 @@
     "template"
   ],
   "dependencies": {
-    "postcss-value-parser": "^3.3.1"
+    "css-property-parser": "^1.0.6"
   },
   "devDependencies": {
     "chai": "^4.2.0",

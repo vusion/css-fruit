@@ -1,15 +1,15 @@
 const path = require('path');
 
 module.exports = {
-    // mode: 'development',
-    mode: 'production',
+    mode: 'development',
+    // mode: 'production',
     entry: {
-        propcss: './index.ts',
+        'css-fruit': './index.ts',
     },
     output: {
         path: path.resolve(__dirname, './dist'),
         filename: '[name].js',
-        library: 'TSRepo',
+        library: 'cssFruit',
         libraryTarget: 'umd',
     },
     externals: {
