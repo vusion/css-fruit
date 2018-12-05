@@ -24,34 +24,6 @@ class BackgroundPosition {
     offsetY: string;
 }
 
-const enum BackgroundRepeatKeyword {
-    repeat = 'repeat',
-    space = 'space',
-    round = 'round',
-    'no-repeat' = 'no-repeat',
-}
-
-class BackgroundRepeat {
-    x: BackgroundRepeatKeyword;
-    y: BackgroundRepeatKeyword;
-    constructor (x: BackgroundRepeatKeyword, y: BackgroundRepeatKeyword) {
-        this.x = x;
-        this.y = y;
-    }
-    toString(redundant?: boolean) {
-        if (!redundant) {
-            if (this.x === this.y)
-                return this.x;
-            else if (this.x === BackgroundRepeatKeyword.repeat && this.y === BackgroundRepeatKeyword['no-repeat'])
-                return 'repeat-x';
-            else if (this.y === BackgroundRepeatKeyword.repeat && this.x === BackgroundRepeatKeyword['no-repeat'])
-                return 'repeat-y';
-        }
-
-        return [this.x, this.y].join(' ');
-    }
-}
-
 const enum BackgroundSizeKeyword {
     cover = 'cover',
     contain = 'contain',
@@ -69,7 +41,7 @@ class BackgroundSize {
  * Unsupport two backgrounds
  */
 export default class Background extends Fruit {
-    protected _name: string = 'background';
+    protected _type: string = 'background';
     protected _inherit: boolean = false;
 
     public attachment: string;
@@ -125,7 +97,7 @@ export default class Background extends Fruit {
         return this;
     }
 
-    toString(redundant?: boolean): string {
+    toString(complete?: boolean): string {
         return [this.color, this.image, this.repeat].join(',');
     }
 }

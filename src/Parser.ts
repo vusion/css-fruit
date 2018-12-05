@@ -21,13 +21,13 @@ export default class Parser {
         irrelevantProperty: IrrelevantProperty.ignore,
     }
 
-    protected _name: string = 'parser';
+    protected _type: string = 'parser';
     protected _inherit: boolean = false;
     protected _pos: number = 0;
     protected _nodes: Array<ValueNode> = [];
 
     constructor(value?: string) {
-        value && this.parse(this._name, value);
+        value && this.parse(this._type, value);
     }
 
     parse(prop: string, value: string): Parser;

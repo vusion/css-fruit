@@ -17,7 +17,6 @@
       "es6",
       "es7"
     ],
-    "typeRoots" : ["./types"],
     "sourceMap": true,
     "pretty": true
   }

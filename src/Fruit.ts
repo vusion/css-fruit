@@ -1,23 +1,66 @@
-import {
-    isShorthandProperty,
-    isValidDeclaration,
-    getShorthandComputedProperties,
-    expandShorthandProperty,
-    getShorthandsForProperty,
-} from 'css-property-parser';
+const ValueParser = require('postcss-value-parser');
 
 export interface decl {
     prop: string,
     value: string,
 }
 
+export interface ValueNode {
+    type: string;
+    value: string;
+}
+
+export enum ValueNodeType {
+    word = 'word',
+    string = 'string',
+    div = 'div',
+    space = 'space',
+    comment = 'comment',
+    function = 'function',
+}
+
+export class Stem {
+    nodes: Array<ValueNode>;
+    pos: number;
+    constructor(value: string) {
+        this.nodes = new ValueParser(value).nodes;
+        this.pos = 0;
+    }
+
+    head(): ValueNode {
+        return this.nodes[this.pos];
+    }
+
+    next(): ValueNode {
+        if (this.pos < this.nodes.length)
+            return this.nodes[++this.pos];
+    }
+}
+
+// enum IrrelevantProperty {
+//     ignore = 'ignore',
+//     error = 'error',
+// }
+
+// interface ParserConfig {
+//     irrelevantProperty: IrrelevantProperty;
+// }
+
 export default class Fruit {
-    protected _name: string = 'fruit';
+    protected _type: string = 'fruit';
     protected _inherit: boolean = false;
 
+    constructor();
+    constructor(value?: string);
     constructor(value?: string) {
-        value && this.absorb(this._name, value);
+        if (arguments.length === 1)
+            this._parse(value);
+        // value && this.absorb(this._type, value);
     }
+
+    protected _parse(value: string): void {}
+    protected _analyze(value?: Array<ValueNode> | string): void {}
+    // toString(complete?: boolean): string;
 
     absorb(prop: string, value: string): Fruit;
     absorb(decl: decl): Fruit;
@@ -37,13 +80,13 @@ export default class Fruit {
     }
 
     protected _absorb(prop: string, value: string) {
-        this._expand(prop, value ,true);
+        // this._expand(prop, value ,true);
         return this;
     }
 
-    protected _expand(prop: string, value: string, recursive?: boolean, initial?: boolean) {
-        return expandShorthandProperty(prop, value, recursive, initial);
-    }
+    // protected _expand(prop: string, value: string, recursive?: boolean, initial?: boolean) {
+    //     return expandShorthandProperty(prop, value, recursive, initial);
+    // }
 
     static Kinds: { [prop: string]: any } = {};
     static init(): void {
@@ -67,12 +110,21 @@ export default class Fruit {
             prop = prop.prop;
         }
 
-        const shorthands = getShorthandsForProperty(prop);
-        const shorthand = shorthands[shorthands.length - 1];
-        if (!shorthand)
-            throw new Error('Unknown property: ' + prop);
+        // const shorthands = getShorthandsForProperty(prop);
+        // const shorthand = shorthands[shorthands.length - 1];
+        // if (!shorthand)
+        //     throw new Error('Unknown property: ' + prop);
 
-        const fruit = new Fruit.Kinds[shorthand]();
-        return fruit.absorb(prop, value);
+        // const fruit = new Fruit.Kinds[shorthand]();
+        // return fruit.absorb(prop, value);
+    }
+
+    static validate(value: string): boolean {
+        try {
+            new this(value);
+            return true;
+        } catch (e) {
+            return false;
+        }
     }
 }

@@ -54,8 +54,8 @@ export default class Margin {
         }
     }
 
-    toString(redundant?: boolean): string {
-        if (!redundant) {
+    toString(complete?: boolean): string {
+        if (!complete) {
             if (this.top === this.right && this.right === this.bottom && this.bottom === this.left)
                 return this.top;
             else if (this.left === this.right && this.top === this.bottom)
