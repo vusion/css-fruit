@@ -9,11 +9,13 @@ export default class Percentage extends Fruit {
     number: number;
 
     init() {
+        super.init();
         this.number = undefined;
     }
 
-    parse(value: string) {
+    parse(value: string): this | string {
         value = value.trim();
+        this.init();
 
         const found = partialRE.exec(value);
         if (!found)
@@ -22,11 +24,15 @@ export default class Percentage extends Fruit {
         //     throw new SyntaxError('"%" should be after the non-zero number');
 
         this.number = +found[1];
+        this.valid = true;
 
         return this.toResult();
     }
 
     toString(complete?: boolean): string {
+        if (!this.valid)
+            return super.toString();
+
         // if (!complete) {
         //     if (this.number === 0)
         //         return '0';

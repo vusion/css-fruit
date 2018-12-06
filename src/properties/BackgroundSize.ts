@@ -18,12 +18,15 @@ export default class BackgroundSize extends Fruit {
     }
 
     protected init() {
+        super.init();
         this._state = { count: 0 };
         this.width = undefined;
         this.height = undefined;
     }
 
     protected toResult(): this | string {
+        if (!this.valid)
+            return super.toResult();
         if (this.width === 'cover' || this.width === 'contain')
             return this.width;
         else
@@ -36,21 +39,18 @@ export default class BackgroundSize extends Fruit {
         else if (node.type === ValueNodeType.word) {
             if (node.value === 'cover' || node.value === 'contain') {
                 if (this._state.count > 0)
-                    throw new SyntaxError('Excessive keywords found');
+                    throw new SyntaxError('Excessive keywords');
                 else {
                     this.width = this.height = node.value;
                     this._state.count += 2;
+                    this.valid = true;
                 }
             } else {
-                const length = Length.parse(node.value) as Length | string;
+                const length = Length.parse(node.value) as Length | string; // '0' is truthy
                 const percentage = Percentage.parse(node.value) as Percentage | string
                 let size;
-                if (length !== undefined)
-                    size = length;
-                else if (percentage !== undefined)
-                    size = percentage;
-                else if (node.value === 'auto')
-                    size = node.value;
+                if (length || percentage || node.value === 'auto')
+                    size = length || percentage || node.value;
                 else
                     return true; // Incompatible value
 
@@ -60,9 +60,11 @@ export default class BackgroundSize extends Fruit {
                     this.width = size;
                     this.height = 'auto';
                     this._state.count++;
+                    this.valid = true;
                 } else if (this._state.count === 1) {
                     this.height = size;
                     this._state.count++;
+                    this.valid = true;
                 } else
                     throw new Error('State Problem!');
             }
@@ -71,6 +73,9 @@ export default class BackgroundSize extends Fruit {
     }
 
     toString(complete?: boolean): string {
+        if (!this.valid)
+            return super.toString();
+
         if (this.width === 'cover' || this.width === 'contain')
             return this.width;
 

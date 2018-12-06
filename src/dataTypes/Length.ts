@@ -1,7 +1,8 @@
 import Fruit, { ValueNode, ValueNodeType, ResolveDepth } from '../Fruit';
 import { numberRE } from './Number';
 
-const partialRE = new RegExp(`^(${String(numberRE).slice(2, -3)})(cap|ch|em|ex|ic|lh|rem|rlh|vh|vw|vi|vb|vmin|vmax|px|cm|mm|Q|in|pc|pt)?$`, 'i');
+const experimentalRE = new RegExp(`^(${String(numberRE).slice(2, -3)})(cap|ch|em|ex|ic|lh|rem|rlh|vh|vw|vi|vb|vmin|vmax|px|cm|mm|Q|in|pc|pt)?$`, 'i');
+const partialRE = new RegExp(`^(${String(numberRE).slice(2, -3)})(ch|em|ex|rem|vh|vw|vmin|vmax|px|cm|mm|in|pc|pt)?$`, 'i');
 
 export default class Length extends Fruit {
     protected _type: string = 'length';
@@ -10,12 +11,14 @@ export default class Length extends Fruit {
     unit: string;
 
     init() {
+        super.init();
         this.number = undefined;
         this.unit = undefined;
     }
 
     parse(value: string): this | string {
         value = value.trim();
+        this.init();
 
         const found = partialRE.exec(value);
         if (!found)
@@ -25,11 +28,15 @@ export default class Length extends Fruit {
 
         this.number = +found[1];
         this.unit = found[2] || '';
+        this.valid = true;
 
         return this.toResult();
     }
 
     toString(complete?: boolean): string {
+        if (!this.valid)
+            return super.toString();
+
         if (!complete) {
             if (this.number === 0)
                 return '0';

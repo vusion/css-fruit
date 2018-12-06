@@ -8,7 +8,7 @@
     "precommit": "node node_modules/vusion-hooks/precommit",
     "build": "webpack-cli",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha --require ts-node/register test/unit.test.ts",
-    "test:one": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha --require ts-node/register test/dataTypes/URL.ts"
+    "test:one": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha --require ts-node/register"
   },
   "main": "./dist/css-fruit.js",
   "repository": "vusion/css-fruit",

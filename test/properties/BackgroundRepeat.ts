@@ -17,9 +17,9 @@ describe('BackgroundRepeat', () => {
     });
 
     it('(value) -> invalid', () => {
-        expect(BackgroundRepeat.validate('repeat-a')).to.equal(false);
-        expect(BackgroundRepeat.validate('repeat-x repeat-y')).to.equal(false);
-        expect(BackgroundRepeat.validate('repeat space round')).to.equal(false);
+        expect(BackgroundRepeat.validate('repeat-a')).to.be.false;
+        expect(BackgroundRepeat.validate('repeat-x repeat-y')).to.be.false;
+        expect(BackgroundRepeat.validate('repeat space round')).to.be.false;
     });
 
     it('(~space~comment~) -> trimmed', () => {

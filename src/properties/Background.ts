@@ -42,7 +42,7 @@ class BackgroundSize {
  */
 export default class Background extends Fruit {
     protected _type: string = 'background';
-    protected _inherit: boolean = false;
+    protected _inherited: boolean = false;
 
     public attachment: string;
     public clip: string;

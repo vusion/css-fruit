@@ -10,26 +10,26 @@ describe('Length', () => {
     });
 
     it('.validate(value) => true', () => {
-        expect(Length.validate('12px')).to.equal(true);
-        expect(Length.validate('4.01em')).to.equal(true);
-        expect(Length.validate('-456.8rem')).to.equal(true);
-        expect(Length.validate('.60vh')).to.equal(true);
-        expect(Length.validate('10e3cm')).to.equal(true);
-        expect(Length.validate('-3.4e-2in')).to.equal(true);
+        expect(Length.validate('12px')).to.be.true;
+        expect(Length.validate('4.01em')).to.be.true;
+        expect(Length.validate('-456.8rem')).to.be.true;
+        expect(Length.validate('.60vh')).to.be.true;
+        expect(Length.validate('10e3cm')).to.be.true;
+        expect(Length.validate('-3.4e-2in')).to.be.true;
     });
 
     it('.validate(value) => false', () => {
-        expect(Length.validate('12')).to.equal(false);
-        expect(Length.validate('4deg')).to.equal(false);
-        expect(Length.validate('4s')).to.equal(false);
-        expect(Length.validate('')).to.equal(false);
-        expect(Length.validate('none')).to.equal(false);
+        expect(Length.validate('12')).to.be.false;
+        expect(Length.validate('4deg')).to.be.false;
+        expect(Length.validate('4s')).to.be.false;
+        expect(Length.validate('')).to.be.false;
+        expect(Length.validate('none')).to.be.false;
     });
 
     it('.validate(0) => true', () => {
-        expect(Length.validate('0')).to.equal(true);
-        expect(Length.validate('0.0em')).to.equal(true);
-        expect(Length.validate('-0.0px')).to.equal(true);
+        expect(Length.validate('0')).to.be.true;
+        expect(Length.validate('0.0em')).to.be.true;
+        expect(Length.validate('-0.0px')).to.be.true;
     });
 
     it('#toString()', () => {

@@ -67,8 +67,9 @@ export default class Fruit {
         resolveDepth: ResolveDepth.virtualLonghand,
     };
     protected _type: string = 'fruit';
-    protected _inherit: boolean = false;
+    protected _inherited: boolean = false;
     protected _resolveDepthBoundary = ResolveDepth.virtualLonghand;
+    valid: boolean = false;
 
     constructor();
     constructor(value?: string);
@@ -77,19 +78,25 @@ export default class Fruit {
             this.parse(value);
     }
 
-    protected init(): void {}
+    protected init(): void {
+        this.valid = false;
+    }
 
     parse(value: string): this | string {
         value = value.trim();
 
         const stem = new Stem(value);
         this.analyze(stem);
-        if (stem.head())
+        if (stem.head()) {
+            this.valid = false;
             throw SyntaxError('Nodes of value cannot be fully analyzed: ' + value);
+        }
         return this.toResult();
     }
 
     protected toResult(): this | string {
+        if (!this.valid)
+            return undefined;
         if (this._config.resolveDepth >= this._resolveDepthBoundary)
             return this;
         else
@@ -100,23 +107,33 @@ export default class Fruit {
         let node = stem.head();
         this.init();
         while (node) {
-            if (this.analyzeInLoop(node))
-                return;
+            try {
+                if (this.analyzeInLoop(node, stem))
+                    return;
+            } catch (e) {
+                this.valid = false;
+                throw e;
+            }
             node = stem.next();
         }
     }
 
     /**
      * Analyze in loop
+     * If meeting incompatible node.type or node.value, return true to stop the loop.
+     * When analyzing successful, this.valid must specified.
      * @param node - Node in loop
      * @returns - Whether stop loop
      */
-    protected analyzeInLoop(node: ValueNode): boolean {
+    protected analyzeInLoop(node: ValueNode, stem: Stem): boolean {
         return false;
     }
 
     toString(complete?: boolean): string {
-        return this._type;
+        if (!this.valid)
+            return ''; // Invalid this._type
+        else
+            return this._type;
     }
 
     absorb(prop: string, value: string): this;

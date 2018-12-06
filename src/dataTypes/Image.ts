@@ -1,84 +1,61 @@
-import Fruit, { ValueNode, ValueNodeType } from '../Fruit';
-import Length from './Length';
-import Percentage from './Percentage';
+import Fruit, { ValueNode, ValueNodeType, ResolveDepth, Stem } from '../Fruit';
+import URL from './URL';
 
 export default class Image extends Fruit {
     protected _type: string = 'background-image';
+    protected _resolveDepthBoundary: ResolveDepth = ResolveDepth.dataTypes;
     protected _state: { count: number };
-    width: Length | Percentage | string;
-    height: Length | Percentage | string;
+    value: URL | string;
 
-    constructor(value?: string);
-    constructor(width: string, height?: string) {
-        super(width);
-        if (arguments.length > 1) {
-            this.width = width;
-            this.height = height;
-        }
-    }
+    // constructor(value?: string);
+    // constructor(width: string, height?: string) {
+    //     super(width);
+    //     if (arguments.length > 1) {
+    //         this.width = width;
+    //         this.height = height;
+    //     }
+    // }
 
     protected init() {
+        super.init();
         this._state = { count: 0 };
-        this.width = undefined;
-        this.height = undefined;
+        this.value = undefined;
     }
 
     protected toResult(): this | string {
-        if (this.width === 'cover' || this.width === 'contain')
-            return this.width;
-        else
+        if (!this.valid)
             return super.toResult();
+        this.value
     }
 
-    protected analyzeInLoop(node: ValueNode): boolean {
+    protected analyzeInLoop(node: ValueNode, stem: Stem): boolean {
         if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
             return false;
-        else if (node.type === ValueNodeType.word) {
-            if (node.value === 'cover' || node.value === 'contain') {
-                if (this._state.count > 0)
-                    throw new SyntaxError('Excessive keywords found');
-                else {
-                    this.width = this.height = node.value;
-                    this._state.count += 2;
-                }
-            } else {
-                const length = Length.parse(node.value) as Length | string;
-                const percentage = Percentage.parse(node.value) as Percentage | string
-                let size;
-                if (length !== undefined)
-                    size = length;
-                else if (percentage !== undefined)
-                    size = percentage;
-                else if (node.value === 'auto')
-                    size = node.value;
-                else
-                    return true; // Incompatible value
-
-                if (this._state.count > 1)
+        else if (node.type === ValueNodeType.function) {
+            if (this.value)
                     throw new SyntaxError('Excessive values');
-                else if (this._state.count === 0) {
-                    this.width = size;
-                    this.height = 'auto';
-                    this._state.count++;
-                } else if (this._state.count === 1) {
-                    this.height = size;
-                    this._state.count++;
-                } else
-                    throw new Error('State Problem!');
+            if (node.unclosed)
+                throw new SyntaxError('Unclosed function: ' + node.value);
+            if (node.value === 'url') {
+                const url = new URL();
+                url.analyze(stem);
+                if (url.valid)
+                    this.value = url;
+                else
+                    throw new SyntaxError('Invalid url: ' + node.value);
             }
+
+            // cont gradient = new Gradient();
+
+            if (this.value)
+                this.valid = true;
         } else // Break loop due to incompatible node.type or node.value
             return true;
     }
 
     toString(complete?: boolean): string {
-        if (this.width === 'cover' || this.width === 'contain')
-            return this.width;
-
-        if (!complete) {
-            if (this.height === 'auto')
-                return this.width.toString();
-        }
-
-        return [this.width, this.height].join(' ');
+        if (!this.valid)
+            return super.toString();
+        return this.value.toString();
     }
 }

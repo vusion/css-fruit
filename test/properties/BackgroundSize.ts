@@ -18,9 +18,9 @@ describe('BackgroundSize', () => {
     });
 
     it('(value) -> invalid', () => {
-        expect(BackgroundSize.validate('abc')).to.equal(false);
-        expect(BackgroundSize.validate('cover contain')).to.equal(false);
-        expect(BackgroundSize.validate('auto 20px auto')).to.equal(false);
+        expect(BackgroundSize.validate('abc')).to.be.false;
+        expect(BackgroundSize.validate('cover contain')).to.be.false;
+        expect(BackgroundSize.validate('auto 20px auto')).to.be.false;
     });
 
     it('(~space~comment~) -> trimmed', () => {

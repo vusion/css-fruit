@@ -23,6 +23,7 @@ export default class URL extends Fruit {
     hash: string;
 
     protected init() {
+        super.init();
         // this.quote = "'";
         this.url = undefined;
         this.path = undefined;
@@ -34,7 +35,12 @@ export default class URL extends Fruit {
         if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
             return false;
         else if (node.type === ValueNodeType.function) {
+            if (node.unclosed)
+                throw new SyntaxError('Unclosed function: ' + node.value);
             if (node.value === 'url') {
+                if (this.url)
+                    throw new SyntaxError('Duplicated url functions');
+
                 let url = '';
                 if (node.nodes.length > 1)
                     throw new SyntaxError('Invalid url');
@@ -58,7 +64,7 @@ export default class URL extends Fruit {
                     });
                 }
                 this.hash = found[3] ? decodeURIComponent(found[3].slice(1)) : '';
-
+                this.valid = true;
             } else // Not a url function
                 return true;
         } else // Break loop due to incompatible node.type or node.value
@@ -66,6 +72,9 @@ export default class URL extends Fruit {
     }
 
     toString(): string {
+        if (!this.valid)
+            return super.toString();
+
         const quote = "'";
         const query = Object.keys(this.query).map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(this.query[key])}`).join('&');
         return `url(${quote}${encodeURIComponent(this.path)}${query ? '?' + query : ''}${this.hash ? '#' + encodeURIComponent(this.hash) : ''}${quote})`;

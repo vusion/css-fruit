@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import URL from '../../src/dataTypes/URL';
 
+// @TODO
 describe('URL', () => {
     it('#constructor(value)', () => {
         const url = new URL('url("abc.png?sprite=name#first")');
@@ -12,7 +13,7 @@ describe('URL', () => {
 
     it('(value) -> equal', () => {
         expect(new URL('url(abc.png)').toString()).to.equal(`url('abc.png')`);
-        expect(new URL('url("abc.png")').toString()).to.equal(`url("abc.png")`);
+        expect(new URL('url("abc.png")').toString()).to.equal(`url('abc.png')`);
     });
 
     it('(~space~comment~) -> trimmed', () => {
@@ -27,5 +28,9 @@ describe('URL', () => {
         expect(url.hash).to.equal('哈希');
 
         expect(url.toString()).to.equal(`url('%E4%B8%AD%E6%96%87.png?%E5%8F%82%E6%95%B0=%E5%80%BC#%E5%93%88%E5%B8%8C')`);
+    });
+
+    it('url(xxx) url(xxx) -> invalid', () => {
+        expect(URL.validate('url("abc.png?sprite=name#first") url(def.png)')).to.be.false;
     });
 });
