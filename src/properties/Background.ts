@@ -1,10 +1,10 @@
-import Fruit, { decl } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType } from '../Fruit';
 
-const REGS = {
-    repeat: /^(repeat-x|repeat-y|repeat|space|round|no-repeat)$/,
-    box: /^(border-box|padding-box|content-box)$/,
-    attachment: /^(scroll|fixed|local)$/,
-};
+// const REGS = {
+//     repeat: /^(repeat-x|repeat-y|repeat|space|round|no-repeat)$/,
+//     box: /^(border-box|padding-box|content-box)$/,
+//     attachment: /^(scroll|fixed|local)$/,
+// };
 
 const enum ValueType {
     attachment = 'attachment',

@@ -3,10 +3,10 @@ import BackgroundSize from '../../src/properties/BackgroundSize';
 
 describe('BackgroundSize', () => {
     it('#constructor(value)', () => {
-       const backgroundRepeat = new BackgroundSize('auto 20px');
+       const backgroundSize = new BackgroundSize('auto 20px');
 
-       expect(backgroundRepeat.width.toString()).to.equal('auto');
-       expect(backgroundRepeat.height.toString()).to.equal('20px');
+       expect(backgroundSize.width.toString()).to.equal('auto');
+       expect(backgroundSize.height.toString()).to.equal('20px');
     });
 
     it('(value) -> equal', () => {

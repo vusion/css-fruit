@@ -2,7 +2,7 @@ import Fruit, { ValueNode, ValueNodeType, ResolveDepth, Stem } from '../Fruit';
 import URL from './URL';
 
 export default class Image extends Fruit {
-    protected _type: string = 'background-image';
+    protected _type: string = 'image';
     protected _resolveDepthBoundary: ResolveDepth = ResolveDepth.dataTypes;
     protected _state: { count: number };
     value: URL;
