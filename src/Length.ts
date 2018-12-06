@@ -5,6 +5,7 @@ const partialRE = new RegExp(`^(${String(numberRE).slice(2, -3)})(cap|ch|em|ex|i
 
 export default class Length extends Fruit {
     protected _type: string = 'length';
+    protected _resolveDepthBoundary = ResolveDepth.dataTypes;
     number: number;
     unit: string;
 
@@ -13,7 +14,7 @@ export default class Length extends Fruit {
         this.unit = undefined;
     }
 
-    parse(value: string) {
+    parse(value: string): this | string {
         value = value.trim();
 
         const found = partialRE.exec(value);
@@ -25,10 +26,7 @@ export default class Length extends Fruit {
         this.number = +found[1];
         this.unit = found[2] || '';
 
-        if (this._config.resolveDepth >= ResolveDepth.dataTypes)
-            return this;
-        else
-            return this.toString();
+        return this.toResult();
     }
 
     toString(complete?: boolean): string {

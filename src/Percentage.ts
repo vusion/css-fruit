@@ -5,6 +5,7 @@ const partialRE = new RegExp(`^(${String(numberRE).slice(2, -3)})%$`, 'i');
 
 export default class Percentage extends Fruit {
     protected _type: string = 'percentage';
+    protected _resolveDepthBoundary = ResolveDepth.dataTypes;
     number: number;
 
     init() {
@@ -22,10 +23,7 @@ export default class Percentage extends Fruit {
 
         this.number = +found[1];
 
-        if (this._config.resolveDepth >= ResolveDepth.dataTypes)
-            return this;
-        else
-            return this.toString();
+        return this.toResult();
     }
 
     toString(complete?: boolean): string {

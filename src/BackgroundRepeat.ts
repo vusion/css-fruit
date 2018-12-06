@@ -61,10 +61,10 @@ export default class BackgroundRepeat extends Fruit {
                     this._state.count++;
                 } else
                     throw new Error('State Problem!');
-            }
-        }
-        // Break loop due to incompatible node.type or node.value
-        return true;
+            } else
+                return true;
+        } else // Break loop due to incompatible node.type or node.value
+            return true;
     }
 
     toString(complete?: boolean) {
@@ -75,13 +75,9 @@ export default class BackgroundRepeat extends Fruit {
                 return 'repeat-x';
             else if (this.y === BackgroundRepeatKeyword.repeat && this.x === BackgroundRepeatKeyword['no-repeat'])
                 return 'repeat-y';
-            // else;
+            // else go on
         }
 
         return [this.x, this.y].join(' ');
     }
-
-    // static test(value: string) {
-    //     return
-    // }
 }

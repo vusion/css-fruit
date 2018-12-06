@@ -1,20 +1,12 @@
-import Fruit, { ValueNode, ValueNodeType, Stem } from './Fruit';
+import Fruit, { ValueNode, ValueNodeType, ResolveDepth } from './Fruit';
 import Length from './Length';
-
-export enum BackgroundRepeatKeyword {
-    repeat = 'repeat',
-    space = 'space',
-    round = 'round',
-    'no-repeat' = 'no-repeat',
-}
-
-const partialRE = /^(?:repeat-width|repeat-height|repeat|space|round|no-repeat)$/;
+import Percentage from './Percentage';
 
 export default class BackgroundSize extends Fruit {
     protected _type: string = 'background-repeat';
     protected _state: { count: number };
-    width: string;
-    height: string;
+    width: Length | Percentage | string;
+    height: Length | Percentage | string;
 
     constructor(value?: string);
     constructor(width: string, height?: string) {
@@ -31,6 +23,13 @@ export default class BackgroundSize extends Fruit {
         this.height = undefined;
     }
 
+    protected toResult(): this | string {
+        if (this.width === 'cover' || this.width === 'contain')
+            return this.width;
+        else
+            return super.toResult();
+    }
+
     protected analyzeInLoop(node: ValueNode): boolean {
         if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
             return false;
@@ -42,46 +41,44 @@ export default class BackgroundSize extends Fruit {
                     this.width = this.height = node.value;
                     this._state.count += 2;
                 }
-            } else if (node.value === 'repeat-height') {
-                if (this._state.count > 0)
-                    throw new SyntaxError('Excessive keywords found');
-                else {
-                    this.width = BackgroundRepeatKeyword['no-repeat'];
-                    this.height = BackgroundRepeatKeyword.repeat;
-                    this._state.count += 2;
-                }
-            } else if (Object.keys(BackgroundRepeatKeyword).includes(node.value)) {
+            } else {
+                const length = Length.parse(node.value) as Length | string;
+                const percentage = Percentage.parse(node.value) as Percentage | string
+                let size;
+                if (length !== undefined)
+                    size = length;
+                else if (percentage !== undefined)
+                    size = percentage;
+                else if (node.value === 'auto')
+                    size = node.value;
+                else
+                    return true; // Incompatible value
+
                 if (this._state.count > 1)
-                    throw new SyntaxError('Excessive keywords found');
+                    throw new SyntaxError('Excessive values');
                 else if (this._state.count === 0) {
-                    this.width = this.height = node.value as BackgroundRepeatKeyword;
+                    this.width = size;
+                    this.height = 'auto';
                     this._state.count++;
                 } else if (this._state.count === 1) {
-                    this.height = node.value as BackgroundRepeatKeyword;
+                    this.height = size;
                     this._state.count++;
                 } else
                     throw new Error('State Problem!');
             }
-        }
-        // Break loop due to incompatible node.type or node.value
-        return true;
+        } else // Break loop due to incompatible node.type or node.value
+            return true;
     }
 
-    toString(complete?: boolean) {
+    toString(complete?: boolean): string {
+        if (this.width === 'cover' || this.width === 'contain')
+            return this.width;
+
         if (!complete) {
-            if (this.width === this.height)
-                return this.width;
-            else if (this.width === BackgroundRepeatKeyword.repeat && this.height === BackgroundRepeatKeyword['no-repeat'])
-                return 'repeat-width';
-            else if (this.height === BackgroundRepeatKeyword.repeat && this.width === BackgroundRepeatKeyword['no-repeat'])
-                return 'repeat-height';
-            // else;
+            if (this.height === 'auto')
+                return this.width.toString();
         }
 
         return [this.width, this.height].join(' ');
     }
-
-    // static test(value: string) {
-    //     return
-    // }
 }

@@ -58,10 +58,11 @@ interface Config {
 export default class Fruit {
     protected _config: Config = {
         irrelevantProperty: IrrelevantProperty.ignore,
-        resolveDepth: ResolveDepth.dataTypes,
+        resolveDepth: ResolveDepth.virtualLonghand,
     };
     protected _type: string = 'fruit';
     protected _inherit: boolean = false;
+    protected _resolveDepthBoundary = ResolveDepth.virtualLonghand;
 
     constructor();
     constructor(value?: string);
@@ -72,16 +73,24 @@ export default class Fruit {
 
     protected init(): void {}
 
-    parse(value: string) {
+    parse(value: string): this | string {
         value = value.trim();
 
         const stem = new Stem(value);
         this.analyze(stem);
         if (stem.head())
             throw SyntaxError('Nodes of value cannot be fully analyzed: ' + value);
+        return this.toResult();
     }
 
-    analyze(stem: Stem) {
+    protected toResult(): this | string {
+        if (this._config.resolveDepth >= this._resolveDepthBoundary)
+            return this;
+        else
+            return this.toString();
+    }
+
+    analyze(stem: Stem): void {
         let node = stem.head();
         this.init();
         while (node) {
@@ -100,12 +109,14 @@ export default class Fruit {
         return false;
     }
 
-    // toString(complete?: boolean): string;
+    toString(complete?: boolean): string {
+        return this._type;
+    }
 
-    absorb(prop: string, value: string): Fruit;
-    absorb(decl: decl): Fruit;
-    absorb(decls: Array<decl>): Fruit;
-    absorb(prop: string | decl | Array<decl>, value?: string): Fruit {
+    absorb(prop: string, value: string): this;
+    absorb(decl: decl): this;
+    absorb(decls: Array<decl>): this;
+    absorb(prop: string | decl | Array<decl>, value?: string): this {
         if (Array.isArray(prop)) {
             prop.forEach((decl) => this.absorb(decl));
             return this;
@@ -119,18 +130,20 @@ export default class Fruit {
         return this._absorb(prop, value);
     }
 
-    protected _absorb(prop: string, value: string) {
+    protected _absorb(prop: string, value: string): this {
         // this._expand(prop, value ,true);
         return this;
     }
 
-    // static test(value: string): boolean {}
-    static validate(value: string): boolean {
+    static parse(value: string): Fruit | string {
         try {
-            new this(value);
-            return true;
-        } catch (e) {
-            return false;
-        }
+            const fruit = new this();
+            return fruit.parse(value);
+        } catch (e) {}
+    }
+    // static test(value: string): boolean {}
+
+    static validate(value: string): boolean {
+        return this.parse(value) !== undefined;
     }
 }
