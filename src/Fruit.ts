@@ -37,16 +37,19 @@ export class Stem {
     }
 }
 
-// enum IrrelevantProperty {
-//     ignore = 'ignore',
-//     error = 'error',
-// }
+enum IrrelevantProperty {
+    ignore = 'ignore',
+    error = 'error',
+}
 
-// interface ParserConfig {
-//     irrelevantProperty: IrrelevantProperty;
-// }
+interface Config {
+    irrelevantProperty: IrrelevantProperty;
+}
 
 export default class Fruit {
+    protected _config: Config = {
+        irrelevantProperty: IrrelevantProperty.ignore,
+    };
     protected _type: string = 'fruit';
     protected _inherit: boolean = false;
 
@@ -54,12 +57,39 @@ export default class Fruit {
     constructor(value?: string);
     constructor(value?: string) {
         if (arguments.length === 1)
-            this._parse(value);
-        // value && this.absorb(this._type, value);
+            this.parse(value);
     }
 
-    protected _parse(value: string): void {}
-    protected _analyze(value?: Array<ValueNode> | string): void {}
+    protected init(): void {}
+
+    parse(value: string) {
+        value = value.trim();
+
+        const stem = new Stem(value);
+        this.analyze(stem);
+        if (stem.head())
+            throw SyntaxError('Nodes of value cannot be fully analyzed: ' + value);
+    }
+
+    analyze(stem: Stem) {
+        let node = stem.head();
+        this.init();
+        while (node) {
+            if (this.analyzeInLoop(node))
+                return;
+            node = stem.next();
+        }
+    }
+
+    /**
+     * Analyze in loop
+     * @param node - Node in loop
+     * @returns - Whether stop loop
+     */
+    protected analyzeInLoop(node: ValueNode): boolean {
+        return false;
+    }
+
     // toString(complete?: boolean): string;
 
     absorb(prop: string, value: string): Fruit;
@@ -84,41 +114,7 @@ export default class Fruit {
         return this;
     }
 
-    // protected _expand(prop: string, value: string, recursive?: boolean, initial?: boolean) {
-    //     return expandShorthandProperty(prop, value, recursive, initial);
-    // }
-
-    static Kinds: { [prop: string]: any } = {};
-    static init(): void {
-        // realized in index.ts for import reason
-    }
-
-    static absorb(prop: string, value: string): Fruit;
-    static absorb(decl: decl): Fruit;
-    static absorb(decls: Array<decl>): Fruit;
-    static absorb(prop: string | decl | Array<decl>, value?: string): Fruit {
-        Fruit.init();
-
-        if (Array.isArray(prop)) {
-            // @TODO:
-            // fruit.absorb(prop);
-            return;
-        }
-
-        if (typeof prop === 'object') {
-            value = prop.value;
-            prop = prop.prop;
-        }
-
-        // const shorthands = getShorthandsForProperty(prop);
-        // const shorthand = shorthands[shorthands.length - 1];
-        // if (!shorthand)
-        //     throw new Error('Unknown property: ' + prop);
-
-        // const fruit = new Fruit.Kinds[shorthand]();
-        // return fruit.absorb(prop, value);
-    }
-
+    // static test(value: string): boolean {}
     static validate(value: string): boolean {
         try {
             new this(value);

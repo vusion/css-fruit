@@ -1,4 +1,4 @@
-import Parser, { ValueNode } from './Parser';
+import Fruit, { ValueNode } from './Fruit';
 
 enum ValueType {
     top = 'top',
@@ -7,7 +7,7 @@ enum ValueType {
     left = 'left',
 };
 
-export default class Padding extends Parser {
+export default class Padding extends Fruit {
     protected name: string = 'padding';
     protected inherit: boolean = false;
 

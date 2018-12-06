@@ -7,57 +7,57 @@ export enum BackgroundRepeatKeyword {
     'no-repeat' = 'no-repeat',
 }
 
-const partialRE = /^(?:repeat-x|repeat-y|repeat|space|round|no-repeat)$/;
+const partialRE = /^(?:repeat-width|repeat-height|repeat|space|round|no-repeat)$/;
 
-export default class BackgroundRepeat extends Fruit {
+export default class BackgroundSize extends Fruit {
     protected _type: string = 'background-repeat';
     protected _state: { count: number };
-    x: BackgroundRepeatKeyword;
-    y: BackgroundRepeatKeyword;
+    width: BackgroundRepeatKeyword;
+    height: BackgroundRepeatKeyword;
 
     constructor(value?: string);
-    constructor(x: BackgroundRepeatKeyword, y?: BackgroundRepeatKeyword) {
-        super(x);
+    constructor(width: BackgroundRepeatKeyword, height?: BackgroundRepeatKeyword) {
+        super(width);
         if (arguments.length > 1) {
-            this.x = x;
-            this.y = y;
+            this.width = width;
+            this.height = height;
         }
     }
 
     protected init() {
         this._state = { count: 0 };
-        this.x = undefined;
-        this.y = undefined;
+        this.width = undefined;
+        this.height = undefined;
     }
 
     protected analyzeInLoop(node: ValueNode): boolean {
         if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
             return false;
         else if (node.type === ValueNodeType.word) {
-            if (node.value === 'repeat-x') {
+            if (node.value === 'repeat-width') {
                 if (this._state.count > 0)
                     throw new SyntaxError('Excessive keywords found');
                 else {
-                    this.x = BackgroundRepeatKeyword.repeat;
-                    this.y = BackgroundRepeatKeyword['no-repeat'];
+                    this.width = BackgroundRepeatKeyword.repeat;
+                    this.height = BackgroundRepeatKeyword['no-repeat'];
                     this._state.count += 2;
                 }
-            } else if (node.value === 'repeat-y') {
+            } else if (node.value === 'repeat-height') {
                 if (this._state.count > 0)
                     throw new SyntaxError('Excessive keywords found');
                 else {
-                    this.x = BackgroundRepeatKeyword['no-repeat'];
-                    this.y = BackgroundRepeatKeyword.repeat;
+                    this.width = BackgroundRepeatKeyword['no-repeat'];
+                    this.height = BackgroundRepeatKeyword.repeat;
                     this._state.count += 2;
                 }
             } else if (Object.keys(BackgroundRepeatKeyword).includes(node.value)) {
                 if (this._state.count > 1)
                     throw new SyntaxError('Excessive keywords found');
                 else if (this._state.count === 0) {
-                    this.x = this.y = node.value as BackgroundRepeatKeyword;
+                    this.width = this.height = node.value as BackgroundRepeatKeyword;
                     this._state.count++;
                 } else if (this._state.count === 1) {
-                    this.y = node.value as BackgroundRepeatKeyword;
+                    this.height = node.value as BackgroundRepeatKeyword;
                     this._state.count++;
                 } else
                     throw new Error('State Problem!');
@@ -68,16 +68,16 @@ export default class BackgroundRepeat extends Fruit {
 
     toString(complete?: boolean) {
         if (!complete) {
-            if (this.x === this.y)
-                return this.x;
-            else if (this.x === BackgroundRepeatKeyword.repeat && this.y === BackgroundRepeatKeyword['no-repeat'])
-                return 'repeat-x';
-            else if (this.y === BackgroundRepeatKeyword.repeat && this.x === BackgroundRepeatKeyword['no-repeat'])
-                return 'repeat-y';
+            if (this.width === this.height)
+                return this.width;
+            else if (this.width === BackgroundRepeatKeyword.repeat && this.height === BackgroundRepeatKeyword['no-repeat'])
+                return 'repeat-width';
+            else if (this.height === BackgroundRepeatKeyword.repeat && this.width === BackgroundRepeatKeyword['no-repeat'])
+                return 'repeat-height';
             // else;
         }
 
-        return [this.x, this.y].join(' ');
+        return [this.width, this.height].join(' ');
     }
 
     // static test(value: string) {

@@ -8,18 +8,14 @@ export default class Length extends Fruit {
     number: number;
     unit: string;
 
-    // constructor(value?: string) {
-    //     super(value);
-    //     this._parse(value);
-    // }
-
-    _init() {
+    init() {
         this.number = undefined;
         this.unit = undefined;
     }
 
-    _parse(value: string) {
+    parse(value: string) {
         value = value.trim();
+
         const found = partialRE.exec(value);
         if (!found)
             throw new SyntaxError('Invalid length');
@@ -28,13 +24,6 @@ export default class Length extends Fruit {
 
         this.number = +found[1];
         this.unit = found[2] || '';
-    }
-
-    _digest(value?: Array<ValueNode> | string): void {
-        if (Array.isArray(value))
-            return;
-        else
-            this._parse(value);
     }
 
     toString(complete?: boolean): string {

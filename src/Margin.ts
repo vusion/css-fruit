@@ -1,4 +1,4 @@
-import Parser, { ValueNode } from './Parser';
+import Fruit, { ValueNode } from './Fruit';
 
 enum ValueType {
     top = 'top',

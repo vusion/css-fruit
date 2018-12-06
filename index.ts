@@ -6,23 +6,37 @@
 import Fruit, { decl } from './src/Fruit';
 import Background from './src/Background';
 
-Fruit.init = function init() {
-    if (Fruit.Kinds['background'])
-        return;
-
-    Fruit.Kinds = {
+class CSSFruit {
+    static Kinds: { [prop: string]: any } = {
         background: Background,
     };
-};
 
-export default Fruit;
+    static absorb(prop: string, value: string): Fruit;
+    static absorb(decl: decl): Fruit;
+    static absorb(decls: Array<decl>): Fruit;
+    static absorb(prop: string | decl | Array<decl>, value?: string): Fruit {
+        if (Array.isArray(prop)) {
+            // @TODO:
+            // fruit.absorb(prop);
+            return;
+        }
+
+        if (typeof prop === 'object') {
+            value = prop.value;
+            prop = prop.prop;
+        }
+    }
+}
+
+export default CSSFruit;
 export {
+    Fruit,
     Background,
 }
 
 // Debug
 console.log(
-    Fruit.absorb('background', `#ccc url('abc') no-repeat    repeat`)
+    CSSFruit.absorb('background', `#ccc url('abc') no-repeat    repeat`)
         .absorb('background-image', 'url(abc.png)')
         .absorb('background-size', '40%')
 );

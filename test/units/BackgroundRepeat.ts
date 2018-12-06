@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import BackgroundRepeat from '../../src/BackgroundRepeat';
-import { getHeapSpaceStatistics } from 'v8';
 
 describe('BackgroundRepeat', () => {
     it('#constructor(value)', () => {
