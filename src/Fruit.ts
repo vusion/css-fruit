@@ -37,18 +37,28 @@ export class Stem {
     }
 }
 
-enum IrrelevantProperty {
+export const enum IrrelevantProperty {
     ignore = 'ignore',
     error = 'error',
 }
 
+export const enum ResolveDepth {
+    shorthand,
+    primaryLonghand,
+    completeLonghand,
+    virtualLonghand,
+    dataTypes,
+}
+
 interface Config {
     irrelevantProperty: IrrelevantProperty;
+    resolveDepth: ResolveDepth;
 }
 
 export default class Fruit {
     protected _config: Config = {
         irrelevantProperty: IrrelevantProperty.ignore,
+        resolveDepth: ResolveDepth.dataTypes,
     };
     protected _type: string = 'fruit';
     protected _inherit: boolean = false;

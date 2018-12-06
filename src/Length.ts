@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType } from './Fruit';
+import Fruit, { ValueNode, ValueNodeType, ResolveDepth } from './Fruit';
 import { numberRE } from './Number';
 
 const partialRE = new RegExp(`^(${String(numberRE).slice(2, -3)})(cap|ch|em|ex|ic|lh|rem|rlh|vh|vw|vi|vb|vmin|vmax|px|cm|mm|Q|in|pc|pt)?$`, 'i');
@@ -24,6 +24,11 @@ export default class Length extends Fruit {
 
         this.number = +found[1];
         this.unit = found[2] || '';
+
+        if (this._config.resolveDepth >= ResolveDepth.dataTypes)
+            return this;
+        else
+            return this.toString();
     }
 
     toString(complete?: boolean): string {

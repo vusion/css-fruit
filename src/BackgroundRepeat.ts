@@ -63,6 +63,7 @@ export default class BackgroundRepeat extends Fruit {
                     throw new Error('State Problem!');
             }
         }
+        // Break loop due to incompatible node.type or node.value
         return true;
     }
 

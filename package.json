@@ -7,8 +7,8 @@
     "lint": "eslint ./src --fix",
     "precommit": "node node_modules/vusion-hooks/precommit",
     "build": "webpack-cli",
-    "test": "mocha --timeout 5000 ./test/unit.test.js",
-    "test:one": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha --require ts-node/register test/units/BackgroundRepeat.ts"
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha --require ts-node/register test/unit.test.ts",
+    "test:one": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha --require ts-node/register test/units/Percentage.ts"
   },
   "main": "./dist/css-fruit.js",
   "repository": "vusion/css-fruit",

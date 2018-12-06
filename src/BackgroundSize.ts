@@ -1,4 +1,5 @@
 import Fruit, { ValueNode, ValueNodeType, Stem } from './Fruit';
+import Length from './Length';
 
 export enum BackgroundRepeatKeyword {
     repeat = 'repeat',
@@ -12,11 +13,11 @@ const partialRE = /^(?:repeat-width|repeat-height|repeat|space|round|no-repeat)$
 export default class BackgroundSize extends Fruit {
     protected _type: string = 'background-repeat';
     protected _state: { count: number };
-    width: BackgroundRepeatKeyword;
-    height: BackgroundRepeatKeyword;
+    width: string;
+    height: string;
 
     constructor(value?: string);
-    constructor(width: BackgroundRepeatKeyword, height?: BackgroundRepeatKeyword) {
+    constructor(width: string, height?: string) {
         super(width);
         if (arguments.length > 1) {
             this.width = width;
@@ -34,12 +35,11 @@ export default class BackgroundSize extends Fruit {
         if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
             return false;
         else if (node.type === ValueNodeType.word) {
-            if (node.value === 'repeat-width') {
+            if (node.value === 'cover' || node.value === 'contain') {
                 if (this._state.count > 0)
                     throw new SyntaxError('Excessive keywords found');
                 else {
-                    this.width = BackgroundRepeatKeyword.repeat;
-                    this.height = BackgroundRepeatKeyword['no-repeat'];
+                    this.width = this.height = node.value;
                     this._state.count += 2;
                 }
             } else if (node.value === 'repeat-height') {
@@ -63,6 +63,7 @@ export default class BackgroundSize extends Fruit {
                     throw new Error('State Problem!');
             }
         }
+        // Break loop due to incompatible node.type or node.value
         return true;
     }
 
