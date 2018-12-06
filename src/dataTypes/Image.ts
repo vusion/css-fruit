@@ -2,7 +2,7 @@ import Fruit, { ValueNode, ValueNodeType } from '../Fruit';
 import Length from './Length';
 import Percentage from './Percentage';
 
-export default class BackgroundImage extends Fruit {
+export default class Image extends Fruit {
     protected _type: string = 'background-image';
     protected _state: { count: number };
     width: Length | Percentage | string;

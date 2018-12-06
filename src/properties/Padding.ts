@@ -1,4 +1,4 @@
-import Fruit, { ValueNode } from './Fruit';
+import Fruit, { ValueNode } from '../Fruit';
 
 enum ValueType {
     top = 'top',

@@ -8,6 +8,12 @@ export interface decl {
 export interface ValueNode {
     type: string;
     value: string;
+    sourceIndex: number;
+    before: string;
+    after: string;
+    quote: string;
+    unclosed: boolean;
+    nodes: Array<ValueNode>;
 }
 
 export enum ValueNodeType {
