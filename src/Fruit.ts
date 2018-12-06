@@ -82,7 +82,7 @@ export default class Fruit {
         this.valid = false;
     }
 
-    parse(value: string): this | string {
+    parse(value: string): Fruit | string {
         value = value.trim();
 
         const stem = new Stem(value);
@@ -94,7 +94,7 @@ export default class Fruit {
         return this.toResult();
     }
 
-    protected toResult(): this | string {
+    toResult(): Fruit | string {
         if (!this.valid)
             return undefined;
         if (this._config.resolveDepth >= this._resolveDepthBoundary)
@@ -129,6 +129,7 @@ export default class Fruit {
         return false;
     }
 
+    get [Symbol.toStringTag]() { return this.constructor.name; }
     toString(complete?: boolean): string {
         if (!this.valid)
             return ''; // Invalid this._type

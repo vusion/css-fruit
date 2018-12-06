@@ -16,7 +16,7 @@ export default class Length extends Fruit {
         this.unit = undefined;
     }
 
-    parse(value: string): this | string {
+    parse(value: string): Fruit | string {
         value = value.trim();
         this.init();
 

@@ -2,10 +2,11 @@ import { expect } from 'chai';
 import Image from '../../src/dataTypes/Image';
 
 // @TODO
-describe('URL', () => {
+describe('Image', () => {
     it('#constructor(value)', () => {
-        const image = new Image('/* test */ url("abc.png?sprite=name#first") url(def.png)');
-        console.log(image);
+        const image = new Image('url(abc.png)');
+        expect(image.value).to.be.an('URL');
+        expect(image.value.toString()).to.equal("url('abc.png')");
     });
 
     // it('(value) -> equal', () => {
@@ -27,12 +28,15 @@ describe('URL', () => {
     //     expect(url.toString()).to.equal(`url('%E4%B8%AD%E6%96%87.png?%E5%8F%82%E6%95%B0=%E5%80%BC#%E5%93%88%E5%B8%8C')`);
     // });
 
-    // it('url(xxx) url(xxx) -> invalid', () => {
-    //     const url = new URL('url("abc.png?sprite=name#first") url(def.png)');
+    it('parse(url) -> url', () => {
+        expect(Image.parse('url(abc.png)')).to.be.a('string');
+    });
 
-    //     console.log(url);
-    //     // expect(url.path).to.equal('abc.png');
-    //     // expect(url.query['sprite']).to.equal('name');
-    //     // expect(url.hash).to.equal('first');
-    // });
+    it('parse(value) -> invalid', () => {
+        expect(Image.parse('abc')).to.be.undefined;
+    });
+
+    it('url(xxx) url(xxx) -> invalid', () => {
+        expect(Image.parse('/* test */ url("abc.png?sprite=name#first") url(def.png)')).to.be.undefined;
+    });
 });

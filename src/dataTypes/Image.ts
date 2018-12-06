@@ -5,7 +5,7 @@ export default class Image extends Fruit {
     protected _type: string = 'background-image';
     protected _resolveDepthBoundary: ResolveDepth = ResolveDepth.dataTypes;
     protected _state: { count: number };
-    value: URL | string;
+    value: URL;
 
     // constructor(value?: string);
     // constructor(width: string, height?: string) {
@@ -22,20 +22,21 @@ export default class Image extends Fruit {
         this.value = undefined;
     }
 
-    protected toResult(): this | string {
+    toResult(): Fruit | string {
         if (!this.valid)
             return super.toResult();
-        this.value
+        else
+            return this.value.toResult();
     }
 
     protected analyzeInLoop(node: ValueNode, stem: Stem): boolean {
         if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
             return false;
         else if (node.type === ValueNodeType.function) {
-            if (this.value)
-                    throw new SyntaxError('Excessive values');
             if (node.unclosed)
                 throw new SyntaxError('Unclosed function: ' + node.value);
+            if (this.value)
+                throw new SyntaxError('Excessive values');
             if (node.value === 'url') {
                 const url = new URL();
                 url.analyze(stem);

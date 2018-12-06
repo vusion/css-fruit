@@ -13,7 +13,7 @@ export default class Percentage extends Fruit {
         this.number = undefined;
     }
 
-    parse(value: string): this | string {
+    parse(value: string): Fruit | string {
         value = value.trim();
         this.init();
 

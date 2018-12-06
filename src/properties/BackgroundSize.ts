@@ -24,7 +24,7 @@ export default class BackgroundSize extends Fruit {
         this.height = undefined;
     }
 
-    protected toResult(): this | string {
+    toResult(): Fruit | string {
         if (!this.valid)
             return super.toResult();
         if (this.width === 'cover' || this.width === 'contain')
