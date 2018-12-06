@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import Length from '../../src/Length';
+import Length from '../../src/dataTypes/Length';
 
 describe('Length', () => {
     it('#constructor(value)', () => {

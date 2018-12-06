@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import BackgroundSize from '../../src/BackgroundSize';
+import BackgroundSize from '../../src/properties/BackgroundSize';
 
 describe('BackgroundSize', () => {
     it('#constructor(value)', () => {

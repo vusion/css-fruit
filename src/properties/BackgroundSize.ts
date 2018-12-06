@@ -1,9 +1,9 @@
-import Fruit, { ValueNode, ValueNodeType, ResolveDepth } from './Fruit';
-import Length from './Length';
-import Percentage from './Percentage';
+import Fruit, { ValueNode, ValueNodeType } from '../Fruit';
+import Length from '../dataTypes/Length';
+import Percentage from '../dataTypes/Percentage';
 
 export default class BackgroundSize extends Fruit {
-    protected _type: string = 'background-repeat';
+    protected _type: string = 'background-size';
     protected _state: { count: number };
     width: Length | Percentage | string;
     height: Length | Percentage | string;

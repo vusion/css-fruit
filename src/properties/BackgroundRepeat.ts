@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType, Stem } from './Fruit';
+import Fruit, { ValueNode, ValueNodeType } from '../Fruit';
 
 export enum BackgroundRepeatKeyword {
     repeat = 'repeat',

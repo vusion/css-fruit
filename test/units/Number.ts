@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { numberRE } from '../../src/Number';
+import { numberRE } from '../../src/dataTypes/Number';
 
 describe('Number', () => {
     it('.validate(value) => true', () => {

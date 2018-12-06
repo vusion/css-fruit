@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import BackgroundRepeat from '../../src/BackgroundRepeat';
+import BackgroundRepeat from '../../src/properties/BackgroundRepeat';
 
 describe('BackgroundRepeat', () => {
     it('#constructor(value)', () => {

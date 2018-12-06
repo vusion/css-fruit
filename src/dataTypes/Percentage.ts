@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType, ResolveDepth } from './Fruit';
+import Fruit, { ValueNode, ValueNodeType, ResolveDepth } from '../Fruit';
 import { numberRE } from './Number';
 
 const partialRE = new RegExp(`^(${String(numberRE).slice(2, -3)})%$`, 'i');

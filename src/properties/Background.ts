@@ -1,4 +1,4 @@
-import Fruit, { decl } from './Fruit';
+import Fruit, { decl } from '../Fruit';
 
 const REGS = {
     repeat: /^(repeat-x|repeat-y|repeat|space|round|no-repeat)$/,

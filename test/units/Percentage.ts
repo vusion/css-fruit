@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import Percentage from '../../src/Percentage';
+import Percentage from '../../src/dataTypes/Percentage';
 
 describe('Percentage', () => {
     it('#constructor(value)', () => {
