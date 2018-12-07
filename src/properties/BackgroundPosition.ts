@@ -83,22 +83,27 @@ export default class BackgroundPosition extends Fruit {
                     this.valid = true;
                 } else if (this._state.count === 2) {
                     /**
-                     * [x] (center center) + left ~~~ (center ? center ?)
-                     * [x] (center left) + left ~~~ (left ? center ?)
-                     * [x] (center top) + left ~~~ (center ? top ?)
-                     * [x] (center 40%) + left ~~~ (center ? top 40%)
-                     * [x] (left center) + left ~~~ (left ? center ?)
-                     * ------ [x] (left left) + left ~~~ (xxx xxx xxx xxx)
-                     * [x] (left top) + left ~~~ (left ? top ?)
-                     * [x] (left 40%) + left ~~~ (left x top 40%)
-                     * [x] (top center) + left ~~~ (center ? top ?)
-                     * [x] (top left) + left ~~~ (left ? top ?)
-                     * ------ [x] (top top) + left ~~~ (xxx xxx xxx xxx)
                      * [o] (top 40%) + left === (left ? top 40%) =x= [x](center 40% top ?)
+                     *
+                     * [x] (center center) + left ~~~ (center ? center ?)
+                     * [x] (left center) + left ~~~ (left ? center ?)
+                     * [x] (top center) + left ~~~ (center ? top ?)
                      * [x] (20% center) + left ~~~ (left 20% center ?)
-                     * ------ [x] (20% left) + left ~~~ (xxx xxx xxx xxx)
+                     *
+                     * [x] (center left) + left ~~~ (left ? center ?)
+                     * [x] (top left) + left ~~~ (left ? top ?)
+                     *
+                     * [x] (center top) + left ~~~ (center ? top ?)
+                     * [x] (left top) + left ~~~ (left ? top ?)
                      * [x] (20% top) + left ~~~ (left 20% top ?)
+                     *
+                     * [x] (center 40%) + left ~~~ (center ? top 40%)
+                     * [x] (left 40%) + left ~~~ (left x top 40%)
                      * [x] (20% 40%) + left ~~~ (left 20% top 40%)
+                     *
+                     * ------ [x] (left left) + left ~~~ (xxx xxx xxx xxx)
+                     * ------ [x] (top top) + left ~~~ (xxx xxx xxx xxx)
+                     * ------ [x] (20% left) + left ~~~ (xxx xxx xxx xxx)
                      */
                     if (this.x.origin === BackgroundPositionKeyword.center && this.x.offset) {
                         this.x.origin = node.value;
@@ -134,22 +139,27 @@ export default class BackgroundPosition extends Fruit {
                     this.valid = true;
                 } else if (this._state.count === 2) {
                     /**
-                     * [x] (center center) + top ~~~ (center ? center ?)
-                     * [x] (center left) + top ~~~ (left ? center ?)
-                     * [x] (center top) + top ~~~ (center ? top ?)
-                     * [x] (center 40%) + top ~~~ (center ? top 40%)
-                     * [x] (left center) + top ~~~ (left ? center ?)
-                     * ------ [x] (left left) + top ~~~ (xxx xxx xxx xxx)
-                     * [x] (left top) + top ~~~ (left ? top ?)
                      * [o] (left 40%) + top === (left 40% top ?) =x= (left ? top 40%)
+                     *
+                     * [x] (center center) + top ~~~ (center ? center ?)
+                     * [x] (left center) + top ~~~ (left ? center ?)
                      * [x] (top center) + top ~~~ (center ? top ?)
-                     * [x] (top left) + top ~~~ (left ? top ?)
-                     * ------ [x] (top top) + top ~~~ (xxx xxx xxx xxx)
-                     * [x] (top 40%) + top ~~~ (center 40% top ?)
                      * [x] (20% center) + top ~~~ (left 20% center ?)
-                     * ------ [x] (20% left) + top ~~~ (xxx xxx xxx xxx)
+                     *
+                     * [x] (center left) + top ~~~ (left ? center ?)
+                     * [x] (top left) + top ~~~ (left ? top ?)
+                     *
+                     * [x] (center top) + top ~~~ (center ? top ?)
+                     * [x] (left top) + top ~~~ (left ? top ?)
                      * [x] (20% top) + top ~~~ (left 20% top ?)
+                     *
+                     * [x] (center 40%) + top ~~~ (center ? top 40%)
+                     * [x] (top 40%) + top ~~~ (center 40% top ?)
                      * [x] (20% 40%) + top ~~~ (left 20% top 40%)
+                     *
+                     * ------ [x] (left left) + top ~~~ (xxx xxx xxx xxx)
+                     * ------ [x] (top top) + top ~~~ (xxx xxx xxx xxx)
+                     * ------ [x] (20% left) + top ~~~ (xxx xxx xxx xxx)
                      */
                     if (this.x.origin !== BackgroundPositionKeyword.center && this.y.offset && !this.x.offset) {
                         this.y.origin = node.value;
@@ -198,25 +208,28 @@ export default class BackgroundPosition extends Fruit {
                     }
                 } else if (this._state.count === 2) {
                     /**
-                     * [x] (center center) + 60% ~~~ (center ? center ?)
-                     * [x] (center left) + 60% ~~~ (left ? center ?)
-                     * [x] (center top) + 60% ~~~ (center ? top ?)
-                     * [x] (center 40%) + 60% ~~~ (center ? top 40%)
-                     * [x] (left center) + 60% ~~~ (left ? center ?)
-                     * ------ [x] (left left) + 60% ~~~ (xxx xxx xxx xxx)
+                     * [o] (center left) + 60% ~~~ (left ? center ?)
+                     * [o] (center top) + 60% ~~~ (center ? top ?)
                      * [o] (left top) + 60% === (left ? top 60%) ~~~ (left ? top ?)
-                     * [x] (left 40%) + 60% ~~~ (left ? top 40%)
-                     * [x] (top center) + 60% ~~~ (center ? top ?)
                      * [o] (top left) + 60% === (left 60% top ?) ~~~ (left ? top ?)
-                     * ------ [x] (top top) + 60% ~~~ (xxx xxx xxx xxx)
-                     * [x] (top 40%) + 60% ~~~ (center 40% top ?)
+                     *
+                     * [x] (center center) + 60% ~~~ (center ? center ?)
+                     * [x] (left center) + 60% ~~~ (left ? center ?)
+                     * [x] (top center) + 60% ~~~ (center ? top ?)
                      * [x] (20% center) + 60% ~~~ (left 20% center ?)
-                     * ------ [x] (20% left) + 60% ~~~ (xxx xxx xxx xxx)
-                     * [x] (20% top) + 60% ~~~ (left 20% top ?)
+                     *
+                     * [x] (center 40%) + 60% ~~~ (center ? top 40%)
+                     * [x] (left 40%) + 60% ~~~ (left ? top 40%)
+                     * [x] (top 40%) + 60% ~~~ (center 40% top ?)
                      * [x] (20% 40%) + 60% ~~~ (left 20% top 40%)
+                     *
+                     * [x] (20% top) + 60% ~~~ (left 20% top ?)
+                     *
+                     * ------ [x] (left left) + 60% ~~~ (xxx xxx xxx xxx)
+                     * ------ [x] (top top) + 60% ~~~ (xxx xxx xxx xxx)
+                     * ------ [x] (20% left) + 60% ~~~ (xxx xxx xxx xxx)
                      */
-                    if (this.x.origin !== BackgroundPositionKeyword.center && !this.x.offset
-                        && this.y.origin !== BackgroundPositionKeyword.center && !this.y.offset) {
+                    if (!this.x.offset && !this.y.offset && this._state.lastType !== BackgroundPositionKeyword.center) {
                         if (this._state.lastType === 'x')
                             this.x.offset = lengthPercentage;
                         else if (this._state.lastType === 'y')
@@ -229,8 +242,10 @@ export default class BackgroundPosition extends Fruit {
                     /**
                      * [o] (top 40% left) + 80% === (left 80% top 40%) =x= (left ? top 40%)
                      * [o] (left 40% top) + 80% === (left 40% top 80%) =x= (left 40% top ?)
-                     * [o] (left top 60%) + 80% === (left ? top 60%) ~~~ (left ? top 60%)
-                     * [o] (top left 60%) + 80% === (left 60% top ?) ~~~ (left 60% top ?)
+                     * [x] (left top 60%) + 80% ~~~ (left ? top 60%)
+                     * [x] (top left 60%) + 80% ~~~ (left 60% top ?)
+                     * [x] (center left 60%) + 80% ~~~ (left 60% center ?)
+                     * [x] (center top 60%) + 80% ~~~ (center ? top 60%)
                      */
                     if (this._state.lastType === 'length-percentage')
                         throw new Error('Excessive <length-percentage> value: ' + lengthPercentage);
@@ -247,4 +262,11 @@ export default class BackgroundPosition extends Fruit {
         } else // Break loop due to incompatible node.type or node.value
             return true;
     }
+
+    // toString(complete?: boolean): string {
+    //     const x: [string, string] = ['', ''];
+    //     const y: [string, string] = ['', ''];
+    //     if (this.x.origin === 'center' || this.x.offset.toString() === '50%')
+
+    // }
 }
