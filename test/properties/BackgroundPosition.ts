@@ -101,9 +101,37 @@ describe('BackgroundPosition', () => {
     //     expect(new BackgroundPosition('  left /* test */ 20px  ').toString()).to.equal('left 20px');
     // });
 
-    // it('(value) -> simple', () => {
-    //     expect(new BackgroundPosition('20px auto').toString()).to.equal('20px');
-    // });
+    it('(value) -> simple', () => {
+        expect(BackgroundPosition.parse('center').toString()).to.be.equal('center center');
+        expect(BackgroundPosition.parse('right').toString()).to.be.equal('right center');
+        expect(BackgroundPosition.parse('top').toString()).to.be.equal('center top');
+        expect(BackgroundPosition.parse('20%').toString()).to.be.equal('20% center');
+
+        expect(BackgroundPosition.parse('center center').toString()).to.be.equal('center center');
+        expect(BackgroundPosition.parse('left center').toString()).to.be.equal('left center');
+        expect(BackgroundPosition.parse('bottom center').toString()).to.be.equal('center bottom');
+        expect(BackgroundPosition.parse('20% center').toString()).to.be.equal('20% center');
+        expect(BackgroundPosition.parse('center left').toString()).to.be.equal('left center');
+        expect(BackgroundPosition.parse('top left').toString()).to.be.equal('left top');
+        expect(BackgroundPosition.parse('center top').toString()).to.be.equal('center top');
+        expect(BackgroundPosition.parse('right bottom').toString()).to.be.equal('right bottom');
+        expect(BackgroundPosition.parse('20% bottom').toString()).to.be.equal('20% bottom');
+        expect(BackgroundPosition.parse('center 40%').toString()).to.be.equal('center 40%');
+        expect(BackgroundPosition.parse('right 40%').toString()).to.be.equal('right 40%');
+        expect(BackgroundPosition.parse('20% 40%').toString()).to.be.equal('20% 40%');
+
+        expect(BackgroundPosition.parse('top 40% left').toString()).to.be.equal('left 40%');
+        expect(BackgroundPosition.parse('right 40% top').toString()).to.be.equal('right 40% top');
+        expect(BackgroundPosition.parse('center left 60%').toString()).to.be.equal('60% center');
+        expect(BackgroundPosition.parse('center top 60%').toString()).to.be.equal('center 60%');
+        expect(BackgroundPosition.parse('left top 60%').toString()).to.be.equal('left 60%');
+        expect(BackgroundPosition.parse('top left 60%').toString()).to.be.equal('60% top');
+
+        expect(BackgroundPosition.parse('top 40% right 80%').toString()).to.be.equal('right 80% top 40%');
+        expect(BackgroundPosition.parse('left 40% bottom 80%').toString()).to.be.equal('left 40% bottom 80%');
+        expect(BackgroundPosition.parse('left 40% top 80%').toString()).to.be.equal('40% 80%');
+        expect(BackgroundPosition.parse('bottom 40% right 80%').toString()).to.be.equal('right 80% bottom 40%');
+    });
 
     // it('(value) -> complete', () => {
     //     expect(new BackgroundPosition('20px auto').toString(true)).to.equal('20px auto');

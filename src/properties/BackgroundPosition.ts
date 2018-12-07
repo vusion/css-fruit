@@ -263,10 +263,31 @@ export default class BackgroundPosition extends Fruit {
             return true;
     }
 
-    // toString(complete?: boolean): string {
-    //     const x: [string, string] = ['', ''];
-    //     const y: [string, string] = ['', ''];
-    //     if (this.x.origin === 'center' || this.x.offset.toString() === '50%')
+    toString(complete?: boolean): string {
+        let x: Array<string> = [this.x.origin];
+        let y: Array<string> = [this.y.origin];
 
-    // }
+        if (this.x.offset)
+            x.push(this.x.offset.toString());
+        if (this.y.offset)
+            y.push(this.y.offset.toString());
+
+        if (complete)
+            return [...x, ...y].join(' ');
+
+        if (x.length === 1 && y.length === 1) {
+            // I dislike 1-value syntax
+            // if (x[0] === BackgroundPositionKeyword.center)
+            //     x = [];
+            // if (y[0] === BackgroundPositionKeyword.center)
+            //     y = [];
+        } else {
+            if (x.length === 2 && x[0] === BackgroundPositionKeyword.left && (!y[1] || y[0] === BackgroundPositionKeyword.top))
+                x = x.slice(1);
+            if (y.length === 2 && y[0] === BackgroundPositionKeyword.top && (!x[1] || x[0] === BackgroundPositionKeyword.left))
+                y = y.slice(1);
+        }
+
+        return [...x, ...y].join(' ');
+    }
 }
