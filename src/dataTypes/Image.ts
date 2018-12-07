@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType, ResolveDepth, Stem, AnalyzeLoopControl } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, ResolveDepth, Stem } from '../Fruit';
 import URL from './URL';
 
 export default class Image extends Fruit {
@@ -31,9 +31,9 @@ export default class Image extends Fruit {
             return this.value.toResult();
     }
 
-    protected analyzeInLoop(node: ValueNode, stem: Stem): AnalyzeLoopControl {
+    protected analyzeInLoop(node: ValueNode, stem: Stem) {
         if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
-            return AnalyzeLoopControl.next;
+            return true;
         else if (node.type === ValueNodeType.function) {
             if (node.unclosed)
                 throw new SyntaxError('Unclosed function: ' + node.value);
@@ -46,12 +46,10 @@ export default class Image extends Fruit {
                     throw new SyntaxError('Invalid url: ' + node.value);
                 this.value = url.toResult() as URL | string;
                 this.valid = true;
-                return AnalyzeLoopControl.continue;
-            } else
-                return AnalyzeLoopControl.break;
+                return false;
+            } // else
             // cont gradient = new Gradient();
-        } else // Break loop due to incompatible node.type or node.value
-            return AnalyzeLoopControl.break;
+        }
     }
 
     toString(complete?: boolean): string {

@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType, AnalyzeLoopControl } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType } from '../Fruit';
 
 export enum BackgroundRepeatKeyword {
     repeat = 'repeat',
@@ -31,9 +31,9 @@ export default class BackgroundRepeat extends Fruit {
         this.y = undefined;
     }
 
-    protected analyzeInLoop(node: ValueNode): AnalyzeLoopControl {
+    protected analyzeInLoop(node: ValueNode): boolean {
         if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
-            return AnalyzeLoopControl.next;
+            return true;
         else if (node.type === ValueNodeType.word) {
             if (node.value === 'repeat-x') {
                 if (this._state.count >= 1)
@@ -42,7 +42,7 @@ export default class BackgroundRepeat extends Fruit {
                     this.x = BackgroundRepeatKeyword.repeat;
                     this.y = BackgroundRepeatKeyword['no-repeat'];
                     this._state.count += 2;
-                    this.valid = true;
+                    return this.valid = true;
                 }
             } else if (node.value === 'repeat-y') {
                 if (this._state.count >= 1)
@@ -51,7 +51,7 @@ export default class BackgroundRepeat extends Fruit {
                     this.x = BackgroundRepeatKeyword['no-repeat'];
                     this.y = BackgroundRepeatKeyword.repeat;
                     this._state.count += 2;
-                    this.valid = true;
+                    return this.valid = true;
                 }
             } else if (Object.keys(BackgroundRepeatKeyword).includes(node.value)) {
                 if (this._state.count >= 2)
@@ -59,17 +59,15 @@ export default class BackgroundRepeat extends Fruit {
                 else if (this._state.count === 0) {
                     this.x = this.y = node.value as BackgroundRepeatKeyword;
                     this._state.count++;
-                    this.valid = true;
+                    return this.valid = true;
                 } else if (this._state.count === 1) {
                     this.y = node.value as BackgroundRepeatKeyword;
                     this._state.count++;
-                    this.valid = true;
+                    return this.valid = true;
                 } else
                     throw new Error('State inside problem!');
-            } else
-                return AnalyzeLoopControl.break;
-        } else // Break loop due to incompatible node.type or node.value
-            return AnalyzeLoopControl.break;
+            }
+        }
     }
 
     toString(complete?: boolean) {

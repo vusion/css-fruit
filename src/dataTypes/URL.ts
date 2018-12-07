@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType, ResolveDepth, AnalyzeLoopControl } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, ResolveDepth } from '../Fruit';
 
 // @TODO:
 // const strict = false;
@@ -31,9 +31,9 @@ export default class URL extends Fruit {
         this.hash = undefined;
     }
 
-    protected analyzeInLoop(node: ValueNode): AnalyzeLoopControl {
+    protected analyzeInLoop(node: ValueNode): boolean {
         if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
-            return AnalyzeLoopControl.next;
+            return true;
         else if (node.type === ValueNodeType.function) {
             if (node.unclosed)
                 throw new SyntaxError('Unclosed function: ' + node.value);
@@ -64,11 +64,9 @@ export default class URL extends Fruit {
                     });
                 }
                 this.hash = found[3] ? decodeURIComponent(found[3].slice(1)) : '';
-                this.valid = true;
-            } else // Not a url function
-                return AnalyzeLoopControl.break;
-        } else // Break loop due to incompatible node.type or node.value
-            return AnalyzeLoopControl.break;
+                return this.valid = true;
+            }
+        }
     }
 
     toString(): string {

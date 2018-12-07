@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType, AnalyzeLoopControl } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType } from '../Fruit';
 import Length from '../dataTypes/Length';
 import Percentage from '../dataTypes/Percentage';
 
@@ -28,9 +28,9 @@ export default class BackgroundPosition extends Fruit {
         this.y = { origin: undefined, offset: undefined };
     }
 
-    protected analyzeInLoop(node: ValueNode): AnalyzeLoopControl {
+    protected analyzeInLoop(node: ValueNode): boolean {
         if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
-            return AnalyzeLoopControl.next;
+            return true;
         else if (node.type === ValueNodeType.word) {
             /**
              * 4 types: center, left, top, 40%
@@ -42,7 +42,7 @@ export default class BackgroundPosition extends Fruit {
                     this.x.origin = this.y.origin = node.value;
                     this._state.lastType = 'center';
                     this._state.count++;
-                    this.valid = true;
+                    return this.valid = true;
                 } else if (this._state.count === 1) {
                     /**
                      * [o] (center) + center === (center ? center ?) === (center ? center ?)
@@ -53,7 +53,7 @@ export default class BackgroundPosition extends Fruit {
                     // Do nothing
                     this._state.lastType = 'center';
                     this._state.count++;
-                    this.valid = true;
+                    return this.valid = true;
                 }
             } else if (node.value === BackgroundPositionKeyword.left || node.value === BackgroundPositionKeyword.right) {
                 if (this._state.count >= 3)
@@ -63,7 +63,7 @@ export default class BackgroundPosition extends Fruit {
                     this.y.origin = BackgroundPositionKeyword.center;
                     this._state.lastType = 'x';
                     this._state.count++;
-                    this.valid = true;
+                    return this.valid = true;
                 } else if (this._state.count === 1) {
                     /**
                      * [o] (center) + left === (left ? center ?) =x= (center ? center ?)
@@ -76,7 +76,7 @@ export default class BackgroundPosition extends Fruit {
                     this.x.origin = node.value;
                     this._state.lastType = 'x';
                     this._state.count++;
-                    this.valid = true;
+                    return this.valid = true;
                 } else if (this._state.count === 2) {
                     /**
                      * [o] (top 40%) + left === (left ? top 40%) =x= [x](center 40% top ?)
@@ -107,7 +107,7 @@ export default class BackgroundPosition extends Fruit {
                         this.x.offset = undefined;
                         this._state.lastType = 'x';
                         this._state.count++;
-                        this.valid = true;
+                        return this.valid = true;
                     } else
                         throw new SyntaxError('Excessive keyword: ' + node.value);
                 }
@@ -119,7 +119,7 @@ export default class BackgroundPosition extends Fruit {
                     this.x.origin = BackgroundPositionKeyword.center;
                     this._state.lastType = 'y';
                     this._state.count++;
-                    this.valid = true;
+                    return this.valid = true;
                 } else if (this._state.count === 1) {
                     /**
                      * [o] (center) + top === (center ? top ?) =x= (center ? center ?)
@@ -132,7 +132,7 @@ export default class BackgroundPosition extends Fruit {
                     this.y.origin = node.value;
                     this._state.lastType = 'y';
                     this._state.count++;
-                    this.valid = true;
+                    return this.valid = true;
                 } else if (this._state.count === 2) {
                     /**
                      * [o] (left 40%) + top === (left 40% top ?) =x= (left ? top 40%)
@@ -163,7 +163,7 @@ export default class BackgroundPosition extends Fruit {
                         this.y.offset = undefined;
                         this._state.lastType = 'y';
                         this._state.count++;
-                        this.valid = true;
+                        return this.valid = true;
                     } else
                         throw new SyntaxError('Excessive keyword: ' + node.value);
                 }
@@ -172,7 +172,7 @@ export default class BackgroundPosition extends Fruit {
                 const percentage = Percentage.parse(node.value) as Percentage | string
                 let lengthPercentage = length || percentage;
                 if (!lengthPercentage)
-                    return AnalyzeLoopControl.break;
+                    return undefined;
 
                 if (this._state.count >= 4)
                     throw new SyntaxError('Excessive <length-percentage> value: ' + lengthPercentage);
@@ -180,9 +180,9 @@ export default class BackgroundPosition extends Fruit {
                     this.x.offset = lengthPercentage;
                     this.x.origin = BackgroundPositionKeyword.left;
                     this.y.origin = BackgroundPositionKeyword.center;
-                    this._state.lastType = 'lengthPercentage';
+                    this._state.lastType = 'length-percentage';
                     this._state.count++;
-                    this.valid = true;
+                    return this.valid = true;
                 } else if (this._state.count === 1) {
                     /**
                      * [o] (center) + 40% === (center ? top 40%) =x= (center ? center ?)
@@ -192,15 +192,16 @@ export default class BackgroundPosition extends Fruit {
                      */
                     if (this.y.origin !== BackgroundPositionKeyword.center) {
                         this.x.offset = lengthPercentage;
-                        this._state.lastType = 'lengthPercentage';
+                        this._state.lastType = 'length-percentage';
                         this._state.count++;
-                        this.valid = false;
+                        this.valid = false; // This is invalid but next state maybe valid
+                        return true;
                     } else {
                         this.y.origin = BackgroundPositionKeyword.top;
                         this.y.offset = lengthPercentage;
-                        this._state.lastType = 'lengthPercentage';
+                        this._state.lastType = 'length-percentage';
                         this._state.count++;
-                        this.valid = true;
+                        return this.valid = true;
                     }
                 } else if (this._state.count === 2) {
                     /**
@@ -232,6 +233,9 @@ export default class BackgroundPosition extends Fruit {
                             this.y.offset = lengthPercentage;
                         else
                             throw new Error('xxx');
+                        this._state.lastType = 'length-percentage';
+                        this._state.count++;
+                        return this.valid = true;
                     } else
                         throw new SyntaxError('Excessive <length-percentage> value: ' + lengthPercentage);
                 } else if (this._state.count === 3) {
@@ -251,12 +255,12 @@ export default class BackgroundPosition extends Fruit {
                         this.y.offset = lengthPercentage;
                     else
                         throw Error('Something wrong');
+                    this._state.lastType = 'length-percentage';
                     this._state.count++;
-                    this.valid = true;
+                    return this.valid = true;
                 }
             }
-        } else // Break loop due to incompatible node.type or node.value
-            return AnalyzeLoopControl.break;
+        }
     }
 
     toString(complete?: boolean): string {

@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType, Stem, AnalyzeLoopControl } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, Stem } from '../Fruit';
 import Image from '../dataTypes/Image';
 import BackgroundPosition from './BackgroundPosition';
 import BackgroundRepeat from './BackgroundRepeat';
@@ -37,9 +37,9 @@ export default class Background extends Fruit {
     repeat: BackgroundRepeat | string;
     size: BackgroundSize | string;
 
-    protected analyzeInLoop(node: ValueNode, stem: Stem): AnalyzeLoopControl {
+    protected analyzeInLoop(node: ValueNode, stem: Stem): boolean {
         if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
-            return AnalyzeLoopControl.next;
+            return true;
         else if (node.type === ValueNodeType.word) {
             if (node.value === 'none')
                 this.setImage(node.value);
@@ -48,6 +48,7 @@ export default class Background extends Fruit {
                 position.analyze(stem);
                 if (position.valid) {
                     this.setPosition(position.toResult() as BackgroundPosition | string);
+                    this.valid = true;
                 }
                 // else
                 //     return true;
@@ -57,9 +58,10 @@ export default class Background extends Fruit {
                 repeat.analyze(stem);
                 if (repeat.valid) {
                     this.setRepeat(repeat.toResult() as BackgroundRepeat | string);
+                    this.valid = true;
                 }
 
-                return AnalyzeLoopControl.continue;
+                return false;
             }
             // color
         } else if (node.type === ValueNodeType.function) {
@@ -71,12 +73,11 @@ export default class Background extends Fruit {
                 if (!image.valid)
                     throw new SyntaxError('Invalid image');
                 this.setImage(image.toResult() as Image | string);
-                return AnalyzeLoopControl.continue;
+                return false;
             } // else if (node.value ===)
             // else
             //     return true;
-        } else
-            return AnalyzeLoopControl.break;
+        }
     }
 
     private setImage(image: Image | string): void {

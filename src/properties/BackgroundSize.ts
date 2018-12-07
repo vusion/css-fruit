@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType, AnalyzeLoopControl } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType } from '../Fruit';
 import Length from '../dataTypes/Length';
 import Percentage from '../dataTypes/Percentage';
 
@@ -33,9 +33,9 @@ export default class BackgroundSize extends Fruit {
             return super.toResult();
     }
 
-    protected analyzeInLoop(node: ValueNode): AnalyzeLoopControl {
+    protected analyzeInLoop(node: ValueNode): boolean {
         if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
-            return AnalyzeLoopControl.next;
+            return true;
         else if (node.type === ValueNodeType.word) {
             if (node.value === 'cover' || node.value === 'contain') {
                 if (this._state.count >= 1)
@@ -43,7 +43,7 @@ export default class BackgroundSize extends Fruit {
                 else {
                     this.width = this.height = node.value;
                     this._state.count += 2;
-                    this.valid = true;
+                    return this.valid = true;
                 }
             } else {
                 const length = Length.parse(node.value) as Length | string; // '0' is truthy
@@ -52,7 +52,7 @@ export default class BackgroundSize extends Fruit {
                 if (length || percentage || node.value === 'auto')
                     size = length || percentage || node.value;
                 else
-                    return AnalyzeLoopControl.break; // Incompatible value
+                    return undefined;
 
                 if (this._state.count >= 2)
                     throw new SyntaxError('Excessive <size> value: ' + size);
@@ -60,16 +60,15 @@ export default class BackgroundSize extends Fruit {
                     this.width = size;
                     this.height = 'auto';
                     this._state.count++;
-                    this.valid = true;
+                    return this.valid = true;
                 } else if (this._state.count === 1) {
                     this.height = size;
                     this._state.count++;
-                    this.valid = true;
+                    return this.valid = true;
                 } else
                     throw new Error('State Problem!');
             }
-        } else // Break loop due to incompatible node.type or node.value
-            return AnalyzeLoopControl.break;
+        }
     }
 
     toString(complete?: boolean): string {

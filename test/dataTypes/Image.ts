@@ -5,8 +5,8 @@ import Image from '../../src/dataTypes/Image';
 describe('Image', () => {
     it('#constructor(value)', () => {
         const image = new Image('url(abc.png)');
-        expect(image.value).to.be.an('URL');
-        expect(image.value.toString()).to.equal("url('abc.png')");
+        // expect(image.value).to.be.an('URL');
+        expect(image.value).to.equal("url('abc.png')");
     });
 
     // it('(value) -> equal', () => {

@@ -45,7 +45,7 @@ export class Stem {
 
 export const enum AnalyzeLoopControl {
     next = 'next',
-    continue = 'continue',
+    stay = 'stay',
     break = 'break',
 }
 
@@ -113,29 +113,30 @@ export default class Fruit {
         let node;
         this.init();
         while (node = stem.head()) {
+            let control: boolean;
             try {
-                const control = this.analyzeInLoop(node, stem);
-                if (control === AnalyzeLoopControl.break)
-                    return;
-                else if (control === AnalyzeLoopControl.continue)
-                    continue;
+                control = this.analyzeInLoop(node, stem);
             } catch (e) {
                 this.valid = false;
                 throw e;
             }
-            node = stem.next();
+
+            if (control === undefined)
+                return;
+            else if (control === true)
+                node = stem.next();
         }
     }
 
     /**
      * Analyze in loop
-     * If meeting incompatible node.type or node.value, return true to stop the loop.
+     * If meeting incompatible node.type or node.value, return true to next the loop.
      * When analyzing successful, this.valid must specified.
      * @param node - Node in loop
-     * @returns - Whether stop loop
+     * @returns - Whether next++
      */
-    protected analyzeInLoop(node: ValueNode, stem: Stem): AnalyzeLoopControl {
-        return AnalyzeLoopControl.next;
+    protected analyzeInLoop(node: ValueNode, stem: Stem): boolean {
+        return true;
     }
 
     get [Symbol.toStringTag]() { return this.constructor.name; }
