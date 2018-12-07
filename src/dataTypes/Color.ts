@@ -1,3 +1,6 @@
+import Fruit, { ValueNode, ValueNodeType, ResolveDepth, Stem } from '../Fruit';
+const ValueParser = require('postcss-value-parser');
+
 const enum ColorType {
     'HEX' = 'HEX',
     'RGBA' = 'RGBA',
@@ -9,7 +12,13 @@ const enum ColorType {
     'NAME' = 'NAME',
 };
 
-export default class Color {
+export const namedColorRE = /^(?:black|silver|gray|white|maroon|red|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua|orange|aliceblue|antiquewhite|aquamarine|azure|beige|bisque|blanchedalmond|blueviolet|brown|burlywood|cadetblue|chartreuse|chocolate|coral|cornflowerblue|cornsilk|crimson|cyan|aqua|darkblue|darkcyan|darkgoldenrod|darkgray|darkgreen|darkgrey|darkkhaki|darkmagenta|darkolivegreen|darkorange|darkorchid|darkred|darksalmon|darkseagreen|darkslateblue|darkslategray|darkslategrey|darkturquoise|darkviolet|deeppink|deepskyblue|dimgray|dimgrey|dodgerblue|firebrick|floralwhite|forestgreen|gainsboro|ghostwhite|gold|goldenrod|greenyellow|grey|honeydew|hotpink|indianred|indigo|ivory|khaki|lavender|lavenderblush|lawngreen|lemonchiffon|lightblue|lightcoral|lightcyan|lightgoldenrodyellow|lightgray|lightgreen|lightgrey|lightpink|lightsalmon|lightseagreen|lightskyblue|lightslategray|lightslategrey|lightsteelblue|lightyellow|limegreen|linen|magenta|fuchsia|mediumaquamarine|mediumblue|mediumorchid|mediumpurple|mediumseagreen|mediumslateblue|mediumspringgreen|mediumturquoise|mediumvioletred|midnightblue|mintcream|mistyrose|moccasin|navajowhite|oldlace|olivedrab|orangered|orchid|palegoldenrod|palegreen|paleturquoise|palevioletred|papayawhip|peachpuff|peru|pink|plum|powderblue|rosybrown|royalblue|saddlebrown|salmon|sandybrown|seagreen|seashell|sienna|skyblue|slateblue|slategray|slategrey|snow|springgreen|steelblue|tan|thistle|tomato|turquoise|violet|wheat|whitesmoke|yellowgreen|rebeccapurple)$/i;
+export const hexColorRE = /^#(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
+
+export default class Color extends Fruit {
+    protected _type: string = 'color';
+    protected _resolveDepthBoundary = ResolveDepth.dataTypes;
+    value: string;
     r: number;
     g: number;
     b: number;
@@ -17,7 +26,9 @@ export default class Color {
     h: number;
     s: number;
     v: number;
+
     constructor(r: number = 0, g: number = 0, b: number = 0, a: number = 1) {
+        super();
         this.r = r;
         this.g = g;
         this.b = b;
@@ -28,13 +39,63 @@ export default class Color {
         Object.assign(this, Color.RGB2HSV(this.r, this.g, this.b));
     }
 
+    init() {
+        super.init();
+        this.value = undefined;
+        this.r = 0;
+        this.g = 0;
+        this.b = 0;
+        this.a = 0;
+        this.h = 0;
+        this.s = 0;
+        this.v = 0;
+    }
+
+    protected analyzeInLoop(node: ValueNode, stem: Stem): boolean {
+        if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
+            return true;
+        else if (node.type === ValueNodeType.word) {
+            if (node.value === 'currentColor') {
+                if (this.value)
+                    throw new SyntaxError('Excessive value');
+                this.value = 'currentColor';
+                return this.valid = true;
+            } else if (namedColorRE.test(node.value)) {
+                if (this.value)
+                    throw new SyntaxError('Excessive value');
+                this.value = node.value;
+                // @TODO parse named value;
+                return this.valid = true;
+            } else if (hexColorRE.test(node.value)) {
+                if (this.value)
+                    throw new SyntaxError('Excessive value');
+                this.value = node.value;
+                // @TODO parse named value;
+                return this.valid = true;
+            }
+        } else if (node.type === ValueNodeType.function) {
+            if (node.unclosed)
+                throw new SyntaxError('Unclosed function: ' + node.value);
+            if (node.value === 'rgb' || node.value === 'rgba' || node.value === 'hsl' || node.value === 'hsla') {
+                if (this.value)
+                    throw new SyntaxError('Excessive value');
+                this.value = ValueParser.stringify(node);
+                return this.valid = true;
+            }
+        }
+    }
+
+
+    toString(): string {
+        if (!this.valid)
+            return super.toString();
+
+        return this.value;
+    }
+
     toTuple(): [number, number, number, number] {
         return [this.r, this.g, this.b, this.a];
     }
-
-    // toString() {
-    //     Just use default
-    // }
 
     toHEX(alpha: number): string {
         const fix = (num: string) => (num.length === 1 ? '0' + num : num).toUpperCase();
