@@ -1,6 +1,9 @@
-import './units/Number';
-import './units/Length';
-import './units/Percentage';
-import './units/URL';
-import './units/BackgroundRepeat';
-import './units/BackgroundSize';
+import './dataTypes/Number';
+import './dataTypes/Length';
+import './dataTypes/Percentage';
+import './dataTypes/URL';
+import './dataTypes/Image';
+import './properties/Background';
+import './properties/BackgroundPosition';
+import './properties/BackgroundRepeat';
+import './properties/BackgroundSize';

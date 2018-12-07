@@ -16,7 +16,7 @@ export interface ValueNode {
     nodes: Array<ValueNode>;
 }
 
-export enum ValueNodeType {
+export const enum ValueNodeType {
     word = 'word',
     string = 'string',
     div = 'div',
@@ -41,6 +41,12 @@ export class Stem {
         if (this.pos < this.nodes.length)
             return this.nodes[++this.pos];
     }
+}
+
+export const enum AnalyzeLoopControl {
+    next = 'next',
+    continue = 'continue',
+    break = 'break',
 }
 
 export const enum IrrelevantProperty {
@@ -74,7 +80,7 @@ export default class Fruit {
     constructor();
     constructor(value?: string);
     constructor(value?: string) {
-        if (arguments.length === 1)
+        if (arguments.length === 1 && value)
             this.parse(value);
     }
 
@@ -104,12 +110,15 @@ export default class Fruit {
     }
 
     analyze(stem: Stem): void {
-        let node = stem.head();
+        let node;
         this.init();
-        while (node) {
+        while (node = stem.head()) {
             try {
-                if (this.analyzeInLoop(node, stem))
+                const control = this.analyzeInLoop(node, stem);
+                if (control === AnalyzeLoopControl.break)
                     return;
+                else if (control === AnalyzeLoopControl.continue)
+                    continue;
             } catch (e) {
                 this.valid = false;
                 throw e;
@@ -125,8 +134,8 @@ export default class Fruit {
      * @param node - Node in loop
      * @returns - Whether stop loop
      */
-    protected analyzeInLoop(node: ValueNode, stem: Stem): boolean {
-        return false;
+    protected analyzeInLoop(node: ValueNode, stem: Stem): AnalyzeLoopControl {
+        return AnalyzeLoopControl.next;
     }
 
     get [Symbol.toStringTag]() { return this.constructor.name; }

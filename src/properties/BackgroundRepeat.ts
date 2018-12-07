@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, AnalyzeLoopControl } from '../Fruit';
 
 export enum BackgroundRepeatKeyword {
     repeat = 'repeat',
@@ -31,9 +31,9 @@ export default class BackgroundRepeat extends Fruit {
         this.y = undefined;
     }
 
-    protected analyzeInLoop(node: ValueNode): boolean {
+    protected analyzeInLoop(node: ValueNode): AnalyzeLoopControl {
         if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
-            return false;
+            return AnalyzeLoopControl.next;
         else if (node.type === ValueNodeType.word) {
             if (node.value === 'repeat-x') {
                 if (this._state.count >= 1)
@@ -67,9 +67,9 @@ export default class BackgroundRepeat extends Fruit {
                 } else
                     throw new Error('State inside problem!');
             } else
-                return true;
+                return AnalyzeLoopControl.break;
         } else // Break loop due to incompatible node.type or node.value
-            return true;
+            return AnalyzeLoopControl.break;
     }
 
     toString(complete?: boolean) {

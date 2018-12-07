@@ -1,11 +1,11 @@
-import Fruit, { ValueNode, ValueNodeType, ResolveDepth, Stem } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, ResolveDepth, Stem, AnalyzeLoopControl } from '../Fruit';
 import URL from './URL';
 
 export default class Image extends Fruit {
     protected _type: string = 'image';
     protected _resolveDepthBoundary: ResolveDepth = ResolveDepth.dataTypes;
     protected _state: { count: number };
-    value: URL;
+    value: URL | string;
 
     // constructor(value?: string);
     // constructor(width: string, height?: string) {
@@ -25,33 +25,33 @@ export default class Image extends Fruit {
     toResult(): Fruit | string {
         if (!this.valid)
             return super.toResult();
+        if (typeof this.value === 'string')
+            return this.value;
         else
             return this.value.toResult();
     }
 
-    protected analyzeInLoop(node: ValueNode, stem: Stem): boolean {
+    protected analyzeInLoop(node: ValueNode, stem: Stem): AnalyzeLoopControl {
         if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
-            return false;
+            return AnalyzeLoopControl.next;
         else if (node.type === ValueNodeType.function) {
             if (node.unclosed)
                 throw new SyntaxError('Unclosed function: ' + node.value);
-            if (this.value)
-                throw new SyntaxError('Excessive values');
             if (node.value === 'url') {
+                if (this.value)
+                    throw new SyntaxError('Excessive values');
                 const url = new URL();
                 url.analyze(stem);
-                if (url.valid)
-                    this.value = url;
-                else
+                if (!url.valid)
                     throw new SyntaxError('Invalid url: ' + node.value);
-            }
-
-            // cont gradient = new Gradient();
-
-            if (this.value)
+                this.value = url.toResult() as URL | string;
                 this.valid = true;
+                return AnalyzeLoopControl.continue;
+            } else
+                return AnalyzeLoopControl.break;
+            // cont gradient = new Gradient();
         } else // Break loop due to incompatible node.type or node.value
-            return true;
+            return AnalyzeLoopControl.break;
     }
 
     toString(complete?: boolean): string {

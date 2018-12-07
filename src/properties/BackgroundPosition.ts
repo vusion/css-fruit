@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, AnalyzeLoopControl } from '../Fruit';
 import Length from '../dataTypes/Length';
 import Percentage from '../dataTypes/Percentage';
 
@@ -28,13 +28,9 @@ export default class BackgroundPosition extends Fruit {
         this.y = { origin: undefined, offset: undefined };
     }
 
-    // toResult(): Fruit | string {
-
-    // }
-
-    protected analyzeInLoop(node: ValueNode): boolean {
+    protected analyzeInLoop(node: ValueNode): AnalyzeLoopControl {
         if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
-            return false;
+            return AnalyzeLoopControl.next;
         else if (node.type === ValueNodeType.word) {
             /**
              * 4 types: center, left, top, 40%
@@ -176,7 +172,7 @@ export default class BackgroundPosition extends Fruit {
                 const percentage = Percentage.parse(node.value) as Percentage | string
                 let lengthPercentage = length || percentage;
                 if (!lengthPercentage)
-                    return true;
+                    return AnalyzeLoopControl.break;
 
                 if (this._state.count >= 4)
                     throw new SyntaxError('Excessive <length-percentage> value: ' + lengthPercentage);
@@ -260,7 +256,7 @@ export default class BackgroundPosition extends Fruit {
                 }
             }
         } else // Break loop due to incompatible node.type or node.value
-            return true;
+            return AnalyzeLoopControl.break;
     }
 
     toString(complete?: boolean): string {

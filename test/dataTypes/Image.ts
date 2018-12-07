@@ -39,4 +39,8 @@ describe('Image', () => {
     it('url(xxx) url(xxx) -> invalid', () => {
         expect(Image.parse('/* test */ url("abc.png?sprite=name#first") url(def.png)')).to.be.undefined;
     });
+
+    it('url(xxx) abc -> invalid', () => {
+        expect(Image.parse('/* test */ url("abc.png?sprite=name#first") abc()')).to.be.undefined;
+    });
 });

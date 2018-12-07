@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, AnalyzeLoopControl } from '../Fruit';
 import Length from '../dataTypes/Length';
 import Percentage from '../dataTypes/Percentage';
 
@@ -33,9 +33,9 @@ export default class BackgroundSize extends Fruit {
             return super.toResult();
     }
 
-    protected analyzeInLoop(node: ValueNode): boolean {
+    protected analyzeInLoop(node: ValueNode): AnalyzeLoopControl {
         if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
-            return false;
+            return AnalyzeLoopControl.next;
         else if (node.type === ValueNodeType.word) {
             if (node.value === 'cover' || node.value === 'contain') {
                 if (this._state.count >= 1)
@@ -52,7 +52,7 @@ export default class BackgroundSize extends Fruit {
                 if (length || percentage || node.value === 'auto')
                     size = length || percentage || node.value;
                 else
-                    return true; // Incompatible value
+                    return AnalyzeLoopControl.break; // Incompatible value
 
                 if (this._state.count >= 2)
                     throw new SyntaxError('Excessive <size> value: ' + size);
@@ -69,7 +69,7 @@ export default class BackgroundSize extends Fruit {
                     throw new Error('State Problem!');
             }
         } else // Break loop due to incompatible node.type or node.value
-            return true;
+            return AnalyzeLoopControl.break;
     }
 
     toString(complete?: boolean): string {
