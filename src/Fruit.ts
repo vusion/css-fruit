@@ -75,6 +75,7 @@ export default class Fruit {
     protected _type: string = 'fruit';
     protected _inherited: boolean = false;
     protected _resolveDepthBoundary = ResolveDepth.virtualLonghand;
+    raw: string;
     valid: boolean = false;
 
     constructor();
@@ -89,6 +90,7 @@ export default class Fruit {
     }
 
     parse(value: string): Fruit | string {
+        this.raw = value;
         value = value.trim();
 
         const stem = new Stem(value);
@@ -144,7 +146,7 @@ export default class Fruit {
         if (!this.valid)
             return ''; // Invalid this._type
         else
-            return this._type;
+            return this.raw;
     }
 
     absorb(prop: string, value: string): this;
@@ -165,7 +167,6 @@ export default class Fruit {
     }
 
     protected _absorb(prop: string, value: string): this {
-        // this._expand(prop, value ,true);
         return this;
     }
 
@@ -175,9 +176,20 @@ export default class Fruit {
             return fruit.parse(value);
         } catch (e) {}
     }
+
     // static test(value: string): boolean {}
 
     static validate(value: string): boolean {
         return this.parse(value) !== undefined;
+    }
+
+    // private static Kinds: { [prop: string]: any };
+
+    static absorb(prop: string, value: string): Fruit;
+    static absorb(decl: decl): Fruit;
+    static absorb(decls: Array<decl>): Fruit;
+    static absorb(prop: string | decl | Array<decl>, value?: string): Fruit {
+        const fruit = new this();
+        return fruit.absorb.apply(fruit, arguments);
     }
 }

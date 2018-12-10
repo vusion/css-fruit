@@ -4,39 +4,39 @@
 // import Background from './src/Background';
 
 import Fruit, { decl } from './src/Fruit';
-import Background from './src/Background';
+import Background from './src/properties/Background';
 
-class CSSFruit {
-    static Kinds: { [prop: string]: any } = {
-        background: Background,
-    };
+const Kinds: { [prop: string]: any } = {
+    background: Background,
+};
 
-    static absorb(prop: string, value: string): Fruit;
-    static absorb(decl: decl): Fruit;
-    static absorb(decls: Array<decl>): Fruit;
-    static absorb(prop: string | decl | Array<decl>, value?: string): Fruit {
+Fruit.absorb = function absorb(prop: string | decl | Array<decl>, value?: string): Fruit {
+    if (this.name !== 'Fruit') {
+        const fruit = new this();
+        return fruit.absorb.apply(fruit, arguments);
+    } else {
         if (Array.isArray(prop)) {
-            // @TODO:
-            // fruit.absorb(prop);
-            return;
+            const first = prop[0];
+            const rest = prop.slice(1);
+            return this.absorb(first).absorb(rest);
         }
 
         if (typeof prop === 'object') {
             value = prop.value;
             prop = prop.prop;
         }
-    }
-}
 
-export default CSSFruit;
+        const shorthand = prop.split('-')[0];
+        const Kind = Kinds[shorthand];
+        if (!Kind)
+            throw new Error('Unsupported property');
+
+        return Kind.absorb(prop, value);
+    }
+};
+
+export default Fruit;
 export {
-    Fruit,
     Background,
 }
 
-// Debug
-console.log(
-    CSSFruit.absorb('background', `#ccc url('abc') no-repeat    repeat`)
-        .absorb('background-image', 'url(abc.png)')
-        .absorb('background-size', '40%')
-);

@@ -8,7 +8,7 @@ import BackgroundSize from './BackgroundSize';
 export const backgroundAttachmentRE = /^(scroll|fixed|local)$/i;
 export const boxRE = /^(border-box|padding-box|content-box)$/i;
 
-const enum ValueType {
+enum SubProperty {
     attachment = 'attachment',
     clip = 'clip',
     color = 'color',
@@ -87,6 +87,8 @@ export default class Background extends Fruit {
                     valid = this.valid = true;
 
                     node = stem.head();
+                    if (!node)
+                        return false;
                     if (node.type === 'div' && node.value === '/') {
                         const size = new BackgroundSize();
                         stem.next();
@@ -119,12 +121,13 @@ export default class Background extends Fruit {
                 if (!image.valid)
                     throw new SyntaxError('Invalid image');
                 this.setImage(image.toResult() as Image | string);
+                this.valid = true;
                 return false;
             } else if (node.value === 'rgb' || node.value === 'rgba' || node.value === 'hsl' || node.value === 'hsla') {
                 const color = new Color();
                 color.analyze(stem);
                 if (color.valid) {
-                    this.setColor(color);
+                    this.setColor(color.toResult() as Color | string);
                     this.valid = true;
                 }
             }
@@ -166,51 +169,48 @@ export default class Background extends Fruit {
             this.size = size;
     }
 
-    // protected _absorb(prop: string, value: string) {
-    //     const style = this._expand(prop, value ,true);
-    //     Object.keys(style).forEach((longhand) => {
-    //         const value = style[longhand];
-    //         if (longhand === 'background-attachment')
-    //             this[ValueType.attachment] = value;
-    //         else if (longhand === 'background-clip')
-    //             this[ValueType.clip] = value;
-    //         else if (longhand === 'background-origin')
-    //             this[ValueType.origin] = value;
-    //         else if (longhand === 'background-color') {
-    //             // @TODO:
-    //             this[ValueType.color] = value;
-    //         } else if (longhand === 'background-image') {
-    //             this[ValueType.image] = value;
-    //         } else if (longhand === 'background-position') {
-
-    //         } else if (longhand === 'background-repeat') {
-    //             const repeat = value.split(' ');
-    //             if (!repeat[1]) {
-    //                 if (repeat[0] === 'repeat-x') {
-    //                     repeat[0] = 'repeat';
-    //                     repeat[1] = 'no-repeat';
-    //                 } else if (repeat[0] === 'repeat-y') {
-    //                     repeat[0] = 'no-repeat';
-    //                     repeat[1] = 'repeat';
-    //                 } else
-    //                     repeat[1] = repeat[0];
-    //             }
-    //             this.repeat = new BackgroundRepeat(repeat[0] as BackgroundRepeatKeyword, repeat[1] as BackgroundRepeatKeyword);
-    //         } else if (longhand === 'background-size') {
-    //             if (value === BackgroundSizeKeyword.contain || value === BackgroundSizeKeyword.cover)
-    //                 this.size = value;
-    //             else {
-    //                 const size = value.split(' ');
-    //                 if (!size[1])
-    //                     size[1] = 'auto';
-    //                 this.size = size as [string, string];
-    //             }
-    //         }
-    //     });
-    //     return this;
-    // }
-
     toString(complete?: boolean): string {
-        return [this.color, this.image, this.repeat].join(',');
+        const output: Array<string> = [];
+        this.color && output.push(this.color.toString());
+        this.image && output.push(this.image.toString());
+        this.position && output.push(this.position.toString());
+        this.size && output.push((this.position ? '/ ' : 'left /') + this.size.toString());
+        this.repeat && output.push(this.repeat.toString());
+        this.attachment && output.push(this.attachment);
+        this.origin && output.push(this.origin);
+        this.clip && this.clip !== this.origin && output.push(this.clip);
+        return output.join(' ');
+    }
+
+    protected _absorb(prop: string, value: string): this {
+        const subProperty = prop.slice(this._type.length + 1) as SubProperty;
+        if (prop === 'background') {
+            const background = new Background();
+            background.parse(value);
+            this.color = background.color;
+            this.image = background.image;
+            this.position = background.position;
+            this.size = background.size;
+            this.attachment = background.attachment;
+            this.repeat = background.repeat;
+            this.origin = background.origin;
+            this.clip = background.clip;
+
+            this.valid = background.valid;
+        } else if (subProperty === 'size') {
+            const size = BackgroundSize.parse(value);
+            this.size = size as BackgroundSize | string;
+
+            if (size instanceof BackgroundSize)
+                this.valid = size.valid;
+        } else if (Object.keys(SubProperty).includes(subProperty)) { // @TODO: expand it
+            const background = new Background();
+            background.parse(value);
+            this[subProperty] = background[subProperty];
+
+            this.valid = background.valid;
+        } else
+            throw new Error('Incompatible property: ' + prop);
+        return this;
     }
 }

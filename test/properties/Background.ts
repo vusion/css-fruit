@@ -24,4 +24,13 @@ describe('Background', () => {
         expect(Background.validate('red url(abc.png) center top / border-box repeat-x repeat-y')).to.be.false;
         expect(Background.validate('red url(abc center top no-repeat')).to.be.false;
     });
+
+    it('(value) -> string', () => {
+        expect(Background.parse('url(abc.png) red center top border-box no-repeat').toString())
+            .to.equal(`red url('abc.png') center top no-repeat border-box`);
+        expect(Background.parse('red url(abc.png) center top / auto 20px border-box no-repeat').toString())
+            .to.equal(`red url('abc.png') center top / auto 20px no-repeat border-box`);
+        expect(Background.parse('red url(abc.png) padding-box 50% bottom / auto border-box space').toString())
+            .to.equal(`red url('abc.png') 50% bottom / auto space padding-box border-box`);
+    });
 });
