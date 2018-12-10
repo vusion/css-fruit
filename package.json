@@ -6,9 +6,11 @@
   "scripts": {
     "lint": "eslint ./src --fix",
     "precommit": "node node_modules/vusion-hooks/precommit",
+    "prepublish": "npm run build",
     "build": "webpack-cli",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha --require ts-node/register test/unit.test.ts",
-    "test:one": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha --require ts-node/register"
+    "test:one": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha --require ts-node/register",
+    "test:integration": "mocha test/integration/css-fruit.js"
   },
   "main": "./dist/css-fruit.js",
   "repository": "vusion/css-fruit",

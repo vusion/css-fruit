@@ -40,6 +40,14 @@ import Fruit from 'css-fruit';
 const background = Fruit.absorb('background', 'url(abc.png) #eee right top / 100% repeat-x');
 ```
 
+CommonJS Code
+
+``` js
+const Fruit = require('css-fruit').default;
+
+const background = Fruit.absorb('background', 'url(abc.png) #eee right top / 100% repeat-x');
+```
+
 Following is the structure of generated backgroud object:
 
 ``` js

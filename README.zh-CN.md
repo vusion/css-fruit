@@ -42,6 +42,14 @@ import Fruit from 'css-fruit';
 const background = Fruit.absorb('background', 'url(abc.png) #eee right top repeat-x');
 ```
 
+如果是 CommonJS，请用下面的代码：
+
+``` js
+const Fruit = require('css-fruit').default;
+
+const background = Fruit.absorb('background', 'url(abc.png) #eee right top / 100% repeat-x');
+```
+
 生成的 background 对象具有如下结构：
 
 ``` js
