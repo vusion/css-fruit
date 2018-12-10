@@ -16,6 +16,9 @@ Fruit.absorb = function absorb(prop: string | decl | Array<decl>, value?: string
         return fruit.absorb.apply(fruit, arguments);
     } else {
         if (Array.isArray(prop)) {
+            if (!prop.length)
+                return undefined;
+
             const first = prop[0];
             const rest = prop.slice(1);
             return this.absorb(first).absorb(rest);
