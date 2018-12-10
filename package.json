@@ -1,6 +1,6 @@
 {
   "name": "css-fruit",
-  "description": "A template for creating npm package repo",
+  "description": "A Parser and Analysis of CSS Declartion",
   "version": "0.1.0",
   "author": "Rainfore <rainforest92@126.com>",
   "scripts": {
