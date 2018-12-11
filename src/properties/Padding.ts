@@ -1,6 +1,6 @@
 import Fruit, { ValueNode } from '../Fruit';
 
-enum ValueType {
+const enum ValueType {
     top = 'top',
     right = 'right',
     bottom = 'bottom',

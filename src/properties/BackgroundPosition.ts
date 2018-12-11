@@ -2,7 +2,7 @@ import Fruit, { ValueNode, ValueNodeType } from '../Fruit';
 import Length from '../dataTypes/Length';
 import Percentage from '../dataTypes/Percentage';
 
-enum BackgroundPositionKeyword {
+export enum BackgroundPositionKeyword {
     center = 'center',
     left = 'left',
     right = 'right',

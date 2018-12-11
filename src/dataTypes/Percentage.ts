@@ -1,11 +1,11 @@
-import Fruit, { ValueNode, ValueNodeType, ResolveDepth } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, ParseDeepLevel } from '../Fruit';
 import { numberRE } from './Number';
 
 const partialRE = new RegExp(`^(${String(numberRE).slice(2, -3)})%$`, 'i');
 
 export default class Percentage extends Fruit {
     protected _type: string = 'percentage';
-    protected _resolveDepthBoundary = ResolveDepth.dataTypes;
+    protected _parseDeepLevelBoundary = ParseDeepLevel.dataTypes;
     number: number;
 
     init() {

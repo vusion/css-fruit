@@ -54,7 +54,7 @@ export const enum IrrelevantProperty {
     error = 'error',
 }
 
-export const enum ResolveDepth {
+export const enum ParseDeepLevel {
     shorthand,
     primaryLonghand,
     completeLonghand,
@@ -62,19 +62,31 @@ export const enum ResolveDepth {
     dataTypes,
 }
 
-interface Config {
+export const enum FruitKind {
+    color = 'color',
+    image = 'image',
+    length = 'length',
+    number = 'number',
+    percentage = 'percentage',
+    url = 'url',
+
+    background = 'background',
+    'background-position' = 'background-position',
+    'background-repeat' = 'background-repeat',
+    'background-size' = 'background-size',
+}
+
+interface ConfigOptions {
     irrelevantProperty: IrrelevantProperty;
-    resolveDepth: ResolveDepth;
+    parseDeepLevel: ParseDeepLevel;
+    forceParsing: { [prop: string]: boolean };
 }
 
 export default class Fruit {
-    protected _config: Config = {
-        irrelevantProperty: IrrelevantProperty.ignore,
-        resolveDepth: ResolveDepth.virtualLonghand,
-    };
+    options: ConfigOptions;
     protected _type: string = 'fruit';
     protected _inherited: boolean = false;
-    protected _resolveDepthBoundary = ResolveDepth.virtualLonghand;
+    protected _parseDeepLevelBoundary = ParseDeepLevel.virtualLonghand;
     raw: string;
     valid: boolean = false;
 
@@ -105,7 +117,7 @@ export default class Fruit {
     toResult(): Fruit | string {
         if (!this.valid)
             return undefined;
-        if (this._config.resolveDepth >= this._resolveDepthBoundary)
+        if (this.options.parseDeepLevel >= this._parseDeepLevelBoundary || this.options.forceParsing[this._type])
             return this;
         else
             return this.toString();
@@ -170,6 +182,12 @@ export default class Fruit {
         return this;
     }
 
+    static config(options: ConfigOptions) {
+        console.log(this.prototype);
+        Object.assign(this.prototype.options.forceParsing, options.forceParsing);
+        Object.assign(this.prototype.options, options);
+    }
+
     static parse(value: string): Fruit | string {
         try {
             const fruit = new this();
@@ -193,3 +211,9 @@ export default class Fruit {
         return fruit.absorb.apply(fruit, arguments);
     }
 }
+
+Fruit.prototype.options = {
+    irrelevantProperty: IrrelevantProperty.ignore,
+    parseDeepLevel: ParseDeepLevel.virtualLonghand,
+    forceParsing: {},
+};

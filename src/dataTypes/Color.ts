@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType, ResolveDepth, Stem } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, ParseDeepLevel, Stem } from '../Fruit';
 const ValueParser = require('postcss-value-parser');
 
 const enum ColorType {
@@ -17,7 +17,7 @@ export const hexColorRE = /^#(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
 
 export default class Color extends Fruit {
     protected _type: string = 'color';
-    protected _resolveDepthBoundary = ResolveDepth.dataTypes;
+    protected _parseDeepLevelBoundary = ParseDeepLevel.dataTypes;
     value: string;
     r: number;
     g: number;

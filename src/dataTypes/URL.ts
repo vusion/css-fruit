@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType, ResolveDepth } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, ParseDeepLevel } from '../Fruit';
 
 // @TODO:
 // const strict = false;
@@ -15,7 +15,7 @@ export const urlRE = /^(.*?)(\?.*?)?(#.*?)?$/i;
 
 export default class URL extends Fruit {
     protected _type: string = 'url';
-    protected _resolveDepthBoundary: ResolveDepth = ResolveDepth.dataTypes;
+    protected _parseDeepLevelBoundary: ParseDeepLevel = ParseDeepLevel.dataTypes;
     // quote: string;
     url: string;
     path: string;

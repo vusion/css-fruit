@@ -1,8 +1,8 @@
 const path = require('path');
 
 module.exports = {
-    // mode: 'none',
-    mode: 'production',
+    mode: 'none',
+    // mode: 'production',
     entry: {
         'css-fruit': './index.ts',
     },
