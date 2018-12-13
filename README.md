@@ -2,7 +2,7 @@
 
 - [中文说明](README.zh-CN.md)
 
-A Parser and Analysis of CSS Declartion.
+A Parser and Analysis of CSS Declaration.
 
 [![CircleCI][circleci-img]][circleci-url]
 [![NPM Version][npm-img]][npm-url]

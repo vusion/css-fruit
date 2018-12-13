@@ -2,7 +2,7 @@
 
 - [README in English](README.md)
 
-这是一个 npm 仓库模板。
+CSS 属性的解析器和分析器。
 
 [![CircleCI][circleci-img]][circleci-url]
 [![NPM Version][npm-img]][npm-url]
