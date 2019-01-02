@@ -1,4 +1,6 @@
-import Fruit, { ValueNode } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType } from '../Fruit';
+import Length from '../dataTypes/Length';
+import Percentage from '../dataTypes/Percentage';
 
 const enum ValueType {
     top = 'top',
@@ -7,65 +9,63 @@ const enum ValueType {
     left = 'left',
 };
 
-export default class Padding {
-    protected name: string = 'padding';
-    protected inherit: boolean = false;
+export default class Padding extends Fruit {
+    protected _type: string = 'background-repeat';
+    protected _state: { count: number };
 
-    top: string;
-    right: string;
-    bottom: string;
-    left: string;
+    top: Length | Percentage | string;
+    right: Length | Percentage | string;
+    bottom: Length | Percentage | string;
+    left: Length | Percentage | string;
 
-    // digest(valueType?: ValueType) {
-    //     if (!valueType) {
-    //         let count = 0;
-    //         let node: ValueNode;
-    //         while (node = this.eat()) {
-    //             if (node.type === 'space' || node.type === 'comment')
-    //                 continue;
-    //             if (node.type === 'div' || node.type === 'string')
-    //                 throw new TypeError(`Error node type in ${this.name} value: `);
+    protected init() {
+        super.init();
+        this._state = { count: 0 };
 
-    //             if (count === 0)
-    //                 this.top = this.right = this.bottom = this.left = node.value;
-    //             else if (count === 1)
-    //                 this.right = this.left = node.value;
-    //             else if (count === 2)
-    //                 this.bottom = node.value;
-    //             else if (count === 3)
-    //                 this.left = node.value;
-    //             else
-    //                 throw new Error('length');
-    //             count++;
-    //         }
-    //     } else {
-    //         let count = 0;
-    //         let node: ValueNode;
-    //         while (node = this.eat()) {
-    //             if (node.type === 'space' || node.type === 'comment')
-    //                 continue;
-    //             if (node.type === 'div' || node.type === 'string')
-    //                 throw new TypeError(`Error node type in ${this.name} value: `);
+        this.top = undefined;
+        this.right = undefined;
+        this.bottom = undefined;
+        this.left = undefined;
+    }
 
-    //             if (count === 0)
-    //                 this.top = this.right = this.bottom = this.left = node.value;
-    //             else if (count === 1)
-    //                 this.right = this.left = node.value;
-    //             else if (count === 2)
-    //                 this.bottom = node.value;
-    //             else if (count === 3)
-    //                 this.left = node.value;
-    //             else
-    //                 throw new Error('length');
-    //             count++;
-    //         }
-    //     }
-    // }
+    analyzeInLoop(node: ValueNode): boolean {
+        if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
+            return true;
+        else if (node.type === ValueNodeType.word) {
+            const length = Length.parse(node.value) as Length | string; // '0' is truthy
+            const percentage = Percentage.parse(node.value) as Percentage | string
+            let value: Length | Percentage | string;
+            if (length || percentage)
+                value = length || percentage;
+            else
+                return undefined;
+
+            if (String(value)[0] === '-')
+                throw new Error('Negative values are invalid');
+
+            if (this._state.count >= 4)
+                throw new SyntaxError('Excessive <padding> value: ' + value);
+            else if (this._state.count === 0)
+                this.top = this.right = this.bottom = this.left = value;
+            else if (this._state.count === 1)
+                this.right = this.left = value;
+            else if (this._state.count === 2)
+                this.bottom = value;
+            else if (this._state.count === 3)
+                this.left = value;
+
+            this._state.count++;
+            return this.valid = true;
+        }
+    }
 
     toString(complete?: boolean): string {
+        if(!this.valid)
+            return super.toString();
+
         if (!complete) {
             if (this.top === this.right && this.right === this.bottom && this.bottom === this.left)
-                return this.top;
+                return this.top.toString();
             else if (this.left === this.right && this.top === this.bottom)
                 return [this.top, this.left].join(' ');
             else if (this.left === this.right)

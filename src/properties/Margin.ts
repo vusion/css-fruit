@@ -1,4 +1,6 @@
-import Fruit, { ValueNode } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType } from '../Fruit';
+import Length from '../dataTypes/Length';
+import Percentage from '../dataTypes/Percentage';
 
 const enum ValueType {
     top = 'top',
@@ -7,57 +9,60 @@ const enum ValueType {
     left = 'left',
 };
 
-export default class Margin {
-    protected name: string = 'margin';
-    protected inherit: boolean = false;
+export default class Margin extends Fruit {
+    protected _type: string = 'background-repeat';
+    protected _state: { count: number };
 
-    top: string;
-    right: string;
-    bottom: string;
-    left: string;
+    top: Length | Percentage | string;
+    right: Length | Percentage | string;
+    bottom: Length | Percentage | string;
+    left: Length | Percentage | string;
 
-    digest(nodes: Array<ValueNode>, pos: number, valueType?: ValueType) {
-        if(!valueType) {
-            let count = 0;
-            nodes.forEach((node) => {
-                if (node.type === 'div' || node.type === 'string')
-                    throw new TypeError(`Error node type in ${this.name} value: `);
-                else if (node.type === 'space' || node.type === 'comment')
-                    return;
+    protected init() {
+        super.init();
+        this._state = { count: 0 };
 
-                if (count === 0)
-                    this.top = this.right = this.bottom = this.left = node.value;
-                else if (count === 1)
-                    this.right = this.left = node.value;
-                else if (count === 2)
-                    this.bottom = node.value;
-                else if (count === 3)
-                    this.left = node.value;
-                // else
-                    // throw new Erro`length');
-                count++;
-            });
-        } else {
-            let count = 0;
-            nodes.forEach((node) => {
-                if (node.type === 'div' || node.type === 'string')
-                    throw new TypeError(`Error node type in ${this.name} value: `);
-                else if (node.type === 'space' || node.type === 'comment')
-                    return;
+        this.top = undefined;
+        this.right = undefined;
+        this.bottom = undefined;
+        this.left = undefined;
+    }
 
-                if (count === 0)
-                    this[valueType] = node.value;
-                else
-                    throw new Error('length');
-                count++;
-            });
+    analyzeInLoop(node: ValueNode): boolean {
+        if (node.type === ValueNodeType.space || node.type === ValueNodeType.comment)
+            return true;
+        else if (node.type === ValueNodeType.word) {
+            const length = Length.parse(node.value) as Length | string; // '0' is truthy
+            const percentage = Percentage.parse(node.value) as Percentage | string
+            let value;
+            if (length || percentage || node.value === 'auto')
+                value = length || percentage || node.value;
+            else
+                return undefined;
+
+            if (this._state.count >= 4)
+                throw new SyntaxError('Excessive <margin> value: ' + value);
+            else if (this._state.count === 0)
+                this.top = this.right = this.bottom = this.left = value;
+            else if (this._state.count === 1)
+                this.right = this.left = value;
+            else if (this._state.count === 2)
+                this.bottom = value;
+            else if (this._state.count === 3)
+                this.left = value;
+
+            this._state.count++;
+            return this.valid = true;
         }
     }
 
     toString(complete?: boolean): string {
+        if(!this.valid)
+            return super.toString();
+
         if (!complete) {
             if (this.top === this.right && this.right === this.bottom && this.bottom === this.left)
-                return this.top;
+                return this.top.toString();
             else if (this.left === this.right && this.top === this.bottom)
                 return [this.top, this.left].join(' ');
             else if (this.left === this.right)
