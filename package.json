@@ -31,6 +31,8 @@
     "template"
   ],
   "dependencies": {
+    "@types/json5": "^0.0.30",
+    "json5": "^2.1.0",
     "postcss-value-parser": "^3.3.1"
   },
   "devDependencies": {

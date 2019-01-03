@@ -16,6 +16,21 @@ describe('URL', () => {
         expect(new URL('url("abc.png")').toString()).to.equal(`url('abc.png')`);
     });
 
+    it('(~query~) -> equal', () => {
+        expect(new URL(`url('abc.png?')`).toString()).to.equal(`url('abc.png?')`);
+        expect(new URL(`url('abc.png?flag')`).toString()).to.equal(`url('abc.png?flag')`);
+        expect(new URL(`url('abc.png?+flag')`).toString()).to.equal(`url('abc.png?flag')`);
+        expect(new URL(`url('abc.png?-flag')`).toString()).to.equal(`url('abc.png?flag=false')`);
+        expect(new URL(`url('abc.png?xyz=test')`).toString()).to.equal(`url('abc.png?xyz=test')`);
+        expect(new URL(`url('abc.png?xyz=1')`).toString()).to.equal(`url('abc.png?xyz=1')`);
+        expect(new URL(`url('abc.png?xyz[]=a')`).toString()).to.equal(`url('abc.png?xyz[]=a')`);
+        expect(new URL(`url('abc.png?flag1&flag2')`).toString()).to.equal(`url('abc.png?flag1&flag2')`);
+        expect(new URL(`url('abc.png?+flag1&-flag2')`).toString()).to.equal(`url('abc.png?flag1&flag2=false')`);
+        expect(new URL(`url('abc.png?xyz[]=a&xyz[]=b')`).toString()).to.equal(`url('abc.png?xyz[]=a&xyz[]=b')`);
+        expect(new URL(`url('abc.png?a%2C%26b=c%2C%26d')`).toString()).to.equal(`url('abc.png?a%2C%26b=c%2C%26d')`);
+        expect(new URL(`url('abc.png?{data:{a:1},isJSON5:true}')`).toString()).to.equal(`url('abc.png?{data:{a:1},isJSON5:true}')`);
+    })
+
     it('(~space~comment~) -> trimmed', () => {
         expect(new URL('url("abc.png?sprite=name#first") /* comment */').toString()).to.equal(`url('abc.png?sprite=name#first')`);
     });

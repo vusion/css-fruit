@@ -14,6 +14,7 @@ module.exports = {
     },
     externals: {
         'postcss-value-parser': 'postcss-value-parser',
+        json5: 'json5',
     },
     target: 'node',
     resolve: {

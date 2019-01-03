@@ -1,4 +1,5 @@
 import Fruit, { ValueNode, ValueNodeType, ParseDeepLevel } from '../Fruit';
+import { parseQuery, stringifyQuery, Query } from '../utils';
 
 // @TODO:
 // const strict = false;
@@ -19,7 +20,7 @@ export default class URL extends Fruit {
     // quote: string;
     url: string;
     path: string;
-    query: { [prop: string]: string };
+    query: Query;
     hash: string;
 
     protected init() {
@@ -27,7 +28,7 @@ export default class URL extends Fruit {
         // this.quote = "'";
         this.url = undefined;
         this.path = undefined;
-        this.query = {};
+        this.query = undefined;
         this.hash = undefined;
     }
 
@@ -55,14 +56,8 @@ export default class URL extends Fruit {
                 this.url = url;
                 const found = urlRE.exec(url);
                 this.path = found[1] ? decodeURIComponent(found[1]) : '';
-                if (found[2]) {
-                    const parts = found[2].slice(1).split('&');
-                    parts.forEach((part) => {
-                        const pair = part.split('=');
-                        if (pair[0])
-                            this.query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]) || '';
-                    });
-                }
+                if (found[2])
+                    this.query = parseQuery(found[2]);
                 this.hash = found[3] ? decodeURIComponent(found[3].slice(1)) : '';
                 return this.valid = true;
             }
@@ -74,7 +69,7 @@ export default class URL extends Fruit {
             return super.toString();
 
         const quote = "'";
-        const query = Object.keys(this.query).map((key) => `${encodeURIComponent(key)}=${encodeURIComponent(this.query[key])}`).join('&');
-        return `url(${quote}${encodeURIComponent(this.path)}${query ? '?' + query : ''}${this.hash ? '#' + encodeURIComponent(this.hash) : ''}${quote})`;
+        const queryString = this.query ? stringifyQuery(this.query) : '';
+        return `url(${quote}${encodeURIComponent(this.path)}${queryString}${this.hash ? '#' + encodeURIComponent(this.hash) : ''}${quote})`;
     }
 }
