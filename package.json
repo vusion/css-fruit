@@ -1,7 +1,7 @@
 {
   "name": "css-fruit",
   "description": "A Parser and Analysis of CSS Declaration",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Rainfore <rainforest92@126.com>",
   "scripts": {
     "lint": "eslint ./src --fix",
