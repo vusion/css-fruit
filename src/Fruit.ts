@@ -183,7 +183,6 @@ export default class Fruit {
     }
 
     static config(options: ConfigOptions) {
-        console.log(this.prototype);
         Object.assign(this.prototype.options.forceParsing, options.forceParsing);
         Object.assign(this.prototype.options, options);
     }

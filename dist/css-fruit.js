@@ -7,7 +7,7 @@
 		exports["cssFruit"] = factory(require("postcss-value-parser"), require("json5"));
 	else
 		root["cssFruit"] = factory(root["postcss-value-parser"], root["json5"]);
-})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__8__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__7__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -101,8 +101,41 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _src_properties_Background__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Background", function() { return _src_properties_Background__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+/* harmony import */ var _src_dataTypes_Color__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Color", function() { return _src_dataTypes_Color__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+
+/* harmony import */ var _src_dataTypes_Image__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Image", function() { return _src_dataTypes_Image__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+
+/* harmony import */ var _src_dataTypes_Length__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(8);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Length", function() { return _src_dataTypes_Length__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+
+/* harmony import */ var _src_dataTypes_Number__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Number", function() { return _src_dataTypes_Number__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+
+/* harmony import */ var _src_dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(10);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Percentage", function() { return _src_dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_5__["default"]; });
+
+/* harmony import */ var _src_dataTypes_URL__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(5);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "URL", function() { return _src_dataTypes_URL__WEBPACK_IMPORTED_MODULE_6__["default"]; });
+
+/* harmony import */ var _src_properties_Background__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(11);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Background", function() { return _src_properties_Background__WEBPACK_IMPORTED_MODULE_7__["default"]; });
+
+/* harmony import */ var _src_properties_BackgroundPosition__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(12);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BackgroundPosition", function() { return _src_properties_BackgroundPosition__WEBPACK_IMPORTED_MODULE_8__["default"]; });
+
+/* harmony import */ var _src_properties_BackgroundRepeat__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(13);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BackgroundRepeat", function() { return _src_properties_BackgroundRepeat__WEBPACK_IMPORTED_MODULE_9__["default"]; });
+
+/* harmony import */ var _src_properties_BackgroundSize__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(14);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BackgroundSize", function() { return _src_properties_BackgroundSize__WEBPACK_IMPORTED_MODULE_10__["default"]; });
+
+/* harmony import */ var _src_properties_Margin__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(15);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Margin", function() { return _src_properties_Margin__WEBPACK_IMPORTED_MODULE_11__["default"]; });
+
+/* harmony import */ var _src_properties_Padding__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(16);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Padding", function() { return _src_properties_Padding__WEBPACK_IMPORTED_MODULE_12__["default"]; });
 
 // import Parser from './src/Parser';
 // import Padding from './src/Padding';
@@ -110,8 +143,19 @@ __webpack_require__.r(__webpack_exports__);
 // import Background from './src/Background';
 
 
+
+
+
+
+
+
+
+
+
+
+
 var Kinds = {
-    background: _src_properties_Background__WEBPACK_IMPORTED_MODULE_1__["default"],
+    background: _src_properties_Background__WEBPACK_IMPORTED_MODULE_7__["default"],
 };
 _src_Fruit__WEBPACK_IMPORTED_MODULE_0__["default"].absorb = function absorb(prop, value) {
     if (this.name !== 'Fruit') {
@@ -250,7 +294,6 @@ var Fruit = /** @class */ (function () {
         return this;
     };
     Fruit.config = function (options) {
-        console.log(this.prototype);
         Object.assign(this.prototype.options.forceParsing, options.forceParsing);
         Object.assign(this.prototype.options, options);
     };
@@ -287,241 +330,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
 
 /***/ }),
 /* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "backgroundAttachmentRE", function() { return backgroundAttachmentRE; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "boxRE", function() { return boxRE; });
-/* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _dataTypes_Color__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
-/* harmony import */ var _dataTypes_Image__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
-/* harmony import */ var _BackgroundPosition__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9);
-/* harmony import */ var _BackgroundRepeat__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(13);
-/* harmony import */ var _BackgroundSize__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(14);
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-
-
-
-
-
-var backgroundAttachmentRE = /^(scroll|fixed|local)$/i;
-var boxRE = /^(border-box|padding-box|content-box)$/i;
-var SubProperty;
-(function (SubProperty) {
-    SubProperty["attachment"] = "attachment";
-    SubProperty["clip"] = "clip";
-    SubProperty["color"] = "color";
-    SubProperty["image"] = "image";
-    SubProperty["origin"] = "origin";
-    SubProperty["position"] = "position";
-    SubProperty["repeat"] = "repeat";
-    SubProperty["size"] = "size";
-})(SubProperty || (SubProperty = {}));
-;
-/**
- * Unsupport two backgrounds
- */
-var Background = /** @class */ (function (_super) {
-    __extends(Background, _super);
-    function Background() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this._type = 'background';
-        _this._inherited = false;
-        return _this;
-    }
-    Background.prototype.init = function () {
-        _super.prototype.init.call(this);
-        this._state = { boxCount: 0 };
-        this.attachment = undefined;
-        this.clip = undefined;
-        this.color = undefined;
-        this.image = undefined;
-        this.origin = undefined;
-        this.position = undefined;
-        this.repeat = undefined;
-        this.size = undefined;
-    };
-    Background.prototype.analyzeInLoop = function (node, stem) {
-        if (node.type === "space" /* space */ || node.type === "comment" /* comment */)
-            return true;
-        else if (node.type === "word" /* word */) {
-            if (node.value === 'none')
-                this.setImage(node.value);
-            else if (backgroundAttachmentRE.test(node.value)) {
-                if (this.attachment)
-                    throw new SyntaxError('Excessive background-attachment');
-                this.attachment = node.value;
-                return this.valid = true;
-            }
-            else if (boxRE.test(node.value)) {
-                if (this._state.boxCount === 0) {
-                    this.clip = this.origin = node.value;
-                    this._state.boxCount++;
-                    return this.valid = true;
-                }
-                else if (this._state.boxCount === 1) {
-                    this.clip = node.value;
-                    this._state.boxCount++;
-                    return this.valid = true;
-                }
-                else
-                    throw new SyntaxError('Excessive background-clip');
-            }
-            else {
-                var valid = false;
-                var color = new _dataTypes_Color__WEBPACK_IMPORTED_MODULE_1__["default"]();
-                color.analyze(stem);
-                if (color.valid) {
-                    this.setColor(color);
-                    valid = this.valid = true;
-                }
-                var position = new _BackgroundPosition__WEBPACK_IMPORTED_MODULE_3__["default"]();
-                position.analyze(stem);
-                if (position.valid) {
-                    this.setPosition(position.toResult());
-                    valid = this.valid = true;
-                    node = stem.head();
-                    if (!node)
-                        return false;
-                    if (node.type === 'div' && node.value === '/') {
-                        var size = new _BackgroundSize__WEBPACK_IMPORTED_MODULE_5__["default"]();
-                        stem.next();
-                        size.analyze(stem);
-                        if (size.valid) {
-                            this.setSize(size);
-                            valid = this.valid = true;
-                        }
-                        else
-                            throw new SyntaxError('Invalid background-size');
-                    }
-                }
-                var repeat = new _BackgroundRepeat__WEBPACK_IMPORTED_MODULE_4__["default"]();
-                repeat.analyze(stem);
-                if (repeat.valid) {
-                    this.setRepeat(repeat.toResult());
-                    valid = this.valid = true;
-                }
-                if (valid)
-                    return false;
-            }
-            // color
-        }
-        else if (node.type === "function" /* function */) {
-            if (node.unclosed)
-                throw new SyntaxError('Unclosed function: ' + node.value);
-            if (node.value === 'url') {
-                var image = new _dataTypes_Image__WEBPACK_IMPORTED_MODULE_2__["default"]();
-                image.analyze(stem);
-                if (!image.valid)
-                    throw new SyntaxError('Invalid image');
-                this.setImage(image.toResult());
-                this.valid = true;
-                return false;
-            }
-            else if (node.value === 'rgb' || node.value === 'rgba' || node.value === 'hsl' || node.value === 'hsla') {
-                var color = new _dataTypes_Color__WEBPACK_IMPORTED_MODULE_1__["default"]();
-                color.analyze(stem);
-                if (color.valid) {
-                    this.setColor(color.toResult());
-                    this.valid = true;
-                }
-            }
-        }
-    };
-    Background.prototype.setColor = function (color) {
-        if (this.color)
-            throw new SyntaxError('Excessive color');
-        else
-            this.color = color;
-    };
-    Background.prototype.setImage = function (image) {
-        if (this.image)
-            throw new SyntaxError('Excessive image');
-        else
-            this.image = image;
-    };
-    Background.prototype.setPosition = function (position) {
-        if (this.position)
-            throw new SyntaxError('Excessive background-position');
-        else
-            this.position = position;
-    };
-    Background.prototype.setRepeat = function (repeat) {
-        if (this.repeat)
-            throw new SyntaxError('Excessive background-repeat');
-        else
-            this.repeat = repeat;
-    };
-    Background.prototype.setSize = function (size) {
-        if (this.size)
-            throw new SyntaxError('Excessive background-size');
-        else
-            this.size = size;
-    };
-    Background.prototype.toString = function (complete) {
-        var output = [];
-        this.color && output.push(this.color.toString());
-        this.image && output.push(this.image.toString());
-        this.position && output.push(this.position.toString());
-        this.size && output.push((this.position ? '/ ' : 'left /') + this.size.toString());
-        this.repeat && output.push(this.repeat.toString());
-        this.attachment && output.push(this.attachment);
-        this.origin && output.push(this.origin);
-        this.clip && this.clip !== this.origin && output.push(this.clip);
-        return output.join(' ');
-    };
-    Background.prototype._absorb = function (prop, value) {
-        var subProperty = prop.slice(this._type.length + 1);
-        if (prop === 'background') {
-            var background = new Background();
-            background.parse(value);
-            this.color = background.color;
-            this.image = background.image;
-            this.position = background.position;
-            this.size = background.size;
-            this.attachment = background.attachment;
-            this.repeat = background.repeat;
-            this.origin = background.origin;
-            this.clip = background.clip;
-            this.valid = background.valid;
-        }
-        else if (subProperty === 'size') {
-            var size = _BackgroundSize__WEBPACK_IMPORTED_MODULE_5__["default"].parse(value);
-            this.size = size;
-            if (size instanceof _BackgroundSize__WEBPACK_IMPORTED_MODULE_5__["default"])
-                this.valid = size.valid;
-        }
-        else if (Object.keys(SubProperty).includes(subProperty)) { // @TODO: expand it
-            var background = new Background();
-            background.parse(value);
-            this[subProperty] = background[subProperty];
-            this.valid = background.valid;
-        }
-        else
-            throw new Error('Incompatible property: ' + prop);
-        return this;
-    };
-    return Background;
-}(_Fruit__WEBPACK_IMPORTED_MODULE_0__["default"]));
-/* harmony default export */ __webpack_exports__["default"] = (Background);
-
-
-/***/ }),
-/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -803,13 +611,13 @@ var Color = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _URL__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
+/* harmony import */ var _URL__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -885,14 +693,14 @@ var Image = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "urlRE", function() { return urlRE; });
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -979,14 +787,14 @@ var URL = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parseQuery", function() { return parseQuery; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "stringifyQuery", function() { return stringifyQuery; });
-/* harmony import */ var json5__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
+/* harmony import */ var json5__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
 /* harmony import */ var json5__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(json5__WEBPACK_IMPORTED_MODULE_0__);
 
 var specialValues = {
@@ -1051,10 +859,78 @@ function stringifyQuery(query) {
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__8__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__7__;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _Number__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+var experimentalRE = new RegExp("^(" + String(_Number__WEBPACK_IMPORTED_MODULE_1__["numberRE"]).slice(2, -3) + ")(cap|ch|em|ex|ic|lh|rem|rlh|vh|vw|vi|vb|vmin|vmax|px|cm|mm|Q|in|pc|pt)?$", 'i');
+var partialRE = new RegExp("^(" + String(_Number__WEBPACK_IMPORTED_MODULE_1__["numberRE"]).slice(2, -3) + ")(ch|em|ex|rem|vh|vw|vmin|vmax|px|cm|mm|in|pc|pt)?$", 'i');
+var Length = /** @class */ (function (_super) {
+    __extends(Length, _super);
+    function Length() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this._type = 'length';
+        _this._parseDeepLevelBoundary = 4 /* dataTypes */;
+        return _this;
+    }
+    Length.prototype.init = function () {
+        _super.prototype.init.call(this);
+        this.number = undefined;
+        this.unit = undefined;
+    };
+    Length.prototype.parse = function (value) {
+        value = value.trim();
+        this.init();
+        var found = partialRE.exec(value);
+        if (!found)
+            throw new SyntaxError('Invalid length');
+        if (+found[1] !== 0 && !found[2])
+            throw new SyntaxError('A unit should be after the non-zero number');
+        this.number = +found[1];
+        this.unit = found[2] || '';
+        this.valid = true;
+        return this.toResult();
+    };
+    Length.prototype.toString = function (complete) {
+        if (!this.valid)
+            return _super.prototype.toString.call(this);
+        if (!complete) {
+            if (this.number === 0)
+                return '0';
+        }
+        return this.number + this.unit;
+    };
+    Length.test = function (value) {
+        return partialRE.test(value);
+    };
+    return Length;
+}(_Fruit__WEBPACK_IMPORTED_MODULE_0__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (Length);
+
 
 /***/ }),
 /* 9 */
@@ -1062,10 +938,321 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__8__;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "numberRE", function() { return numberRE; });
+var numberRE = /^[+-]?(?:\.?\d+|\d+\.\d+)(?:e[+-]?\d+)?$/i;
+/* harmony default export */ __webpack_exports__["default"] = (Number);
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _Number__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+var partialRE = new RegExp("^(" + String(_Number__WEBPACK_IMPORTED_MODULE_1__["numberRE"]).slice(2, -3) + ")%$", 'i');
+var Percentage = /** @class */ (function (_super) {
+    __extends(Percentage, _super);
+    function Percentage() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this._type = 'percentage';
+        _this._parseDeepLevelBoundary = 4 /* dataTypes */;
+        return _this;
+    }
+    Percentage.prototype.init = function () {
+        _super.prototype.init.call(this);
+        this.number = undefined;
+    };
+    Percentage.prototype.parse = function (value) {
+        value = value.trim();
+        this.init();
+        var found = partialRE.exec(value);
+        if (!found)
+            throw new SyntaxError('Invalid percentage');
+        // if (+found[1] !== 0 && !found[2])
+        //     throw new SyntaxError('"%" should be after the non-zero number');
+        this.number = +found[1];
+        this.valid = true;
+        return this.toResult();
+    };
+    Percentage.prototype.toString = function (complete) {
+        if (!this.valid)
+            return _super.prototype.toString.call(this);
+        // if (!complete) {
+        //     if (this.number === 0)
+        //         return '0';
+        // }
+        return this.number + '%';
+    };
+    Percentage.test = function (value) {
+        return partialRE.test(value);
+    };
+    return Percentage;
+}(_Fruit__WEBPACK_IMPORTED_MODULE_0__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (Percentage);
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "backgroundAttachmentRE", function() { return backgroundAttachmentRE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "boxRE", function() { return boxRE; });
+/* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _dataTypes_Color__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _dataTypes_Image__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
+/* harmony import */ var _BackgroundPosition__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(12);
+/* harmony import */ var _BackgroundRepeat__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(13);
+/* harmony import */ var _BackgroundSize__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(14);
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+
+
+
+var backgroundAttachmentRE = /^(scroll|fixed|local)$/i;
+var boxRE = /^(border-box|padding-box|content-box)$/i;
+var SubProperty;
+(function (SubProperty) {
+    SubProperty["attachment"] = "attachment";
+    SubProperty["clip"] = "clip";
+    SubProperty["color"] = "color";
+    SubProperty["image"] = "image";
+    SubProperty["origin"] = "origin";
+    SubProperty["position"] = "position";
+    SubProperty["repeat"] = "repeat";
+    SubProperty["size"] = "size";
+})(SubProperty || (SubProperty = {}));
+;
+/**
+ * Unsupport two backgrounds
+ */
+var Background = /** @class */ (function (_super) {
+    __extends(Background, _super);
+    function Background() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this._type = 'background';
+        _this._inherited = false;
+        return _this;
+    }
+    Background.prototype.init = function () {
+        _super.prototype.init.call(this);
+        this._state = { boxCount: 0 };
+        this.attachment = undefined;
+        this.clip = undefined;
+        this.color = undefined;
+        this.image = undefined;
+        this.origin = undefined;
+        this.position = undefined;
+        this.repeat = undefined;
+        this.size = undefined;
+    };
+    Background.prototype.analyzeInLoop = function (node, stem) {
+        if (node.type === "space" /* space */ || node.type === "comment" /* comment */)
+            return true;
+        else if (node.type === "word" /* word */) {
+            if (node.value === 'none')
+                this.setImage(node.value);
+            else if (backgroundAttachmentRE.test(node.value)) {
+                if (this.attachment)
+                    throw new SyntaxError('Excessive background-attachment');
+                this.attachment = node.value;
+                return this.valid = true;
+            }
+            else if (boxRE.test(node.value)) {
+                if (this._state.boxCount === 0) {
+                    this.clip = this.origin = node.value;
+                    this._state.boxCount++;
+                    return this.valid = true;
+                }
+                else if (this._state.boxCount === 1) {
+                    this.clip = node.value;
+                    this._state.boxCount++;
+                    return this.valid = true;
+                }
+                else
+                    throw new SyntaxError('Excessive background-clip');
+            }
+            else {
+                var valid = false;
+                var color = new _dataTypes_Color__WEBPACK_IMPORTED_MODULE_1__["default"]();
+                color.analyze(stem);
+                if (color.valid) {
+                    this.setColor(color);
+                    valid = this.valid = true;
+                }
+                var position = new _BackgroundPosition__WEBPACK_IMPORTED_MODULE_3__["default"]();
+                position.analyze(stem);
+                if (position.valid) {
+                    this.setPosition(position.toResult());
+                    valid = this.valid = true;
+                    node = stem.head();
+                    if (!node)
+                        return false;
+                    if (node.type === 'div' && node.value === '/') {
+                        var size = new _BackgroundSize__WEBPACK_IMPORTED_MODULE_5__["default"]();
+                        stem.next();
+                        size.analyze(stem);
+                        if (size.valid) {
+                            this.setSize(size);
+                            valid = this.valid = true;
+                        }
+                        else
+                            throw new SyntaxError('Invalid background-size');
+                    }
+                }
+                var repeat = new _BackgroundRepeat__WEBPACK_IMPORTED_MODULE_4__["default"]();
+                repeat.analyze(stem);
+                if (repeat.valid) {
+                    this.setRepeat(repeat.toResult());
+                    valid = this.valid = true;
+                }
+                if (valid)
+                    return false;
+            }
+            // color
+        }
+        else if (node.type === "function" /* function */) {
+            if (node.unclosed)
+                throw new SyntaxError('Unclosed function: ' + node.value);
+            if (node.value === 'url') {
+                var image = new _dataTypes_Image__WEBPACK_IMPORTED_MODULE_2__["default"]();
+                image.analyze(stem);
+                if (!image.valid)
+                    throw new SyntaxError('Invalid image');
+                this.setImage(image.toResult());
+                this.valid = true;
+                return false;
+            }
+            else if (node.value === 'rgb' || node.value === 'rgba' || node.value === 'hsl' || node.value === 'hsla') {
+                var color = new _dataTypes_Color__WEBPACK_IMPORTED_MODULE_1__["default"]();
+                color.analyze(stem);
+                if (color.valid) {
+                    this.setColor(color.toResult());
+                    this.valid = true;
+                }
+            }
+        }
+    };
+    Background.prototype.setColor = function (color) {
+        if (this.color)
+            throw new SyntaxError('Excessive color');
+        else
+            this.color = color;
+    };
+    Background.prototype.setImage = function (image) {
+        if (this.image)
+            throw new SyntaxError('Excessive image');
+        else
+            this.image = image;
+    };
+    Background.prototype.setPosition = function (position) {
+        if (this.position)
+            throw new SyntaxError('Excessive background-position');
+        else
+            this.position = position;
+    };
+    Background.prototype.setRepeat = function (repeat) {
+        if (this.repeat)
+            throw new SyntaxError('Excessive background-repeat');
+        else
+            this.repeat = repeat;
+    };
+    Background.prototype.setSize = function (size) {
+        if (this.size)
+            throw new SyntaxError('Excessive background-size');
+        else
+            this.size = size;
+    };
+    Background.prototype.toString = function (complete) {
+        var output = [];
+        this.color && output.push(this.color.toString());
+        this.image && output.push(this.image.toString());
+        this.position && output.push(this.position.toString());
+        this.size && output.push((this.position ? '/ ' : 'left /') + this.size.toString());
+        this.repeat && output.push(this.repeat.toString());
+        this.attachment && output.push(this.attachment);
+        this.origin && output.push(this.origin);
+        this.clip && this.clip !== this.origin && output.push(this.clip);
+        return output.join(' ');
+    };
+    Background.prototype._absorb = function (prop, value) {
+        var subProperty = prop.slice(this._type.length + 1);
+        if (prop === 'background') {
+            var background = new Background();
+            background.parse(value);
+            this.color = background.color;
+            this.image = background.image;
+            this.position = background.position;
+            this.size = background.size;
+            this.attachment = background.attachment;
+            this.repeat = background.repeat;
+            this.origin = background.origin;
+            this.clip = background.clip;
+            this.valid = background.valid;
+        }
+        else if (subProperty === 'size') {
+            var size = _BackgroundSize__WEBPACK_IMPORTED_MODULE_5__["default"].parse(value);
+            this.size = size;
+            if (size instanceof _BackgroundSize__WEBPACK_IMPORTED_MODULE_5__["default"])
+                this.valid = size.valid;
+        }
+        else if (Object.keys(SubProperty).includes(subProperty)) { // @TODO: expand it
+            var background = new Background();
+            background.parse(value);
+            this[subProperty] = background[subProperty];
+            this.valid = background.valid;
+        }
+        else
+            throw new Error('Incompatible property: ' + prop);
+        return this;
+    };
+    return Background;
+}(_Fruit__WEBPACK_IMPORTED_MODULE_0__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (Background);
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BackgroundPositionKeyword", function() { return BackgroundPositionKeyword; });
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
-/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
+/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
+/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -1381,150 +1568,6 @@ var BackgroundPosition = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _Number__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-
-var experimentalRE = new RegExp("^(" + String(_Number__WEBPACK_IMPORTED_MODULE_1__["numberRE"]).slice(2, -3) + ")(cap|ch|em|ex|ic|lh|rem|rlh|vh|vw|vi|vb|vmin|vmax|px|cm|mm|Q|in|pc|pt)?$", 'i');
-var partialRE = new RegExp("^(" + String(_Number__WEBPACK_IMPORTED_MODULE_1__["numberRE"]).slice(2, -3) + ")(ch|em|ex|rem|vh|vw|vmin|vmax|px|cm|mm|in|pc|pt)?$", 'i');
-var Length = /** @class */ (function (_super) {
-    __extends(Length, _super);
-    function Length() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this._type = 'length';
-        _this._parseDeepLevelBoundary = 4 /* dataTypes */;
-        return _this;
-    }
-    Length.prototype.init = function () {
-        _super.prototype.init.call(this);
-        this.number = undefined;
-        this.unit = undefined;
-    };
-    Length.prototype.parse = function (value) {
-        value = value.trim();
-        this.init();
-        var found = partialRE.exec(value);
-        if (!found)
-            throw new SyntaxError('Invalid length');
-        if (+found[1] !== 0 && !found[2])
-            throw new SyntaxError('A unit should be after the non-zero number');
-        this.number = +found[1];
-        this.unit = found[2] || '';
-        this.valid = true;
-        return this.toResult();
-    };
-    Length.prototype.toString = function (complete) {
-        if (!this.valid)
-            return _super.prototype.toString.call(this);
-        if (!complete) {
-            if (this.number === 0)
-                return '0';
-        }
-        return this.number + this.unit;
-    };
-    Length.test = function (value) {
-        return partialRE.test(value);
-    };
-    return Length;
-}(_Fruit__WEBPACK_IMPORTED_MODULE_0__["default"]));
-/* harmony default export */ __webpack_exports__["default"] = (Length);
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "numberRE", function() { return numberRE; });
-var numberRE = /^[+-]?(?:\.?\d+|\d+\.\d+)(?:e[+-]?\d+)?$/i;
-/* harmony default export */ __webpack_exports__["default"] = (Number);
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _Number__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
-var __extends = (undefined && undefined.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-
-var partialRE = new RegExp("^(" + String(_Number__WEBPACK_IMPORTED_MODULE_1__["numberRE"]).slice(2, -3) + ")%$", 'i');
-var Percentage = /** @class */ (function (_super) {
-    __extends(Percentage, _super);
-    function Percentage() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this._type = 'percentage';
-        _this._parseDeepLevelBoundary = 4 /* dataTypes */;
-        return _this;
-    }
-    Percentage.prototype.init = function () {
-        _super.prototype.init.call(this);
-        this.number = undefined;
-    };
-    Percentage.prototype.parse = function (value) {
-        value = value.trim();
-        this.init();
-        var found = partialRE.exec(value);
-        if (!found)
-            throw new SyntaxError('Invalid percentage');
-        // if (+found[1] !== 0 && !found[2])
-        //     throw new SyntaxError('"%" should be after the non-zero number');
-        this.number = +found[1];
-        this.valid = true;
-        return this.toResult();
-    };
-    Percentage.prototype.toString = function (complete) {
-        if (!this.valid)
-            return _super.prototype.toString.call(this);
-        // if (!complete) {
-        //     if (this.number === 0)
-        //         return '0';
-        // }
-        return this.number + '%';
-    };
-    Percentage.test = function (value) {
-        return partialRE.test(value);
-    };
-    return Percentage;
-}(_Fruit__WEBPACK_IMPORTED_MODULE_0__["default"]));
-/* harmony default export */ __webpack_exports__["default"] = (Percentage);
-
-
-/***/ }),
 /* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1639,8 +1682,8 @@ var BackgroundRepeat = /** @class */ (function (_super) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
-/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
+/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
+/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -1735,6 +1778,176 @@ var BackgroundSize = /** @class */ (function (_super) {
     return BackgroundSize;
 }(_Fruit__WEBPACK_IMPORTED_MODULE_0__["default"]));
 /* harmony default export */ __webpack_exports__["default"] = (BackgroundSize);
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
+/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+;
+var Margin = /** @class */ (function (_super) {
+    __extends(Margin, _super);
+    function Margin() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this._type = 'background-repeat';
+        return _this;
+    }
+    Margin.prototype.init = function () {
+        _super.prototype.init.call(this);
+        this._state = { count: 0 };
+        this.top = undefined;
+        this.right = undefined;
+        this.bottom = undefined;
+        this.left = undefined;
+    };
+    Margin.prototype.analyzeInLoop = function (node) {
+        if (node.type === "space" /* space */ || node.type === "comment" /* comment */)
+            return true;
+        else if (node.type === "word" /* word */) {
+            var length_1 = _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__["default"].parse(node.value); // '0' is truthy
+            var percentage = _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__["default"].parse(node.value);
+            var value = void 0;
+            if (length_1 || percentage || node.value === 'auto')
+                value = length_1 || percentage || node.value;
+            else
+                return undefined;
+            if (this._state.count >= 4)
+                throw new SyntaxError('Excessive <margin> value: ' + value);
+            else if (this._state.count === 0)
+                this.top = this.right = this.bottom = this.left = value;
+            else if (this._state.count === 1)
+                this.right = this.left = value;
+            else if (this._state.count === 2)
+                this.bottom = value;
+            else if (this._state.count === 3)
+                this.left = value;
+            this._state.count++;
+            return this.valid = true;
+        }
+    };
+    Margin.prototype.toString = function (complete) {
+        if (!this.valid)
+            return _super.prototype.toString.call(this);
+        if (!complete) {
+            if (this.top === this.right && this.right === this.bottom && this.bottom === this.left)
+                return this.top.toString();
+            else if (this.left === this.right && this.top === this.bottom)
+                return [this.top, this.left].join(' ');
+            else if (this.left === this.right)
+                return [this.top, this.left, this.bottom].join(' ');
+        }
+        return [this.top, this.right, this.bottom, this.left].join(' ');
+    };
+    return Margin;
+}(_Fruit__WEBPACK_IMPORTED_MODULE_0__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (Margin);
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
+/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+;
+var Padding = /** @class */ (function (_super) {
+    __extends(Padding, _super);
+    function Padding() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this._type = 'background-repeat';
+        return _this;
+    }
+    Padding.prototype.init = function () {
+        _super.prototype.init.call(this);
+        this._state = { count: 0 };
+        this.top = undefined;
+        this.right = undefined;
+        this.bottom = undefined;
+        this.left = undefined;
+    };
+    Padding.prototype.analyzeInLoop = function (node) {
+        if (node.type === "space" /* space */ || node.type === "comment" /* comment */)
+            return true;
+        else if (node.type === "word" /* word */) {
+            var length_1 = _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__["default"].parse(node.value); // '0' is truthy
+            var percentage = _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__["default"].parse(node.value);
+            var value = void 0;
+            if (length_1 || percentage)
+                value = length_1 || percentage;
+            else
+                return undefined;
+            if (String(value)[0] === '-')
+                throw new Error('Negative values are invalid');
+            if (this._state.count >= 4)
+                throw new SyntaxError('Excessive <padding> value: ' + value);
+            else if (this._state.count === 0)
+                this.top = this.right = this.bottom = this.left = value;
+            else if (this._state.count === 1)
+                this.right = this.left = value;
+            else if (this._state.count === 2)
+                this.bottom = value;
+            else if (this._state.count === 3)
+                this.left = value;
+            this._state.count++;
+            return this.valid = true;
+        }
+    };
+    Padding.prototype.toString = function (complete) {
+        if (!this.valid)
+            return _super.prototype.toString.call(this);
+        if (!complete) {
+            if (this.top === this.right && this.right === this.bottom && this.bottom === this.left)
+                return this.top.toString();
+            else if (this.left === this.right && this.top === this.bottom)
+                return [this.top, this.left].join(' ');
+            else if (this.left === this.right)
+                return [this.top, this.left, this.bottom].join(' ');
+        }
+        return [this.top, this.right, this.bottom, this.left].join(' ');
+    };
+    return Padding;
+}(_Fruit__WEBPACK_IMPORTED_MODULE_0__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (Padding);
 
 
 /***/ })

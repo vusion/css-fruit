@@ -174,7 +174,7 @@ export default class Background extends Fruit {
         this.color && output.push(this.color.toString());
         this.image && output.push(this.image.toString());
         this.position && output.push(this.position.toString());
-        this.size && output.push((this.position ? '/ ' : 'left /') + this.size.toString());
+        this.size && output.push((this.position ? '/ ' : 'left / ') + this.size.toString());
         this.repeat && output.push(this.repeat.toString());
         this.attachment && output.push(this.attachment);
         this.origin && output.push(this.origin);
