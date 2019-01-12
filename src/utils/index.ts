@@ -10,7 +10,7 @@ const specialValues: { [prop: string]: QueryValue } = {
 
 export function parseQuery(query: string): Query {
     if (query[0] !== '?')
-        throw new Error("A valid query string passed to parseQuery should begin with '?'");
+        throw new SyntaxError("A valid query string passed to parseQuery should begin with '?'");
 
     query = query.substr(1);
     if (!query)

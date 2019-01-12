@@ -37,7 +37,7 @@ export default class BackgroundRepeat extends Fruit {
         else if (node.type === ValueNodeType.word) {
             if (node.value === 'repeat-x') {
                 if (this._state.count >= 1)
-                    throw new SyntaxError('Excessive keyword');
+                    throw new SyntaxError(`Excessive keyword '${node.value}'`);
                 else {
                     this.x = BackgroundRepeatKeyword.repeat;
                     this.y = BackgroundRepeatKeyword['no-repeat'];
@@ -46,7 +46,7 @@ export default class BackgroundRepeat extends Fruit {
                 }
             } else if (node.value === 'repeat-y') {
                 if (this._state.count >= 1)
-                    throw new SyntaxError('Excessive keyword');
+                    throw new SyntaxError(`Excessive keyword '${node.value}'`);
                 else {
                     this.x = BackgroundRepeatKeyword['no-repeat'];
                     this.y = BackgroundRepeatKeyword.repeat;
@@ -55,7 +55,7 @@ export default class BackgroundRepeat extends Fruit {
                 }
             } else if (Object.keys(BackgroundRepeatKeyword).includes(node.value)) {
                 if (this._state.count >= 2)
-                    throw new SyntaxError('Excessive keyword');
+                    throw new SyntaxError(`Excessive keyword '${node.value}'`);
                 else if (this._state.count === 0) {
                     this.x = this.y = node.value as BackgroundRepeatKeyword;
                     this._state.count++;
@@ -65,7 +65,7 @@ export default class BackgroundRepeat extends Fruit {
                     this._state.count++;
                     return this.valid = true;
                 } else
-                    throw new Error('State inside problem!');
+                throw new Error('Unexpected internal error about _state.count');
             }
         }
     }

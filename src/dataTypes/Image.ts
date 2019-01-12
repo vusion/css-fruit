@@ -36,14 +36,14 @@ export default class Image extends Fruit {
             return true;
         else if (node.type === ValueNodeType.function) {
             if (node.unclosed)
-                throw new SyntaxError('Unclosed function: ' + node.value);
+                throw new SyntaxError(`Unclosed function '${node.value}'`);
             if (node.value === 'url') {
                 if (this.value)
-                    throw new SyntaxError('Excessive values');
+                    throw new SyntaxError(`Excessive value '${node.value}'`);
                 const url = new URL();
                 url.analyze(stem);
                 if (!url.valid)
-                    throw new SyntaxError('Invalid url: ' + node.value);
+                    throw new SyntaxError(`Invalid <url> '${node.value}'`);
                 this.value = url.toResult() as URL | string;
                 this.valid = true;
                 return false;

@@ -37,18 +37,18 @@ export default class URL extends Fruit {
             return true;
         else if (node.type === ValueNodeType.function) {
             if (node.unclosed)
-                throw new SyntaxError('Unclosed function: ' + node.value);
+                throw new SyntaxError(`Unclosed function '${node.value}'`);
             if (node.value === 'url') {
                 if (this.url)
-                    throw new SyntaxError('Duplicated url functions');
+                    throw new SyntaxError(`Duplicated function 'url'`);
 
                 let url = '';
                 if (node.nodes.length > 1)
-                    throw new SyntaxError('Invalid url');
+                    throw new SyntaxError('Invalid url format');
                 else if (node.nodes.length === 1) {
                     const subNode = node.nodes[0];
                     if (subNode.unclosed)
-                        throw new SyntaxError('Unclosed quote: ' + subNode.value);
+                        throw new SyntaxError(`Unclosed quote '${subNode.value}'`);
                     else
                         url = subNode.value;
                         // @discuss: keep quote?

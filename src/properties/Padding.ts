@@ -41,10 +41,10 @@ export default class Padding extends Fruit {
                 return undefined;
 
             if (String(value)[0] === '-')
-                throw new Error('Negative values are invalid');
+                throw new RangeError(`Negative value '${value}' is invalid`);
 
             if (this._state.count >= 4)
-                throw new SyntaxError('Excessive <padding> value: ' + value);
+                throw new SyntaxError(`Excessive value '${value}'`);
             else if (this._state.count === 0)
                 this.top = this.right = this.bottom = this.left = value;
             else if (this._state.count === 1)

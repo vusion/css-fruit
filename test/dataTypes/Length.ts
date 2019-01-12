@@ -2,11 +2,18 @@ import { expect } from 'chai';
 import Length from '../../src/dataTypes/Length';
 
 describe('Length', () => {
-    it('#constructor(value)', () => {
+    it('#constructor(value?: string)', () => {
         const length = new Length('4.01em');
 
         expect(length.number).to.equal(4.01);
         expect(length.unit).to.equal('em');
+    });
+
+    it('#constructor(number: number, unit: string)', () => {
+        const length = new Length(3, 'px');
+
+        expect(length.number).to.equal(3);
+        expect(length.unit).to.equal('px');
     });
 
     it('.validate(value) => true', () => {

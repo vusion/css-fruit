@@ -214,7 +214,7 @@ var Fruit = /** @class */ (function () {
         this._inherited = false;
         this._parseDeepLevelBoundary = 3 /* virtualLonghand */;
         this.valid = false;
-        if (arguments.length === 1 && value)
+        if (arguments.length === 1 && typeof value === 'string')
             this.parse(value);
     }
     Fruit.prototype.init = function () {
@@ -249,7 +249,8 @@ var Fruit = /** @class */ (function () {
             }
             catch (e) {
                 this.valid = false;
-                throw e;
+                console.log(this._type);
+                throw new Error("When analyzing <" + this._type + ">\n\t" + e);
             }
             if (control === undefined)
                 return;
@@ -391,20 +392,20 @@ var Color = /** @class */ (function (_super) {
         else if (node.type === "word" /* word */) {
             if (node.value === 'currentColor') {
                 if (this.value)
-                    throw new SyntaxError('Excessive value');
+                    throw new SyntaxError("Excessive value '" + node.value + "'");
                 this.value = 'currentColor';
                 return this.valid = true;
             }
             else if (namedColorRE.test(node.value)) {
                 if (this.value)
-                    throw new SyntaxError('Excessive value');
+                    throw new SyntaxError("Excessive value '" + node.value + "'");
                 this.value = node.value;
                 // @TODO parse named value;
                 return this.valid = true;
             }
             else if (hexColorRE.test(node.value)) {
                 if (this.value)
-                    throw new SyntaxError('Excessive value');
+                    throw new SyntaxError("Excessive value '" + node.value + "'");
                 this.value = node.value;
                 // @TODO parse named value;
                 return this.valid = true;
@@ -412,10 +413,10 @@ var Color = /** @class */ (function (_super) {
         }
         else if (node.type === "function" /* function */) {
             if (node.unclosed)
-                throw new SyntaxError('Unclosed function: ' + node.value);
+                throw new SyntaxError("Unclosed function '" + node.value + "'");
             if (node.value === 'rgb' || node.value === 'rgba' || node.value === 'hsl' || node.value === 'hsla') {
                 if (this.value)
-                    throw new SyntaxError('Excessive value');
+                    throw new SyntaxError("Excessive value '" + node.value + "'");
                 this.value = ValueParser.stringify(node);
                 return this.valid = true;
             }
@@ -472,7 +473,7 @@ var Color = /** @class */ (function (_super) {
     Color.fromHEX = function (value) {
         value = value.trim().slice(1);
         if (value.length !== 6 && value.length !== 3)
-            throw new SyntaxError('Unexpected length of hex number');
+            throw new SyntaxError("Unexpected length of hex number '" + value + "'");
         else if (value.length === 3)
             value = "" + value[0] + value[0] + value[1] + value[1] + value[2] + value[2];
         return new Color(parseInt(value.slice(0, 2), 16), parseInt(value.slice(2, 4), 16), parseInt(value.slice(4, 6), 16));
@@ -481,14 +482,14 @@ var Color = /** @class */ (function (_super) {
         value = value.trim().slice(4, -1);
         var arr = value.split(',').map(function (num) { return +num; });
         if (arr.length !== 4)
-            throw new SyntaxError('Unexpected params of rgba function');
+            throw new SyntaxError("Unexpected params of rgba function '" + value + "'");
         return new (Color.bind.apply(Color, [void 0].concat(arr)))();
     };
     Color.fromRGBA = function (value) {
         value = value.trim().slice(5, -1);
         var arr = value.split(',').map(function (num) { return +num; });
         if (arr.length !== 4)
-            throw new SyntaxError('Unexpected params of rgba function');
+            throw new SyntaxError("Unexpected params of rgba function '" + value + "'");
         return new (Color.bind.apply(Color, [void 0].concat(arr)))();
     };
     /** @TODO: fromHSL */
@@ -667,14 +668,14 @@ var Image = /** @class */ (function (_super) {
             return true;
         else if (node.type === "function" /* function */) {
             if (node.unclosed)
-                throw new SyntaxError('Unclosed function: ' + node.value);
+                throw new SyntaxError("Unclosed function '" + node.value + "'");
             if (node.value === 'url') {
                 if (this.value)
-                    throw new SyntaxError('Excessive values');
+                    throw new SyntaxError("Excessive value '" + node.value + "'");
                 var url = new _URL__WEBPACK_IMPORTED_MODULE_1__["default"]();
                 url.analyze(stem);
                 if (!url.valid)
-                    throw new SyntaxError('Invalid url: ' + node.value);
+                    throw new SyntaxError("Invalid <url> '" + node.value + "'");
                 this.value = url.toResult();
                 this.valid = true;
                 return false;
@@ -749,17 +750,17 @@ var URL = /** @class */ (function (_super) {
             return true;
         else if (node.type === "function" /* function */) {
             if (node.unclosed)
-                throw new SyntaxError('Unclosed function: ' + node.value);
+                throw new SyntaxError("Unclosed function '" + node.value + "'");
             if (node.value === 'url') {
                 if (this.url)
-                    throw new SyntaxError('Duplicated url functions');
+                    throw new SyntaxError("Duplicated function 'url'");
                 var url = '';
                 if (node.nodes.length > 1)
                     throw new SyntaxError('Invalid url');
                 else if (node.nodes.length === 1) {
                     var subNode = node.nodes[0];
                     if (subNode.unclosed)
-                        throw new SyntaxError('Unclosed quote: ' + subNode.value);
+                        throw new SyntaxError("Unclosed quote '" + subNode.value + "'");
                     else
                         url = subNode.value;
                     // @discuss: keep quote?
@@ -804,7 +805,7 @@ var specialValues = {
 };
 function parseQuery(query) {
     if (query[0] !== '?')
-        throw new Error("A valid query string passed to parseQuery should begin with '?'");
+        throw new SyntaxError("A valid query string passed to parseQuery should begin with '?'");
     query = query.substr(1);
     if (!query)
         return {};
@@ -887,14 +888,33 @@ var __extends = (undefined && undefined.__extends) || (function () {
 })();
 
 
-var experimentalRE = new RegExp("^(" + String(_Number__WEBPACK_IMPORTED_MODULE_1__["numberRE"]).slice(2, -3) + ")(cap|ch|em|ex|ic|lh|rem|rlh|vh|vw|vi|vb|vmin|vmax|px|cm|mm|Q|in|pc|pt)?$", 'i');
-var partialRE = new RegExp("^(" + String(_Number__WEBPACK_IMPORTED_MODULE_1__["numberRE"]).slice(2, -3) + ")(ch|em|ex|rem|vh|vw|vmin|vmax|px|cm|mm|in|pc|pt)?$", 'i');
+var unitRE = /^ch|em|ex|rem|vh|vw|vmin|vmax|px|cm|mm|in|pc|pt$/i;
+var experimentalUnitRE = /^cap|ch|em|ex|ic|lh|rem|rlh|vh|vw|vi|vb|vmin|vmax|px|cm|mm|Q|in|pc|pt$/i;
+var partialRE = new RegExp("^(" + String(_Number__WEBPACK_IMPORTED_MODULE_1__["numberRE"]).slice(2, -3) + ")(" + String(unitRE).slice(2, -3) + ")?$", 'i');
 var Length = /** @class */ (function (_super) {
     __extends(Length, _super);
-    function Length() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
+    function Length(value, unit) {
+        var _this = _super.call(this) || this;
         _this._type = 'length';
         _this._parseDeepLevelBoundary = 4 /* dataTypes */;
+        if (typeof value === 'string' && arguments.length === 1)
+            _this.parse(value);
+        else if (typeof value === 'number') {
+            if (!unit && value === 0) {
+                _this.number = value;
+                _this.unit = '';
+                _this.valid = true;
+            }
+            else if (unit && unitRE.test(unit)) {
+                _this.number = value;
+                _this.unit = unit;
+                _this.valid = true;
+            }
+            else
+                throw new SyntaxError("Invalid unit '" + unit + "'");
+        }
+        else
+            throw new TypeError('Wrong constructor param type');
         return _this;
     }
     Length.prototype.init = function () {
@@ -907,9 +927,9 @@ var Length = /** @class */ (function (_super) {
         this.init();
         var found = partialRE.exec(value);
         if (!found)
-            throw new SyntaxError('Invalid length');
+            throw new SyntaxError("Invalid length '" + value + "'");
         if (+found[1] !== 0 && !found[2])
-            throw new SyntaxError('A unit should be after the non-zero number');
+            throw new SyntaxError('There must be a unit after the non-zero number');
         this.number = +found[1];
         this.unit = found[2] || '';
         this.valid = true;
@@ -984,9 +1004,9 @@ var Percentage = /** @class */ (function (_super) {
         this.init();
         var found = partialRE.exec(value);
         if (!found)
-            throw new SyntaxError('Invalid percentage');
+            throw new SyntaxError("Invalid percentage '" + value + "'");
         // if (+found[1] !== 0 && !found[2])
-        //     throw new SyntaxError('"%" should be after the non-zero number');
+        //     throw new SyntaxError('"%" must be after the non-zero number');
         this.number = +found[1];
         this.valid = true;
         return this.toResult();
@@ -1060,10 +1080,12 @@ var SubProperty;
  */
 var Background = /** @class */ (function (_super) {
     __extends(Background, _super);
-    function Background() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
+    function Background(value) {
+        var _this = _super.call(this) || this;
         _this._type = 'background';
         _this._inherited = false;
+        // this._type = 'background';
+        _this.parse(value);
         return _this;
     }
     Background.prototype.init = function () {
@@ -1086,7 +1108,7 @@ var Background = /** @class */ (function (_super) {
                 this.setImage(node.value);
             else if (backgroundAttachmentRE.test(node.value)) {
                 if (this.attachment)
-                    throw new SyntaxError('Excessive background-attachment');
+                    throw new SyntaxError("Excessive <background-attachment> '" + node.value + "'");
                 this.attachment = node.value;
                 return this.valid = true;
             }
@@ -1102,7 +1124,7 @@ var Background = /** @class */ (function (_super) {
                     return this.valid = true;
                 }
                 else
-                    throw new SyntaxError('Excessive background-clip');
+                    throw new SyntaxError("Excessive <background-clip> '" + node.value + "'");
             }
             else {
                 var valid = false;
@@ -1129,7 +1151,7 @@ var Background = /** @class */ (function (_super) {
                             valid = this.valid = true;
                         }
                         else
-                            throw new SyntaxError('Invalid background-size');
+                            throw new SyntaxError("Invalid <background-size> '" + node.value + "'");
                     }
                 }
                 var repeat = new _BackgroundRepeat__WEBPACK_IMPORTED_MODULE_4__["default"]();
@@ -1145,12 +1167,12 @@ var Background = /** @class */ (function (_super) {
         }
         else if (node.type === "function" /* function */) {
             if (node.unclosed)
-                throw new SyntaxError('Unclosed function: ' + node.value);
+                throw new SyntaxError("Unclosed function '" + node.value + "'");
             if (node.value === 'url') {
                 var image = new _dataTypes_Image__WEBPACK_IMPORTED_MODULE_2__["default"]();
                 image.analyze(stem);
                 if (!image.valid)
-                    throw new SyntaxError('Invalid image');
+                    throw new SyntaxError("Invalid <image> '" + node.value + "'");
                 this.setImage(image.toResult());
                 this.valid = true;
                 return false;
@@ -1167,31 +1189,31 @@ var Background = /** @class */ (function (_super) {
     };
     Background.prototype.setColor = function (color) {
         if (this.color)
-            throw new SyntaxError('Excessive color');
+            throw new SyntaxError('Excessive <color>');
         else
             this.color = color;
     };
     Background.prototype.setImage = function (image) {
         if (this.image)
-            throw new SyntaxError('Excessive image');
+            throw new SyntaxError('Excessive <image>');
         else
             this.image = image;
     };
     Background.prototype.setPosition = function (position) {
         if (this.position)
-            throw new SyntaxError('Excessive background-position');
+            throw new SyntaxError('Excessive <background-position>');
         else
             this.position = position;
     };
     Background.prototype.setRepeat = function (repeat) {
         if (this.repeat)
-            throw new SyntaxError('Excessive background-repeat');
+            throw new SyntaxError('Excessive <background-repeat>');
         else
             this.repeat = repeat;
     };
     Background.prototype.setSize = function (size) {
         if (this.size)
-            throw new SyntaxError('Excessive background-size');
+            throw new SyntaxError('Excessive <background-size>');
         else
             this.size = size;
     };
@@ -1200,7 +1222,7 @@ var Background = /** @class */ (function (_super) {
         this.color && output.push(this.color.toString());
         this.image && output.push(this.image.toString());
         this.position && output.push(this.position.toString());
-        this.size && output.push((this.position ? '/ ' : 'left /') + this.size.toString());
+        this.size && output.push((this.position ? '/ ' : 'left / ') + this.size.toString());
         this.repeat && output.push(this.repeat.toString());
         this.attachment && output.push(this.attachment);
         this.origin && output.push(this.origin);
@@ -1235,7 +1257,7 @@ var Background = /** @class */ (function (_super) {
             this.valid = background.valid;
         }
         else
-            throw new Error('Incompatible property: ' + prop);
+            throw new TypeError("Property '" + prop + "' is inconsistent with existing type '" + this._type + "'");
         return this;
     };
     return Background;
@@ -1299,7 +1321,7 @@ var BackgroundPosition = /** @class */ (function (_super) {
              */
             if (node.value === BackgroundPositionKeyword.center) {
                 if (this._state.count >= 2)
-                    throw new SyntaxError('Excessive keyword');
+                    throw new SyntaxError("Excessive keyword '" + node.value + "'");
                 else if (this._state.count === 0) {
                     this.x.origin = this.y.origin = node.value;
                     this._state.lastType = 'center';
@@ -1321,7 +1343,7 @@ var BackgroundPosition = /** @class */ (function (_super) {
             }
             else if (node.value === BackgroundPositionKeyword.left || node.value === BackgroundPositionKeyword.right) {
                 if (this._state.count >= 3)
-                    throw new SyntaxError('Excessive keyword');
+                    throw new SyntaxError("Excessive keyword '" + node.value + "'");
                 else if (this._state.count === 0) {
                     this.x.origin = node.value;
                     this.y.origin = BackgroundPositionKeyword.center;
@@ -1337,7 +1359,7 @@ var BackgroundPosition = /** @class */ (function (_super) {
                      * [x] (20%) + left === (xxx xxx xxx xxx) === (left 20% ? center ?)
                      */
                     if (this.x.origin !== BackgroundPositionKeyword.center)
-                        throw new SyntaxError('Duplicated keywords: ' + node.value);
+                        throw new SyntaxError("Duplicated keyword '" + node.value + "'");
                     this.x.origin = node.value;
                     this._state.lastType = 'x';
                     this._state.count++;
@@ -1376,12 +1398,12 @@ var BackgroundPosition = /** @class */ (function (_super) {
                         return this.valid = true;
                     }
                     else
-                        throw new SyntaxError('Excessive keyword: ' + node.value);
+                        throw new SyntaxError("Excessive keyword '" + node.value + "'");
                 }
             }
             else if (node.value === BackgroundPositionKeyword.top || node.value === BackgroundPositionKeyword.bottom) {
                 if (this._state.count >= 3)
-                    throw new SyntaxError('Excessive keyword');
+                    throw new SyntaxError("Excessive keyword '" + node.value + "'");
                 else if (this._state.count === 0) {
                     this.y.origin = node.value;
                     this.x.origin = BackgroundPositionKeyword.center;
@@ -1397,7 +1419,7 @@ var BackgroundPosition = /** @class */ (function (_super) {
                      * [o] (20%) + top === (left 20% top ?) === (left 20% ? center ?)
                      */
                     if (this.y.origin !== BackgroundPositionKeyword.center)
-                        throw new SyntaxError('Duplicated keywords: ' + node.value);
+                        throw new SyntaxError("Duplicated keyword '" + node.value + "'");
                     this.y.origin = node.value;
                     this._state.lastType = 'y';
                     this._state.count++;
@@ -1436,7 +1458,7 @@ var BackgroundPosition = /** @class */ (function (_super) {
                         return this.valid = true;
                     }
                     else
-                        throw new SyntaxError('Excessive keyword: ' + node.value);
+                        throw new SyntaxError("Excessive keyword '" + node.value + "'");
                 }
             }
             else {
@@ -1446,7 +1468,7 @@ var BackgroundPosition = /** @class */ (function (_super) {
                 if (!lengthPercentage)
                     return undefined;
                 if (this._state.count >= 4)
-                    throw new SyntaxError('Excessive <length-percentage> value: ' + lengthPercentage);
+                    throw new SyntaxError("Excessive <length-percentage> '" + lengthPercentage + "'");
                 else if (this._state.count === 0) {
                     this.x.offset = lengthPercentage;
                     this.x.origin = BackgroundPositionKeyword.left;
@@ -1506,13 +1528,13 @@ var BackgroundPosition = /** @class */ (function (_super) {
                         else if (this._state.lastType === 'y')
                             this.y.offset = lengthPercentage;
                         else
-                            throw new Error('xxx');
+                            throw new Error('Unexpected internal error');
                         this._state.lastType = 'length-percentage';
                         this._state.count++;
                         return this.valid = true;
                     }
                     else
-                        throw new SyntaxError('Excessive <length-percentage> value: ' + lengthPercentage);
+                        throw new SyntaxError("Excessive <length-percentage> value '" + lengthPercentage + "'");
                 }
                 else if (this._state.count === 3) {
                     /**
@@ -1524,7 +1546,7 @@ var BackgroundPosition = /** @class */ (function (_super) {
                      * [x] (center top 60%) + 80% ~~~ (center ? top 60%)
                      */
                     if (this._state.lastType === 'length-percentage')
-                        throw new Error('Excessive <length-percentage> value: ' + lengthPercentage);
+                        throw new Error("Excessive <length-percentage> value '" + lengthPercentage + "'");
                     if (!this.x.offset)
                         this.x.offset = lengthPercentage;
                     else if (!this.y.offset)
@@ -1620,7 +1642,7 @@ var BackgroundRepeat = /** @class */ (function (_super) {
         else if (node.type === "word" /* word */) {
             if (node.value === 'repeat-x') {
                 if (this._state.count >= 1)
-                    throw new SyntaxError('Excessive keyword');
+                    throw new SyntaxError("Excessive keyword '" + node.value + "'");
                 else {
                     this.x = BackgroundRepeatKeyword.repeat;
                     this.y = BackgroundRepeatKeyword['no-repeat'];
@@ -1630,7 +1652,7 @@ var BackgroundRepeat = /** @class */ (function (_super) {
             }
             else if (node.value === 'repeat-y') {
                 if (this._state.count >= 1)
-                    throw new SyntaxError('Excessive keyword');
+                    throw new SyntaxError("Excessive keyword '" + node.value + "'");
                 else {
                     this.x = BackgroundRepeatKeyword['no-repeat'];
                     this.y = BackgroundRepeatKeyword.repeat;
@@ -1640,7 +1662,7 @@ var BackgroundRepeat = /** @class */ (function (_super) {
             }
             else if (Object.keys(BackgroundRepeatKeyword).includes(node.value)) {
                 if (this._state.count >= 2)
-                    throw new SyntaxError('Excessive keyword');
+                    throw new SyntaxError("Excessive keyword '" + node.value + "'");
                 else if (this._state.count === 0) {
                     this.x = this.y = node.value;
                     this._state.count++;
@@ -1652,7 +1674,7 @@ var BackgroundRepeat = /** @class */ (function (_super) {
                     return this.valid = true;
                 }
                 else
-                    throw new Error('State inside problem!');
+                    throw new Error('Unexpected internal error about _state.count');
             }
         }
     };
@@ -1731,7 +1753,7 @@ var BackgroundSize = /** @class */ (function (_super) {
         else if (node.type === "word" /* word */) {
             if (node.value === 'cover' || node.value === 'contain') {
                 if (this._state.count >= 1)
-                    throw new SyntaxError('Excessive keyword');
+                    throw new SyntaxError("Excessive keyword '" + node.value + "'");
                 else {
                     this.width = this.height = node.value;
                     this._state.count += 2;
@@ -1747,7 +1769,7 @@ var BackgroundSize = /** @class */ (function (_super) {
                 else
                     return undefined;
                 if (this._state.count >= 2)
-                    throw new SyntaxError('Excessive <size> value: ' + size);
+                    throw new SyntaxError("Excessive value '" + size + "'");
                 else if (this._state.count === 0) {
                     this.width = size;
                     this.height = 'auto';
@@ -1760,7 +1782,7 @@ var BackgroundSize = /** @class */ (function (_super) {
                     return this.valid = true;
                 }
                 else
-                    throw new Error('State Problem!');
+                    throw new Error('Unexpected internal error about _state.count');
             }
         }
     };
@@ -1810,7 +1832,7 @@ var Margin = /** @class */ (function (_super) {
     __extends(Margin, _super);
     function Margin() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this._type = 'background-repeat';
+        _this._type = 'margin';
         return _this;
     }
     Margin.prototype.init = function () {
@@ -1833,7 +1855,7 @@ var Margin = /** @class */ (function (_super) {
             else
                 return undefined;
             if (this._state.count >= 4)
-                throw new SyntaxError('Excessive <margin> value: ' + value);
+                throw new SyntaxError("Excessive value '" + value + "'");
             else if (this._state.count === 0)
                 this.top = this.right = this.bottom = this.left = value;
             else if (this._state.count === 1)
@@ -1917,9 +1939,9 @@ var Padding = /** @class */ (function (_super) {
             else
                 return undefined;
             if (String(value)[0] === '-')
-                throw new Error('Negative values are invalid');
+                throw new RangeError("Negative value '" + value + "' is invalid");
             if (this._state.count >= 4)
-                throw new SyntaxError('Excessive <padding> value: ' + value);
+                throw new SyntaxError("Excessive value '" + value + "'");
             else if (this._state.count === 0)
                 this.top = this.right = this.bottom = this.left = value;
             else if (this._state.count === 1)

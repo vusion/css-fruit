@@ -10,7 +10,8 @@
     "build": "webpack-cli",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha --require ts-node/register test/unit.test.ts",
     "test:one": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha --require ts-node/register",
-    "test:integration": "mocha test/integration/css-fruit.js"
+    "test:integration": "mocha test/integration/css-fruit.js",
+    "docs": "typedoc --out docs ./src"
   },
   "main": "./dist/css-fruit.js",
   "repository": "vusion/css-fruit",
@@ -46,6 +47,7 @@
     "mocha": "^5.2.0",
     "ts-loader": "^5.3.1",
     "ts-node": "^7.0.1",
+    "typedoc": "^0.14.1",
     "typescript": "^3.2.1",
     "vusion-hooks": "^0.2.1",
     "webpack": "^4.26.1",

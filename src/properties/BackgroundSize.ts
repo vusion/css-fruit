@@ -39,7 +39,7 @@ export default class BackgroundSize extends Fruit {
         else if (node.type === ValueNodeType.word) {
             if (node.value === 'cover' || node.value === 'contain') {
                 if (this._state.count >= 1)
-                    throw new SyntaxError('Excessive keyword');
+                    throw new SyntaxError(`Excessive keyword '${node.value}'`);
                 else {
                     this.width = this.height = node.value;
                     this._state.count += 2;
@@ -55,7 +55,7 @@ export default class BackgroundSize extends Fruit {
                     return undefined;
 
                 if (this._state.count >= 2)
-                    throw new SyntaxError('Excessive <size> value: ' + size);
+                    throw new SyntaxError(`Excessive value '${size}'`);
                 else if (this._state.count === 0) {
                     this.width = size;
                     this.height = 'auto';
@@ -66,7 +66,7 @@ export default class BackgroundSize extends Fruit {
                     this._state.count++;
                     return this.valid = true;
                 } else
-                    throw new Error('State Problem!');
+                    throw new Error('Unexpected internal error about _state.count');
             }
         }
     }

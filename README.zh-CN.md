@@ -168,6 +168,21 @@ npm run build
 npm run test
 ```
 
+### 设计要点
+
+- 每个节点类均继承`Fruit`
+- 构造函数要实现以下内容：
+    - constructor() // 生成空对象，默认 invalid
+    - constructor(value: string) // 直接使用 this.parse 去解析
+    - constructor(...args) // 需要单独对每个参数解析
+    - constructor({}) ? 这种要不要实现得打个问号了。。。
+- _absorb() 单独对每种属性做解析
+- analyzeInLoop 中的流程控制
+    - return true; // 继续下一个 token
+    - return false; // 停留在当前 token，然后继续循环
+    - return undefined; // 结束当前循环，一般是遇到当前解析器不合法的字符，但可以让后续解析器继续处理
+    - throw Error; // 当前解析错误，直接停止解析
+
 ## 修改日志
 
 See [Releases](https://github.com/necfe/css-fruit/releases)

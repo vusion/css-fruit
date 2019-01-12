@@ -93,7 +93,7 @@ export default class Fruit {
     constructor();
     constructor(value?: string);
     constructor(value?: string) {
-        if (arguments.length === 1 && value)
+        if (arguments.length === 1 && typeof value === 'string')
             this.parse(value);
     }
 
@@ -132,7 +132,7 @@ export default class Fruit {
                 control = this.analyzeInLoop(node, stem);
             } catch (e) {
                 this.valid = false;
-                throw e;
+                throw new Error(`When analyzing <${this._type}>\n\t` + e);
             }
 
             if (control === undefined)

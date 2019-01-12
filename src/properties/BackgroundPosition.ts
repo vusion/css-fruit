@@ -37,7 +37,7 @@ export default class BackgroundPosition extends Fruit {
              */
             if (node.value === BackgroundPositionKeyword.center) {
                 if (this._state.count >= 2)
-                    throw new SyntaxError('Excessive keyword');
+                    throw new SyntaxError(`Excessive keyword '${node.value}'`);
                 else if (this._state.count === 0) {
                     this.x.origin = this.y.origin = node.value;
                     this._state.lastType = 'center';
@@ -57,7 +57,7 @@ export default class BackgroundPosition extends Fruit {
                 }
             } else if (node.value === BackgroundPositionKeyword.left || node.value === BackgroundPositionKeyword.right) {
                 if (this._state.count >= 3)
-                    throw new SyntaxError('Excessive keyword');
+                    throw new SyntaxError(`Excessive keyword '${node.value}'`);
                 else if (this._state.count === 0) {
                     this.x.origin = node.value;
                     this.y.origin = BackgroundPositionKeyword.center;
@@ -72,7 +72,7 @@ export default class BackgroundPosition extends Fruit {
                      * [x] (20%) + left === (xxx xxx xxx xxx) === (left 20% ? center ?)
                      */
                     if (this.x.origin !== BackgroundPositionKeyword.center)
-                        throw new SyntaxError('Duplicated keywords: ' + node.value);
+                        throw new SyntaxError(`Duplicated keyword '${node.value}'`);
                     this.x.origin = node.value;
                     this._state.lastType = 'x';
                     this._state.count++;
@@ -109,11 +109,11 @@ export default class BackgroundPosition extends Fruit {
                         this._state.count++;
                         return this.valid = true;
                     } else
-                        throw new SyntaxError('Excessive keyword: ' + node.value);
+                        throw new SyntaxError(`Excessive keyword '${node.value}'`);
                 }
             } else if (node.value === BackgroundPositionKeyword.top || node.value === BackgroundPositionKeyword.bottom) {
                 if (this._state.count >= 3)
-                    throw new SyntaxError('Excessive keyword');
+                    throw new SyntaxError(`Excessive keyword '${node.value}'`);
                 else if (this._state.count === 0) {
                     this.y.origin = node.value;
                     this.x.origin = BackgroundPositionKeyword.center;
@@ -128,7 +128,7 @@ export default class BackgroundPosition extends Fruit {
                      * [o] (20%) + top === (left 20% top ?) === (left 20% ? center ?)
                      */
                     if (this.y.origin !== BackgroundPositionKeyword.center)
-                        throw new SyntaxError('Duplicated keywords: ' + node.value);
+                        throw new SyntaxError(`Duplicated keyword '${node.value}'`);
                     this.y.origin = node.value;
                     this._state.lastType = 'y';
                     this._state.count++;
@@ -165,7 +165,7 @@ export default class BackgroundPosition extends Fruit {
                         this._state.count++;
                         return this.valid = true;
                     } else
-                        throw new SyntaxError('Excessive keyword: ' + node.value);
+                        throw new SyntaxError(`Excessive keyword '${node.value}'`);
                 }
             } else {
                 const length = Length.parse(node.value) as Length | string; // '0' is truthy
@@ -175,7 +175,7 @@ export default class BackgroundPosition extends Fruit {
                     return undefined;
 
                 if (this._state.count >= 4)
-                    throw new SyntaxError('Excessive <length-percentage> value: ' + lengthPercentage);
+                    throw new SyntaxError(`Excessive <length-percentage> '${lengthPercentage}'`);
                 else if (this._state.count === 0) {
                     this.x.offset = lengthPercentage;
                     this.x.origin = BackgroundPositionKeyword.left;
@@ -232,12 +232,12 @@ export default class BackgroundPosition extends Fruit {
                         else if (this._state.lastType === 'y')
                             this.y.offset = lengthPercentage;
                         else
-                            throw new Error('xxx');
+                            throw new Error('Unexpected internal error');
                         this._state.lastType = 'length-percentage';
                         this._state.count++;
                         return this.valid = true;
                     } else
-                        throw new SyntaxError('Excessive <length-percentage> value: ' + lengthPercentage);
+                        throw new SyntaxError(`Excessive <length-percentage> value '${lengthPercentage}'`);
                 } else if (this._state.count === 3) {
                     /**
                      * [o] (top 40% left) + 80% === (left 80% top 40%) =x= (left ? top 40%)
@@ -248,7 +248,7 @@ export default class BackgroundPosition extends Fruit {
                      * [x] (center top 60%) + 80% ~~~ (center ? top 60%)
                      */
                     if (this._state.lastType === 'length-percentage')
-                        throw new Error('Excessive <length-percentage> value: ' + lengthPercentage);
+                        throw new Error(`Excessive <length-percentage> value '${lengthPercentage}'`);
                     if (!this.x.offset)
                         this.x.offset = lengthPercentage;
                     else if (!this.y.offset)

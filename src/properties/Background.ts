@@ -35,6 +35,12 @@ export default class Background extends Fruit {
     repeat: BackgroundRepeat | string;
     size: BackgroundSize | string;
 
+    // constructor(value?: string) {
+    //     super();
+    //     // this._type = 'background';
+    //     this.parse(value);
+    // }
+
     protected init() {
         super.init();
         this._state = { boxCount: 0 };
@@ -56,7 +62,7 @@ export default class Background extends Fruit {
                 this.setImage(node.value);
             else if (backgroundAttachmentRE.test(node.value)) {
                 if (this.attachment)
-                    throw new SyntaxError('Excessive background-attachment');
+                    throw new SyntaxError(`Excessive <background-attachment> '${node.value}'`);
                 this.attachment = node.value;
                 return this.valid = true;
             } else if (boxRE.test(node.value)) {
@@ -69,7 +75,7 @@ export default class Background extends Fruit {
                     this._state.boxCount++;
                     return this.valid = true;
                 } else
-                    throw new SyntaxError('Excessive background-clip')
+                    throw new SyntaxError(`Excessive <background-clip> '${node.value}'`);
             } else {
                 let valid: boolean = false;
 
@@ -97,7 +103,7 @@ export default class Background extends Fruit {
                             this.setSize(size);
                             valid = this.valid = true;
                         } else
-                            throw new SyntaxError('Invalid background-size');
+                            throw new SyntaxError(`Invalid <background-size> '${node.value}'`);
                     }
                 }
 
@@ -114,12 +120,12 @@ export default class Background extends Fruit {
             // color
         } else if (node.type === ValueNodeType.function) {
             if (node.unclosed)
-                throw new SyntaxError('Unclosed function: ' + node.value);
+                throw new SyntaxError(`Unclosed function '${node.value}'`);
             if (node.value === 'url') {
                 const image = new Image();
                 image.analyze(stem);
                 if (!image.valid)
-                    throw new SyntaxError('Invalid image');
+                    throw new SyntaxError(`Invalid <image> '${node.value}'`);
                 this.setImage(image.toResult() as Image | string);
                 this.valid = true;
                 return false;
@@ -136,35 +142,35 @@ export default class Background extends Fruit {
 
     private setColor(color: Color | string): void {
         if (this.color)
-            throw new SyntaxError('Excessive color');
+            throw new SyntaxError('Excessive <color>');
         else
             this.color = color;
     }
 
     private setImage(image: Image | string): void {
         if (this.image)
-            throw new SyntaxError('Excessive image');
+            throw new SyntaxError('Excessive <image>');
         else
             this.image = image;
     }
 
     private setPosition(position: BackgroundPosition | string): void {
         if (this.position)
-            throw new SyntaxError('Excessive background-position');
+            throw new SyntaxError('Excessive <background-position>');
         else
             this.position = position;
     }
 
     private setRepeat(repeat: BackgroundRepeat | string): void {
         if (this.repeat)
-            throw new SyntaxError('Excessive background-repeat');
+            throw new SyntaxError('Excessive <background-repeat>');
         else
             this.repeat = repeat;
     }
 
     private setSize(size: BackgroundSize | string): void {
         if (this.size)
-            throw new SyntaxError('Excessive background-size');
+            throw new SyntaxError('Excessive <background-size>');
         else
             this.size = size;
     }
@@ -210,7 +216,7 @@ export default class Background extends Fruit {
 
             this.valid = background.valid;
         } else
-            throw new Error('Incompatible property: ' + prop);
+            throw new TypeError(`Property '${prop}' is inconsistent with existing type '${this._type}'`);
         return this;
     }
 }

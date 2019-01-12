@@ -19,9 +19,9 @@ export default class Percentage extends Fruit {
 
         const found = partialRE.exec(value);
         if (!found)
-            throw new SyntaxError('Invalid percentage');
+            throw new SyntaxError(`Invalid percentage format of '${value}'`);
         // if (+found[1] !== 0 && !found[2])
-        //     throw new SyntaxError('"%" should be after the non-zero number');
+        //     throw new SyntaxError('"%" must be after the non-zero number');
 
         this.number = +found[1];
         this.valid = true;

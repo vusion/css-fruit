@@ -57,28 +57,28 @@ export default class Color extends Fruit {
         else if (node.type === ValueNodeType.word) {
             if (node.value === 'currentColor') {
                 if (this.value)
-                    throw new SyntaxError('Excessive value');
+                    throw new SyntaxError(`Excessive value '${node.value}'`);
                 this.value = 'currentColor';
                 return this.valid = true;
             } else if (namedColorRE.test(node.value)) {
                 if (this.value)
-                    throw new SyntaxError('Excessive value');
+                    throw new SyntaxError(`Excessive value '${node.value}'`);
                 this.value = node.value;
                 // @TODO parse named value;
                 return this.valid = true;
             } else if (hexColorRE.test(node.value)) {
                 if (this.value)
-                    throw new SyntaxError('Excessive value');
+                    throw new SyntaxError(`Excessive value '${node.value}'`);
                 this.value = node.value;
                 // @TODO parse named value;
                 return this.valid = true;
             }
         } else if (node.type === ValueNodeType.function) {
             if (node.unclosed)
-                throw new SyntaxError('Unclosed function: ' + node.value);
+                throw new SyntaxError(`Unclosed function '${node.value}'`);
             if (node.value === 'rgb' || node.value === 'rgba' || node.value === 'hsl' || node.value === 'hsla') {
                 if (this.value)
-                    throw new SyntaxError('Excessive value');
+                    throw new SyntaxError(`Excessive value '${node.value}'`);
                 this.value = ValueParser.stringify(node);
                 return this.valid = true;
             }
@@ -153,7 +153,7 @@ export default class Color extends Fruit {
     static fromHEX(value: string) {
         value = value.trim().slice(1);
         if (value.length !== 6 && value.length !== 3)
-            throw new SyntaxError('Unexpected length of hex number');
+            throw new SyntaxError(`Unexpected length of hex number '${value}'`);
         else if (value.length === 3)
             value = `${value[0]}${value[0]}${value[1]}${value[1]}${value[2]}${value[2]}`;
 
@@ -168,7 +168,7 @@ export default class Color extends Fruit {
         value = value.trim().slice(4, -1);
         const arr = value.split(',').map((num) => +num);
         if (arr.length !== 4)
-            throw new SyntaxError('Unexpected params of rgba function');
+            throw new SyntaxError(`Unexpected params of rgba function '${value}'`);
 
         return new Color(...arr);
     }
@@ -177,7 +177,7 @@ export default class Color extends Fruit {
         value = value.trim().slice(5, -1);
         const arr = value.split(',').map((num) => +num);
         if (arr.length !== 4)
-            throw new SyntaxError('Unexpected params of rgba function');
+            throw new SyntaxError(`Unexpected params of rgba function '${value}'`);
 
         return new Color(...arr);
     }

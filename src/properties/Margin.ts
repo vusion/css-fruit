@@ -10,7 +10,7 @@ const enum ValueType {
 };
 
 export default class Margin extends Fruit {
-    protected _type: string = 'background-repeat';
+    protected _type: string = 'margin';
     protected _state: { count: number };
 
     top: Length | Percentage | string;
@@ -41,7 +41,7 @@ export default class Margin extends Fruit {
                 return undefined;
 
             if (this._state.count >= 4)
-                throw new SyntaxError('Excessive <margin> value: ' + value);
+                throw new SyntaxError(`Excessive value '${value}'`);
             else if (this._state.count === 0)
                 this.top = this.right = this.bottom = this.left = value;
             else if (this._state.count === 1)
