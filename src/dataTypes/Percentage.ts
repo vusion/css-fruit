@@ -8,6 +8,26 @@ export default class Percentage extends Fruit {
     protected _parseDeepLevelBoundary = ParseDeepLevel.dataTypes;
     number: number;
 
+    constructor();
+    constructor(value: string | number);
+    constructor(value?: string | number) {
+        super();
+        try {
+            if (arguments.length === 0)
+                return;
+            else if (typeof value === 'string')
+                this.parse(value);
+            else if (typeof value === 'number') {
+                this.number = value;
+                this.valid = true;
+            } else
+                throw new TypeError('Wrong constructor param type');
+        } catch (e) {
+            if (this.options.throwErrors)
+                throw e;
+        }
+    }
+
     init() {
         super.init();
         this.number = undefined;
@@ -17,14 +37,19 @@ export default class Percentage extends Fruit {
         value = value.trim();
         this.init();
 
-        const found = partialRE.exec(value);
-        if (!found)
-            throw new SyntaxError(`Invalid percentage format of '${value}'`);
-        // if (+found[1] !== 0 && !found[2])
-        //     throw new SyntaxError('"%" must be after the non-zero number');
+        try {
+            const found = partialRE.exec(value);
+            if (!found)
+                throw new SyntaxError(`Invalid percentage format of '${value}'`);
+            // if (+found[1] !== 0 && !found[2])
+            //     throw new SyntaxError('"%" must be after the non-zero number');
 
-        this.number = +found[1];
-        this.valid = true;
+            this.number = +found[1];
+            this.valid = true;
+        } catch (e) {
+            if (this.options.throwErrors)
+                throw e;
+        }
 
         return this.toResult();
     }

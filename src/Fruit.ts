@@ -80,6 +80,7 @@ interface ConfigOptions {
     irrelevantProperty: IrrelevantProperty;
     parseDeepLevel: ParseDeepLevel;
     forceParsing: { [prop: string]: boolean };
+    throwErrors: boolean;
 }
 
 export default class Fruit {
@@ -106,10 +107,15 @@ export default class Fruit {
         value = value.trim();
 
         const stem = new Stem(value);
-        this.analyze(stem);
-        if (stem.head()) {
-            this.valid = false;
-            throw SyntaxError('Nodes of value cannot be fully analyzed: ' + value);
+        try {
+            this.analyze(stem);
+            if (stem.head()) {
+                this.valid = false;
+                throw SyntaxError('Nodes of value cannot be fully analyzed: ' + value);
+            }
+        } catch (e) {
+            if (this.options.throwErrors)
+                throw e;
         }
         return this.toResult();
     }
@@ -188,10 +194,8 @@ export default class Fruit {
     }
 
     static parse(value: string): Fruit | string {
-        try {
-            const fruit = new this();
-            return fruit.parse(value);
-        } catch (e) {}
+        const fruit = new this();
+        return fruit.parse(value);
     }
 
     // static test(value: string): boolean {}
@@ -215,4 +219,5 @@ Fruit.prototype.options = {
     irrelevantProperty: IrrelevantProperty.ignore,
     parseDeepLevel: ParseDeepLevel.virtualLonghand,
     forceParsing: {},
+    throwErrors: false,
 };

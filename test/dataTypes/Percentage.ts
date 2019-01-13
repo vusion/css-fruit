@@ -2,10 +2,16 @@ import { expect } from 'chai';
 import Percentage from '../../src/dataTypes/Percentage';
 
 describe('Percentage', () => {
-    it('#constructor(value)', () => {
+    it('#constructor(value: string)', () => {
         const percentage = new Percentage('4.01%');
 
         expect(percentage.number).to.equal(4.01);
+    });
+
+    it('#constructor(value: number)', () => {
+        const percentage = new Percentage(12);
+
+        expect(percentage.number).to.equal(12);
     });
 
     it('.validate(value) => true', () => {

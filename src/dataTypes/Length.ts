@@ -14,27 +14,32 @@ export default class Length extends Fruit {
     unit: string;
 
     constructor();
-    constructor(value: string);
+    constructor(value: string | number);
     constructor(number: number, unit: string);
     constructor(value?: string | number, unit?: string) {
         super();
-        if (arguments.length === 0)
-            return;
-        else if (typeof value === 'string' && arguments.length === 1)
-            this.parse(value);
-        else if (typeof value === 'number') {
-            if (!unit && value === 0) {
-                this.number = value;
-                this.unit = '';
-                this.valid = true;
-            } else if (unit && unitRE.test(unit)) {
-                this.number = value;
-                this.unit = unit;
-                this.valid = true;
+        try {
+            if (arguments.length === 0)
+                return;
+            else if (typeof value === 'string' && arguments.length === 1)
+                this.parse(value);
+            else if (typeof value === 'number') {
+                if (!unit && value === 0) {
+                    this.number = value;
+                    this.unit = '';
+                    this.valid = true;
+                } else if (unit && unitRE.test(unit)) {
+                    this.number = value;
+                    this.unit = unit;
+                    this.valid = true;
+                } else
+                    throw new SyntaxError(`Invalid unit '${unit}'`);
             } else
-                throw new SyntaxError(`Invalid unit '${unit}'`);
-        } else
-            throw new TypeError('Wrong constructor param type');
+                throw new TypeError('Wrong constructor param type');
+        } catch (e) {
+            if (this.options.throwErrors)
+                throw e;
+        }
     }
 
     init() {
@@ -47,15 +52,20 @@ export default class Length extends Fruit {
         value = value.trim();
         this.init();
 
-        const found = partialRE.exec(value);
-        if (!found)
-            throw new SyntaxError(`Invalid length '${value}'`);
-        if (+found[1] !== 0 && !found[2])
-            throw new SyntaxError('There must be a unit after the non-zero number');
+        try {
+            const found = partialRE.exec(value);
+            if (!found)
+                throw new SyntaxError(`Invalid length '${value}'`);
+            if (+found[1] !== 0 && !found[2])
+                throw new SyntaxError('There must be a unit after the non-zero number');
 
-        this.number = +found[1];
-        this.unit = found[2] || '';
-        this.valid = true;
+            this.number = +found[1];
+            this.unit = found[2] || '';
+            this.valid = true;
+        } catch (e) {
+            if (this.options.throwErrors)
+                throw e;
+        }
 
         return this.toResult();
     }
