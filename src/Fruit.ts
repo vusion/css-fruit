@@ -227,7 +227,11 @@ export default class Fruit {
     // static test(value: string): boolean {}
 
     static validate(value: string): boolean {
-        return this.parse(value) !== undefined;
+        try {
+            return this.parse(value) !== undefined;
+        } catch (e) {
+            return false;
+        }
     }
 
     // private static Kinds: { [prop: string]: any };
