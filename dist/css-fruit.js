@@ -1375,9 +1375,9 @@ var BackgroundPosition = /** @class */ (function (_super) {
         // Make sure each property has a value.
         if (this.valid) {
             if (!this.x.offset)
-                this.x.offset = new _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__["default"](0);
+                this.x.offset = new _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__["default"](0).toResult();
             if (!this.y.offset)
-                this.y.offset = new _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__["default"](0);
+                this.y.offset = new _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__["default"](0).toResult();
         }
     };
     BackgroundPosition.prototype.analyzeInLoop = function (node) {
@@ -1695,7 +1695,7 @@ var BackgroundRepeat = /** @class */ (function (_super) {
         try {
             if (arguments.length === 0)
                 return _this;
-            else if (arguments.length === 1)
+            else if (arguments.length === 1 && typeof x === 'string')
                 _this.parse(x);
             else if (arguments.length === 2) {
                 _this.x = x;

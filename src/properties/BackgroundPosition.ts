@@ -34,9 +34,9 @@ export default class BackgroundPosition extends Fruit {
         // Make sure each property has a value.
         if (this.valid) {
             if (!this.x.offset)
-                this.x.offset = new Length(0);
+                this.x.offset = new Length(0).toResult() as Length | Percentage | string;
             if (!this.y.offset)
-                this.y.offset = new Length(0);
+                this.y.offset = new Length(0).toResult() as Length | Percentage | string;
         }
     }
 

@@ -23,7 +23,7 @@ export default class BackgroundRepeat extends Fruit {
         try {
             if (arguments.length === 0)
                 return;
-            else if (arguments.length === 1)
+            else if (arguments.length === 1 && typeof x === 'string')
                 this.parse(x);
             else if (arguments.length === 2) {
                 this.x = x as BackgroundRepeatKeyword;
