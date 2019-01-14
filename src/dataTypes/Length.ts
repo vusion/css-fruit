@@ -51,7 +51,7 @@ export default class Length extends Fruit {
     parse(value: string): Fruit | string {
         value = value.trim();
 
-        try {
+        this.tryCatch(() => {
             const found = partialRE.exec(value);
             if (!found)
                 throw new SyntaxError(`Invalid length '${value}'`);
@@ -61,10 +61,7 @@ export default class Length extends Fruit {
             this.number = +found[1];
             this.unit = found[2] || '';
             this.valid = true;
-        } catch (e) {
-            if (this.options.throwErrors)
-                throw e;
-        }
+        });
 
         return this.toResult();
     }

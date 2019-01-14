@@ -36,7 +36,7 @@ export default class Percentage extends Fruit {
     parse(value: string): Fruit | string {
         value = value.trim();
 
-        try {
+        this.tryCatch(() => {
             const found = partialRE.exec(value);
             if (!found)
                 throw new SyntaxError(`Invalid percentage format of '${value}'`);
@@ -45,10 +45,7 @@ export default class Percentage extends Fruit {
 
             this.number = +found[1];
             this.valid = true;
-        } catch (e) {
-            if (this.options.throwErrors)
-                throw e;
-        }
+        });
 
         return this.toResult();
     }
