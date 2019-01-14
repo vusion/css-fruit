@@ -182,6 +182,7 @@ npm run test
     - return false; // 停留在当前 token，然后继续循环
     - return undefined; // 结束当前循环，一般是遇到当前解析器不合法的字符，但可以让后续解析器继续处理
     - throw Error; // 当前解析错误，直接停止解析
+- 像`BackgroundPosition`这样的最长 hand 值，它的属性要么全没有，要么全都有
 
 ## 修改日志
 

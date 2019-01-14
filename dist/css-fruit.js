@@ -209,13 +209,21 @@ var Stem = /** @class */ (function () {
 }());
 
 var Fruit = /** @class */ (function () {
-    function Fruit(value) {
+    function Fruit() {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
         this._type = 'fruit';
         this._inherited = false;
         this._parseDeepLevelBoundary = 3 /* virtualLonghand */;
         this.valid = false;
-        if (arguments.length === 1 && typeof value === 'string')
-            this.parse(value);
+        if (args.length === 0)
+            return;
+        if (args.length === 1)
+            this.parse(args[0]);
+        else
+            this.parse(args.join(' '));
     }
     Fruit.prototype.init = function () {
         this.valid = false;
@@ -224,10 +232,16 @@ var Fruit = /** @class */ (function () {
         this.raw = value;
         value = value.trim();
         var stem = new Stem(value);
-        this.analyze(stem);
-        if (stem.head()) {
-            this.valid = false;
-            throw SyntaxError('Nodes of value cannot be fully analyzed: ' + value);
+        try {
+            this.analyze(stem);
+            if (stem.head()) {
+                this.valid = false;
+                throw SyntaxError('Nodes of value cannot be fully analyzed: ' + value);
+            }
+        }
+        catch (e) {
+            if (this.options.throwErrors)
+                throw e;
         }
         return this.toResult();
     };
@@ -249,7 +263,6 @@ var Fruit = /** @class */ (function () {
             }
             catch (e) {
                 this.valid = false;
-                console.log(this._type);
                 throw new Error("When analyzing <" + this._type + ">\n\t" + e);
             }
             if (control === undefined)
@@ -299,11 +312,8 @@ var Fruit = /** @class */ (function () {
         Object.assign(this.prototype.options, options);
     };
     Fruit.parse = function (value) {
-        try {
-            var fruit = new this();
-            return fruit.parse(value);
-        }
-        catch (e) { }
+        var fruit = new this();
+        return fruit.parse(value);
     };
     // static test(value: string): boolean {}
     Fruit.validate = function (value) {
@@ -320,6 +330,7 @@ Fruit.prototype.options = {
     irrelevantProperty: "ignore" /* ignore */,
     parseDeepLevel: 3 /* virtualLonghand */,
     forceParsing: {},
+    throwErrors: false,
 };
 
 
@@ -636,20 +647,27 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 var Image = /** @class */ (function (_super) {
     __extends(Image, _super);
-    function Image() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
+    function Image(value) {
+        var _this = _super.call(this) || this;
         _this._type = 'image';
         _this._parseDeepLevelBoundary = 4 /* dataTypes */;
+        try {
+            if (arguments.length === 0)
+                return _this;
+            else if (typeof value === 'string')
+                _this.parse(value);
+            else if (value instanceof _URL__WEBPACK_IMPORTED_MODULE_1__["default"]) {
+                // @矛盾: 赋值给`this.value`时，应不应该检查 URL 本身的合法性？
+                _this.value = value.toResult();
+                _this.valid = value.valid;
+            }
+        }
+        catch (e) {
+            if (_this.options.throwErrors)
+                throw e;
+        }
         return _this;
     }
-    // constructor(value?: string);
-    // constructor(width: string, height?: string) {
-    //     super(width);
-    //     if (arguments.length > 1) {
-    //         this.width = width;
-    //         this.height = height;
-    //     }
-    // }
     Image.prototype.init = function () {
         _super.prototype.init.call(this);
         this._state = { count: 0 };
@@ -756,7 +774,7 @@ var URL = /** @class */ (function (_super) {
                     throw new SyntaxError("Duplicated function 'url'");
                 var url = '';
                 if (node.nodes.length > 1)
-                    throw new SyntaxError('Invalid url');
+                    throw new SyntaxError('Invalid url format');
                 else if (node.nodes.length === 1) {
                     var subNode = node.nodes[0];
                     if (subNode.unclosed)
@@ -890,31 +908,40 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 var unitRE = /^ch|em|ex|rem|vh|vw|vmin|vmax|px|cm|mm|in|pc|pt$/i;
 var experimentalUnitRE = /^cap|ch|em|ex|ic|lh|rem|rlh|vh|vw|vi|vb|vmin|vmax|px|cm|mm|Q|in|pc|pt$/i;
-var partialRE = new RegExp("^(" + String(_Number__WEBPACK_IMPORTED_MODULE_1__["numberRE"]).slice(2, -3) + ")(" + String(unitRE).slice(2, -3) + ")?$", 'i');
+var partialRE = new RegExp("^(" + String(_Number__WEBPACK_IMPORTED_MODULE_1__["numberRE"]).slice(2, -3) + ")(ch|em|ex|rem|vh|vw|vmin|vmax|px|cm|mm|in|pc|pt)?$", 'i');
+// const partialRE = new RegExp(`^(${String(numberRE).slice(2, -3)})(${String(unitRE).slice(2, -3)})?$`, 'i');
 var Length = /** @class */ (function (_super) {
     __extends(Length, _super);
     function Length(value, unit) {
         var _this = _super.call(this) || this;
         _this._type = 'length';
         _this._parseDeepLevelBoundary = 4 /* dataTypes */;
-        if (typeof value === 'string' && arguments.length === 1)
-            _this.parse(value);
-        else if (typeof value === 'number') {
-            if (!unit && value === 0) {
-                _this.number = value;
-                _this.unit = '';
-                _this.valid = true;
-            }
-            else if (unit && unitRE.test(unit)) {
-                _this.number = value;
-                _this.unit = unit;
-                _this.valid = true;
+        try {
+            if (arguments.length === 0)
+                return _this;
+            else if (typeof value === 'string' && arguments.length === 1)
+                _this.parse(value);
+            else if (typeof value === 'number') {
+                if (!unit && value === 0) {
+                    _this.number = value;
+                    _this.unit = '';
+                    _this.valid = true;
+                }
+                else if (unit && unitRE.test(unit)) {
+                    _this.number = value;
+                    _this.unit = unit;
+                    _this.valid = true;
+                }
+                else
+                    throw new SyntaxError("Invalid unit '" + unit + "'");
             }
             else
-                throw new SyntaxError("Invalid unit '" + unit + "'");
+                throw new TypeError('Wrong constructor param type');
         }
-        else
-            throw new TypeError('Wrong constructor param type');
+        catch (e) {
+            if (_this.options.throwErrors)
+                throw e;
+        }
         return _this;
     }
     Length.prototype.init = function () {
@@ -925,14 +952,20 @@ var Length = /** @class */ (function (_super) {
     Length.prototype.parse = function (value) {
         value = value.trim();
         this.init();
-        var found = partialRE.exec(value);
-        if (!found)
-            throw new SyntaxError("Invalid length '" + value + "'");
-        if (+found[1] !== 0 && !found[2])
-            throw new SyntaxError('There must be a unit after the non-zero number');
-        this.number = +found[1];
-        this.unit = found[2] || '';
-        this.valid = true;
+        try {
+            var found = partialRE.exec(value);
+            if (!found)
+                throw new SyntaxError("Invalid length '" + value + "'");
+            if (+found[1] !== 0 && !found[2])
+                throw new SyntaxError('There must be a unit after the non-zero number');
+            this.number = +found[1];
+            this.unit = found[2] || '';
+            this.valid = true;
+        }
+        catch (e) {
+            if (this.options.throwErrors)
+                throw e;
+        }
         return this.toResult();
     };
     Length.prototype.toString = function (complete) {
@@ -989,10 +1022,26 @@ var __extends = (undefined && undefined.__extends) || (function () {
 var partialRE = new RegExp("^(" + String(_Number__WEBPACK_IMPORTED_MODULE_1__["numberRE"]).slice(2, -3) + ")%$", 'i');
 var Percentage = /** @class */ (function (_super) {
     __extends(Percentage, _super);
-    function Percentage() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
+    function Percentage(value) {
+        var _this = _super.call(this) || this;
         _this._type = 'percentage';
         _this._parseDeepLevelBoundary = 4 /* dataTypes */;
+        try {
+            if (arguments.length === 0)
+                return _this;
+            else if (typeof value === 'string')
+                _this.parse(value);
+            else if (typeof value === 'number') {
+                _this.number = value;
+                _this.valid = true;
+            }
+            else
+                throw new TypeError('Wrong constructor param type');
+        }
+        catch (e) {
+            if (_this.options.throwErrors)
+                throw e;
+        }
         return _this;
     }
     Percentage.prototype.init = function () {
@@ -1002,13 +1051,19 @@ var Percentage = /** @class */ (function (_super) {
     Percentage.prototype.parse = function (value) {
         value = value.trim();
         this.init();
-        var found = partialRE.exec(value);
-        if (!found)
-            throw new SyntaxError("Invalid percentage '" + value + "'");
-        // if (+found[1] !== 0 && !found[2])
-        //     throw new SyntaxError('"%" must be after the non-zero number');
-        this.number = +found[1];
-        this.valid = true;
+        try {
+            var found = partialRE.exec(value);
+            if (!found)
+                throw new SyntaxError("Invalid percentage format of '" + value + "'");
+            // if (+found[1] !== 0 && !found[2])
+            //     throw new SyntaxError('"%" must be after the non-zero number');
+            this.number = +found[1];
+            this.valid = true;
+        }
+        catch (e) {
+            if (this.options.throwErrors)
+                throw e;
+        }
         return this.toResult();
     };
     Percentage.prototype.toString = function (complete) {
@@ -1080,14 +1135,17 @@ var SubProperty;
  */
 var Background = /** @class */ (function (_super) {
     __extends(Background, _super);
-    function Background(value) {
-        var _this = _super.call(this) || this;
+    function Background() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
         _this._type = 'background';
         _this._inherited = false;
-        // this._type = 'background';
-        _this.parse(value);
         return _this;
     }
+    // constructor(value?: string) {
+    //     super();
+    //     // this._type = 'background';
+    //     this.parse(value);
+    // }
     Background.prototype.init = function () {
         _super.prototype.init.call(this);
         this._state = { boxCount: 0 };
@@ -1311,6 +1369,16 @@ var BackgroundPosition = /** @class */ (function (_super) {
         this._state = { count: 0, lastType: undefined };
         this.x = { origin: undefined, offset: undefined };
         this.y = { origin: undefined, offset: undefined };
+    };
+    BackgroundPosition.prototype.analyze = function (stem) {
+        _super.prototype.analyze.call(this, stem);
+        // Make sure each property has a value.
+        if (this.valid) {
+            if (!this.x.offset)
+                this.x.offset = new _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__["default"](0);
+            if (!this.y.offset)
+                this.y.offset = new _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__["default"](0);
+        }
     };
     BackgroundPosition.prototype.analyzeInLoop = function (node) {
         if (node.type === "space" /* space */ || node.type === "comment" /* comment */)
@@ -1563,9 +1631,9 @@ var BackgroundPosition = /** @class */ (function (_super) {
     BackgroundPosition.prototype.toString = function (complete) {
         var x = [this.x.origin];
         var y = [this.y.origin];
-        if (this.x.offset)
+        if (this.x.offset.toString() !== '0')
             x.push(this.x.offset.toString());
-        if (this.y.offset)
+        if (this.y.offset.toString() !== '0')
             y.push(this.y.offset.toString());
         if (complete)
             return x.concat(y).join(' ');
@@ -1622,11 +1690,24 @@ var partialRE = /^(?:repeat-x|repeat-y|repeat|space|round|no-repeat)$/;
 var BackgroundRepeat = /** @class */ (function (_super) {
     __extends(BackgroundRepeat, _super);
     function BackgroundRepeat(x, y) {
-        var _this = _super.call(this, x) || this;
+        var _this = _super.call(this) || this;
         _this._type = 'background-repeat';
-        if (arguments.length > 1) {
-            _this.x = x;
-            _this.y = y;
+        try {
+            if (arguments.length === 0)
+                return _this;
+            else if (arguments.length === 1)
+                _this.parse(x);
+            else if (arguments.length === 2) {
+                _this.x = x;
+                _this.y = y;
+                _this.valid = true;
+            }
+            else
+                throw new TypeError("Excessive arguments " + arguments);
+        }
+        catch (e) {
+            if (_this.options.throwErrors)
+                throw e;
         }
         return _this;
     }
@@ -1725,11 +1806,24 @@ var __extends = (undefined && undefined.__extends) || (function () {
 var BackgroundSize = /** @class */ (function (_super) {
     __extends(BackgroundSize, _super);
     function BackgroundSize(width, height) {
-        var _this = _super.call(this, width) || this;
+        var _this = _super.call(this) || this;
         _this._type = 'background-size';
-        if (arguments.length > 1) {
-            _this.width = width;
-            _this.height = height;
+        try {
+            if (arguments.length === 0)
+                return _this;
+            else if (arguments.length === 1 && typeof width === 'string')
+                _this.parse(width);
+            else if (arguments.length === 2) {
+                _this.width = width;
+                _this.height = height;
+                _this.valid = true;
+            }
+            else
+                throw new TypeError("Excessive arguments " + arguments);
+        }
+        catch (e) {
+            if (_this.options.throwErrors)
+                throw e;
         }
         return _this;
     }

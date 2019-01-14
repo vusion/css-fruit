@@ -7,14 +7,25 @@ export default class Image extends Fruit {
     protected _state: { count: number };
     value: URL | string;
 
-    // constructor(value?: string);
-    // constructor(width: string, height?: string) {
-    //     super(width);
-    //     if (arguments.length > 1) {
-    //         this.width = width;
-    //         this.height = height;
-    //     }
-    // }
+    constructor();
+    constructor(value: string | URL);
+    constructor(value?: string | URL) {
+        super();
+        try {
+            if (arguments.length === 0)
+                return;
+            else if (typeof value === 'string')
+                this.parse(value);
+            else if (value instanceof URL) {
+                // @矛盾: 赋值给`this.value`时，应不应该检查 URL 本身的合法性？
+                this.value = value.toResult() as URL | string;
+                this.valid = value.valid;
+            }
+        } catch (e) {
+            if (this.options.throwErrors)
+                throw e;
+        }
+    }
 
     protected init() {
         super.init();

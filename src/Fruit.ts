@@ -92,10 +92,14 @@ export default class Fruit {
     valid: boolean = false;
 
     constructor();
-    constructor(value?: string);
-    constructor(value?: string) {
-        if (arguments.length === 1 && typeof value === 'string')
-            this.parse(value);
+    constructor(...args: any[]);
+    constructor(...args: any[]) {
+        if (args.length === 0)
+            return;
+        if (args.length === 1)
+            this.parse(args[0]);
+        else
+            this.parse(args.join(' '));
     }
 
     protected init(): void {

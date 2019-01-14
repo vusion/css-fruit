@@ -6,7 +6,7 @@ describe('BackgroundPosition', () => {
        const backgroundPosition = new BackgroundPosition('left 40%');
 
        expect(backgroundPosition.x.origin).to.equal('left');
-       expect(backgroundPosition.x.offset).to.be.undefined;
+       expect(backgroundPosition.x.offset.toString()).to.equal('0');
        expect(backgroundPosition.y.origin).to.equal('top');
        expect(backgroundPosition.y.offset.toString()).to.equal('40%');
     });

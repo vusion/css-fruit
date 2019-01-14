@@ -15,12 +15,25 @@ export default class BackgroundRepeat extends Fruit {
     x: BackgroundRepeatKeyword;
     y: BackgroundRepeatKeyword;
 
-    constructor(value?: string);
-    constructor(x: BackgroundRepeatKeyword, y?: BackgroundRepeatKeyword) {
-        super(x);
-        if (arguments.length > 1) {
-            this.x = x;
-            this.y = y;
+    constructor();
+    constructor(value: string);
+    constructor(x: BackgroundRepeatKeyword, y: BackgroundRepeatKeyword);
+    constructor(x?: BackgroundRepeatKeyword | string, y?: BackgroundRepeatKeyword) {
+        super();
+        try {
+            if (arguments.length === 0)
+                return;
+            else if (arguments.length === 1)
+                this.parse(x);
+            else if (arguments.length === 2) {
+                this.x = x as BackgroundRepeatKeyword;
+                this.y = y;
+                this.valid = true;
+            } else
+                throw new TypeError(`Excessive arguments ${arguments}`);
+        } catch (e) {
+            if (this.options.throwErrors)
+                throw e;
         }
     }
 

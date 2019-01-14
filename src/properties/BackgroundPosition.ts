@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, Stem } from '../Fruit';
 import Length from '../dataTypes/Length';
 import Percentage from '../dataTypes/Percentage';
 
@@ -26,6 +26,18 @@ export default class BackgroundPosition extends Fruit {
         this._state = { count: 0, lastType: undefined };
         this.x = { origin: undefined, offset: undefined };
         this.y = { origin: undefined, offset: undefined };
+    }
+
+    analyze(stem: Stem): void {
+        super.analyze(stem);
+
+        // Make sure each property has a value.
+        if (this.valid) {
+            if (!this.x.offset)
+                this.x.offset = new Length(0);
+            if (!this.y.offset)
+                this.y.offset = new Length(0);
+        }
     }
 
     protected analyzeInLoop(node: ValueNode): boolean {
@@ -267,9 +279,9 @@ export default class BackgroundPosition extends Fruit {
         let x: Array<string> = [this.x.origin];
         let y: Array<string> = [this.y.origin];
 
-        if (this.x.offset)
+        if (this.x.offset.toString() !== '0')
             x.push(this.x.offset.toString());
-        if (this.y.offset)
+        if (this.y.offset.toString() !== '0')
             y.push(this.y.offset.toString());
 
         if (complete)
