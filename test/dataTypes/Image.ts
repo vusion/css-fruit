@@ -32,6 +32,10 @@ describe('Image', () => {
         expect(Image.parse('url(abc.png)')).to.be.a('string');
     });
 
+    it('parse(image-set) -> image-set', () => {
+        expect(Image.parse('image-set(url(bird.png) 1x, url(bird@2x.png) 2x)').toString()).to.equal("image-set(url('bird.png') 1x, url('bird%402x.png') 2x)");
+    });
+
     it('parse(value) -> invalid', () => {
         expect(Image.parse('abc')).to.be.undefined;
     });

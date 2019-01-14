@@ -1,13 +1,14 @@
 import Fruit, { ValueNode, ValueNodeType, ParsedDepth, Stem } from '../Fruit';
 import URL from './URL';
+import ImageSet from './ImageSet';
 
 export default class Image extends Fruit {
     protected _state: { count: number };
-    value: URL | string;
+    value: URL | ImageSet | string;
 
     constructor();
-    constructor(value: string | URL);
-    constructor(value?: string | URL) {
+    constructor(value: string | URL | ImageSet);
+    constructor(value?: string | URL | ImageSet) {
         super();
         this._type = 'image';
         this._parseDepth = ParsedDepth.dataType;
@@ -19,9 +20,9 @@ export default class Image extends Fruit {
                 return;
             else if (typeof value === 'string')
                 this.parse(value);
-            else if (value instanceof URL) {
+            else if (value instanceof URL || value instanceof ImageSet) {
                 // @矛盾: 赋值给`this.value`时，应不应该检查 URL 本身的合法性？
-                this.value = value.toResult() as URL | string;
+                this.value = value.toResult() as URL | ImageSet | string;
                 this.valid = value.valid;
             } else
                 throw new TypeError('Wrong type or excessive arguments');
@@ -57,6 +58,16 @@ export default class Image extends Fruit {
                 if (!url.valid)
                     throw new SyntaxError(`Invalid <url> '${node.value}'`);
                 this.value = url.toResult() as URL | string;
+                this.valid = true;
+                return false;
+            } else if (node.value === 'image-set' || node.value === '-webkit-image-set') {
+                if (this.value)
+                throw new SyntaxError(`Excessive value '${node.value}'`);
+                const imageSet = new ImageSet();
+                imageSet.analyze(stem);
+                if (!imageSet.valid)
+                    throw new SyntaxError(`Invalid <image-set> '${node.value}'`);
+                this.value = imageSet.toResult() as ImageSet | string;
                 this.valid = true;
                 return false;
             } // else

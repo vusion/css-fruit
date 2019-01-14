@@ -107,34 +107,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_dataTypes_Image__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Image", function() { return _src_dataTypes_Image__WEBPACK_IMPORTED_MODULE_2__["default"]; });
 
-/* harmony import */ var _src_dataTypes_Length__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(8);
+/* harmony import */ var _src_dataTypes_Length__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(9);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Length", function() { return _src_dataTypes_Length__WEBPACK_IMPORTED_MODULE_3__["default"]; });
 
-/* harmony import */ var _src_dataTypes_Number__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9);
+/* harmony import */ var _src_dataTypes_Number__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(10);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Number", function() { return _src_dataTypes_Number__WEBPACK_IMPORTED_MODULE_4__["default"]; });
 
-/* harmony import */ var _src_dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(10);
+/* harmony import */ var _src_dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(11);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Percentage", function() { return _src_dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_5__["default"]; });
 
 /* harmony import */ var _src_dataTypes_URL__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(5);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "URL", function() { return _src_dataTypes_URL__WEBPACK_IMPORTED_MODULE_6__["default"]; });
 
-/* harmony import */ var _src_properties_Background__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(11);
+/* harmony import */ var _src_properties_Background__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(12);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Background", function() { return _src_properties_Background__WEBPACK_IMPORTED_MODULE_7__["default"]; });
 
-/* harmony import */ var _src_properties_BackgroundPosition__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(12);
+/* harmony import */ var _src_properties_BackgroundPosition__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(13);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BackgroundPosition", function() { return _src_properties_BackgroundPosition__WEBPACK_IMPORTED_MODULE_8__["default"]; });
 
-/* harmony import */ var _src_properties_BackgroundRepeat__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(13);
+/* harmony import */ var _src_properties_BackgroundRepeat__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(14);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BackgroundRepeat", function() { return _src_properties_BackgroundRepeat__WEBPACK_IMPORTED_MODULE_9__["default"]; });
 
-/* harmony import */ var _src_properties_BackgroundSize__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(14);
+/* harmony import */ var _src_properties_BackgroundSize__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(15);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BackgroundSize", function() { return _src_properties_BackgroundSize__WEBPACK_IMPORTED_MODULE_10__["default"]; });
 
-/* harmony import */ var _src_properties_Margin__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(15);
+/* harmony import */ var _src_properties_Margin__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(16);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Margin", function() { return _src_properties_Margin__WEBPACK_IMPORTED_MODULE_11__["default"]; });
 
-/* harmony import */ var _src_properties_Padding__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(16);
+/* harmony import */ var _src_properties_Padding__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(17);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Padding", function() { return _src_properties_Padding__WEBPACK_IMPORTED_MODULE_12__["default"]; });
 
 // import Parser from './src/Parser';
@@ -325,7 +325,12 @@ var Fruit = /** @class */ (function () {
     };
     // static test(value: string): boolean {}
     Fruit.validate = function (value) {
-        return this.parse(value) !== undefined;
+        try {
+            return this.parse(value) !== undefined;
+        }
+        catch (e) {
+            return false;
+        }
     };
     Fruit.absorb = function (prop, value) {
         var fruit = new this();
@@ -639,6 +644,7 @@ var Color = /** @class */ (function (_super) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var _URL__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
+/* harmony import */ var _ImageSet__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -654,6 +660,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
 })();
 
 
+
 var Image = /** @class */ (function (_super) {
     __extends(Image, _super);
     function Image(value) {
@@ -667,7 +674,7 @@ var Image = /** @class */ (function (_super) {
                 return;
             else if (typeof value === 'string')
                 _this.parse(value);
-            else if (value instanceof _URL__WEBPACK_IMPORTED_MODULE_1__["default"]) {
+            else if (value instanceof _URL__WEBPACK_IMPORTED_MODULE_1__["default"] || value instanceof _ImageSet__WEBPACK_IMPORTED_MODULE_2__["default"]) {
                 // @矛盾: 赋值给`this.value`时，应不应该检查 URL 本身的合法性？
                 _this.value = value.toResult();
                 _this.valid = value.valid;
@@ -704,6 +711,17 @@ var Image = /** @class */ (function (_super) {
                 if (!url.valid)
                     throw new SyntaxError("Invalid <url> '" + node.value + "'");
                 this.value = url.toResult();
+                this.valid = true;
+                return false;
+            }
+            else if (node.value === 'image-set' || node.value === '-webkit-image-set') {
+                if (this.value)
+                    throw new SyntaxError("Excessive value '" + node.value + "'");
+                var imageSet = new _ImageSet__WEBPACK_IMPORTED_MODULE_2__["default"]();
+                imageSet.analyze(stem);
+                if (!imageSet.valid)
+                    throw new SyntaxError("Invalid <image-set> '" + node.value + "'");
+                this.value = imageSet.toResult();
                 this.valid = true;
                 return false;
             } // else
@@ -909,7 +927,113 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__7__;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _Number__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+/* harmony import */ var _URL__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+var ImageSet = /** @class */ (function (_super) {
+    __extends(ImageSet, _super);
+    function ImageSet(value) {
+        var _this = _super.call(this) || this;
+        _this._type = 'image-set';
+        _this._parseDepth = 4 /* dataType */;
+        _this.init();
+        var args = arguments;
+        _this.tryCatch(function () {
+            if (args.length === 0)
+                return;
+            else if (args.length === 1)
+                _this.parse(value);
+            else
+                throw new TypeError('Wrong type or excessive arguments');
+        });
+        return _this;
+    }
+    ImageSet.prototype.init = function () {
+        _super.prototype.init.call(this);
+        this.prefix = '';
+        this.resolutions = {};
+    };
+    ImageSet.prototype.analyzeInLoop = function (node) {
+        var _this = this;
+        if (node.type === "space" /* space */ || node.type === "comment" /* comment */)
+            return true;
+        else if (node.type === "function" /* function */) {
+            if (node.unclosed)
+                throw new SyntaxError("Unclosed function '" + node.value + "'");
+            if (node.value === 'image-set' || node.value === '-webkit-image-set') {
+                if (node.value === '-webkit-image-set')
+                    this.prefix = '-webkit-';
+                var subNodes = node.nodes;
+                var currentURL_1;
+                subNodes.forEach(function (subNode) {
+                    if (subNode.type === "space" /* space */ || node.type === "comment" /* comment */)
+                        return true;
+                    else if (subNode.type === "div" /* div */) {
+                        if (subNode.value === ',')
+                            currentURL_1 = undefined;
+                        else
+                            throw new SyntaxError("Unknown divider '" + subNode.value + "'");
+                    }
+                    else if (subNode.type === "function" /* function */) {
+                        if (subNode.value === 'url') {
+                            var url = new _URL__WEBPACK_IMPORTED_MODULE_1__["default"]();
+                            url.analyze(new _Fruit__WEBPACK_IMPORTED_MODULE_0__["Stem"]([subNode]));
+                            if (!url.valid)
+                                throw new SyntaxError("Invalid <url> '" + node.value + "'");
+                            currentURL_1 = url.toResult();
+                        }
+                        else
+                            throw new SyntaxError("Unknown function '" + subNode.value + "'");
+                    }
+                    else if (subNode.type === "string" /* string */) {
+                        currentURL_1 = _URL__WEBPACK_IMPORTED_MODULE_1__["default"].parse("url(" + subNode.quote + subNode.value + subNode.quote + ")");
+                    }
+                    else if (subNode.type === "word" /* word */) {
+                        // @TODO: if (xxx) Validate resolution
+                        _this.resolutions[subNode.value] = currentURL_1;
+                    }
+                    else
+                        throw new SyntaxError("Unknown node type '" + subNode.value + "'");
+                });
+                if (Object.keys(this.resolutions).length)
+                    return this.valid = true;
+                else
+                    return undefined;
+            }
+        }
+    };
+    ImageSet.prototype.toString = function () {
+        var _this = this;
+        return this.prefix + 'image-set(' + Object.keys(this.resolutions).map(function (resolution) {
+            return _this.resolutions[resolution].toString() + ' ' + resolution;
+        }).join(', ') + ')';
+    };
+    return ImageSet;
+}(_Fruit__WEBPACK_IMPORTED_MODULE_0__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (ImageSet);
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _Number__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -967,21 +1091,18 @@ var Length = /** @class */ (function (_super) {
         this.unit = undefined;
     };
     Length.prototype.parse = function (value) {
+        var _this = this;
         value = value.trim();
-        try {
+        this.tryCatch(function () {
             var found = partialRE.exec(value);
             if (!found)
                 throw new SyntaxError("Invalid length '" + value + "'");
             if (+found[1] !== 0 && !found[2])
                 throw new SyntaxError('There must be a unit after the non-zero number');
-            this.number = +found[1];
-            this.unit = found[2] || '';
-            this.valid = true;
-        }
-        catch (e) {
-            if (this.options.throwErrors)
-                throw e;
-        }
+            _this.number = +found[1];
+            _this.unit = found[2] || '';
+            _this.valid = true;
+        });
         return this.toResult();
     };
     Length.prototype.toString = function (complete) {
@@ -1002,7 +1123,7 @@ var Length = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1013,13 +1134,13 @@ var numberRE = /^[+-]?(?:\.?\d+|\d+\.\d+)(?:e[+-]?\d+)?$/i;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _Number__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+/* harmony import */ var _Number__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -1063,20 +1184,17 @@ var Percentage = /** @class */ (function (_super) {
         this.number = undefined;
     };
     Percentage.prototype.parse = function (value) {
+        var _this = this;
         value = value.trim();
-        try {
+        this.tryCatch(function () {
             var found = partialRE.exec(value);
             if (!found)
                 throw new SyntaxError("Invalid percentage format of '" + value + "'");
             // if (+found[1] !== 0 && !found[2])
             //     throw new SyntaxError('"%" must be after the non-zero number');
-            this.number = +found[1];
-            this.valid = true;
-        }
-        catch (e) {
-            if (this.options.throwErrors)
-                throw e;
-        }
+            _this.number = +found[1];
+            _this.valid = true;
+        });
         return this.toResult();
     };
     Percentage.prototype.toString = function (complete) {
@@ -1097,7 +1215,7 @@ var Percentage = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1107,9 +1225,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var _dataTypes_Color__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 /* harmony import */ var _dataTypes_Image__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
-/* harmony import */ var _BackgroundPosition__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(12);
-/* harmony import */ var _BackgroundRepeat__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(13);
-/* harmony import */ var _BackgroundSize__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(14);
+/* harmony import */ var _BackgroundPosition__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13);
+/* harmony import */ var _BackgroundRepeat__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(14);
+/* harmony import */ var _BackgroundSize__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(15);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -1342,15 +1460,15 @@ var Background = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BackgroundPositionKeyword", function() { return BackgroundPositionKeyword; });
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
-/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
+/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(11);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -1686,7 +1804,7 @@ var BackgroundPosition = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1805,14 +1923,14 @@ var BackgroundRepeat = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
-/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
+/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(11);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -1922,14 +2040,14 @@ var BackgroundSize = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
-/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
+/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(11);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -2017,14 +2135,14 @@ var Margin = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
-/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
+/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
+/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(11);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
