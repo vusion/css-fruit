@@ -28,8 +28,11 @@ export const enum ValueNodeType {
 export class Stem {
     nodes: Array<ValueNode>;
     pos: number;
-    constructor(value: string) {
-        this.nodes = new ValueParser(value).nodes;
+    constructor(value: string | Array<ValueNode>) {
+        if (Array.isArray(value))
+            this.nodes = value;
+        else
+            this.nodes = new ValueParser(value).nodes;
         this.pos = 0;
     }
 
