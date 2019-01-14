@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType, ParseDeepLevel } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, ParsedDepth } from '../Fruit';
 import { parseQuery, stringifyQuery, Query } from '../utils';
 
 // @TODO:
@@ -15,13 +15,30 @@ import { parseQuery, stringifyQuery, Query } from '../utils';
 export const urlRE = /^(.*?)(\?.*?)?(#.*?)?$/i;
 
 export default class URL extends Fruit {
-    protected _type: string = 'url';
-    protected _parseDeepLevelBoundary: ParseDeepLevel = ParseDeepLevel.dataTypes;
     // quote: string;
     url: string;
     path: string;
     query: Query;
     hash: string;
+
+    constructor();
+    constructor(value: string);
+    constructor(value?: string) {
+        super();
+        this._type = 'url';
+        this._parseDepth = ParsedDepth.dataType;
+        this.init();
+
+        const args = arguments;
+        this.tryCatch(() => {
+            if (args.length === 0)
+                return;
+            else if (args.length === 1)
+                this.parse(value);
+            else
+                throw new TypeError('Wrong type or excessive arguments');
+        })
+    }
 
     protected init() {
         super.init();

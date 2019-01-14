@@ -1,17 +1,32 @@
-import Fruit, { ValueNode, ValueNodeType, ParseDeepLevel, Stem } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, ParsedDepth, Stem } from '../Fruit';
 import URL from './URL';
 
 export default class ImageSet extends Fruit {
-    protected _type: string = 'image';
-    protected _parseDeepLevelBoundary: ParseDeepLevel = ParseDeepLevel.dataTypes;
-    prefix: string = '';
+    prefix: string;
     resolutions: { [prop: string]: URL | string };
 
-    // constructor();
-    // constructor
+    constructor();
+    constructor(value: string);
+    constructor(value?: string) {
+        super();
+        this._type = 'image-set';
+        this._parseDepth = ParsedDepth.dataType;
+        this.init();
+
+        const args = arguments;
+        this.tryCatch(() => {
+            if (args.length === 0)
+                return;
+            else if (args.length === 1)
+                this.parse(value);
+            else
+                throw new TypeError('Wrong type or excessive arguments');
+        })
+    }
 
     protected init() {
         super.init();
+        this.prefix = '';
         this.resolutions = {};
     }
 

@@ -195,7 +195,10 @@ __webpack_require__.r(__webpack_exports__);
 var ValueParser = __webpack_require__(2);
 var Stem = /** @class */ (function () {
     function Stem(value) {
-        this.nodes = new ValueParser(value).nodes;
+        if (Array.isArray(value))
+            this.nodes = value;
+        else
+            this.nodes = new ValueParser(value).nodes;
         this.pos = 0;
     }
     Stem.prototype.head = function () {
@@ -216,7 +219,7 @@ var Fruit = /** @class */ (function () {
         }
         this._type = 'fruit';
         this._inherited = false;
-        this._parseDeepLevelBoundary = 3 /* virtualLonghand */;
+        this._parseDepth = 3 /* virtualLonghand */;
         this.valid = false;
         if (args.length === 0)
             return;
@@ -225,37 +228,42 @@ var Fruit = /** @class */ (function () {
         else
             this.parse(args.join(' '));
     }
-    Fruit.prototype.init = function () {
-        this.valid = false;
-    };
-    Fruit.prototype.parse = function (value) {
-        this.raw = value;
-        value = value.trim();
-        var stem = new Stem(value);
+    Fruit.prototype.tryCatch = function (func) {
         try {
-            this.analyze(stem);
-            if (stem.head()) {
-                this.valid = false;
-                throw SyntaxError('Nodes of value cannot be fully analyzed: ' + value);
-            }
+            func();
         }
         catch (e) {
             if (this.options.throwErrors)
                 throw e;
         }
+    };
+    Fruit.prototype.init = function () {
+        this.valid = false;
+    };
+    Fruit.prototype.parse = function (value) {
+        var _this = this;
+        this.raw = value;
+        value = value.trim();
+        var stem = new Stem(value);
+        this.tryCatch(function () {
+            _this.analyze(stem);
+            if (stem.head()) {
+                _this.valid = false;
+                throw SyntaxError('Nodes of value cannot be fully analyzed: ' + value);
+            }
+        });
         return this.toResult();
     };
     Fruit.prototype.toResult = function () {
         if (!this.valid)
             return undefined;
-        if (this.options.parseDeepLevel >= this._parseDeepLevelBoundary || this.options.forceParsing[this._type])
+        if (this.options.depthParseTo > this._parseDepth || this.options.forceParsing[this._type])
             return this;
         else
             return this.toString();
     };
     Fruit.prototype.analyze = function (stem) {
         var node;
-        this.init();
         while (node = stem.head()) {
             var control = void 0;
             try {
@@ -328,7 +336,7 @@ var Fruit = /** @class */ (function () {
 /* harmony default export */ __webpack_exports__["default"] = (Fruit);
 Fruit.prototype.options = {
     irrelevantProperty: "ignore" /* ignore */,
-    parseDeepLevel: 3 /* virtualLonghand */,
+    depthParseTo: 4 /* dataType */,
     forceParsing: {},
     throwErrors: false,
 };
@@ -376,7 +384,8 @@ var Color = /** @class */ (function (_super) {
         if (a === void 0) { a = 1; }
         var _this = _super.call(this) || this;
         _this._type = 'color';
-        _this._parseDeepLevelBoundary = 4 /* dataTypes */;
+        _this._parseDepth = 4 /* dataType */;
+        _this.init();
         _this.r = r;
         _this.g = g;
         _this.b = b;
@@ -650,10 +659,12 @@ var Image = /** @class */ (function (_super) {
     function Image(value) {
         var _this = _super.call(this) || this;
         _this._type = 'image';
-        _this._parseDeepLevelBoundary = 4 /* dataTypes */;
-        try {
-            if (arguments.length === 0)
-                return _this;
+        _this._parseDepth = 4 /* dataType */;
+        _this.init();
+        var args = arguments;
+        _this.tryCatch(function () {
+            if (args.length === 0)
+                return;
             else if (typeof value === 'string')
                 _this.parse(value);
             else if (value instanceof _URL__WEBPACK_IMPORTED_MODULE_1__["default"]) {
@@ -661,11 +672,9 @@ var Image = /** @class */ (function (_super) {
                 _this.value = value.toResult();
                 _this.valid = value.valid;
             }
-        }
-        catch (e) {
-            if (_this.options.throwErrors)
-                throw e;
-        }
+            else
+                throw new TypeError('Wrong type or excessive arguments');
+        });
         return _this;
     }
     Image.prototype.init = function () {
@@ -749,10 +758,20 @@ var __extends = (undefined && undefined.__extends) || (function () {
 var urlRE = /^(.*?)(\?.*?)?(#.*?)?$/i;
 var URL = /** @class */ (function (_super) {
     __extends(URL, _super);
-    function URL() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
+    function URL(value) {
+        var _this = _super.call(this) || this;
         _this._type = 'url';
-        _this._parseDeepLevelBoundary = 4 /* dataTypes */;
+        _this._parseDepth = 4 /* dataType */;
+        _this.init();
+        var args = arguments;
+        _this.tryCatch(function () {
+            if (args.length === 0)
+                return;
+            else if (args.length === 1)
+                _this.parse(value);
+            else
+                throw new TypeError('Wrong type or excessive arguments');
+        });
         return _this;
     }
     URL.prototype.init = function () {
@@ -915,11 +934,13 @@ var Length = /** @class */ (function (_super) {
     function Length(value, unit) {
         var _this = _super.call(this) || this;
         _this._type = 'length';
-        _this._parseDeepLevelBoundary = 4 /* dataTypes */;
-        try {
-            if (arguments.length === 0)
-                return _this;
-            else if (typeof value === 'string' && arguments.length === 1)
+        _this._parseDepth = 4 /* dataType */;
+        _this.init();
+        var args = arguments;
+        _this.tryCatch(function () {
+            if (args.length === 0)
+                return;
+            else if (typeof value === 'string' && args.length === 1)
                 _this.parse(value);
             else if (typeof value === 'number') {
                 if (!unit && value === 0) {
@@ -936,12 +957,8 @@ var Length = /** @class */ (function (_super) {
                     throw new SyntaxError("Invalid unit '" + unit + "'");
             }
             else
-                throw new TypeError('Wrong constructor param type');
-        }
-        catch (e) {
-            if (_this.options.throwErrors)
-                throw e;
-        }
+                throw new TypeError('Wrong type or excessive arguments');
+        });
         return _this;
     }
     Length.prototype.init = function () {
@@ -951,7 +968,6 @@ var Length = /** @class */ (function (_super) {
     };
     Length.prototype.parse = function (value) {
         value = value.trim();
-        this.init();
         try {
             var found = partialRE.exec(value);
             if (!found)
@@ -1025,10 +1041,12 @@ var Percentage = /** @class */ (function (_super) {
     function Percentage(value) {
         var _this = _super.call(this) || this;
         _this._type = 'percentage';
-        _this._parseDeepLevelBoundary = 4 /* dataTypes */;
-        try {
-            if (arguments.length === 0)
-                return _this;
+        _this._parseDepth = 4 /* dataType */;
+        _this.init();
+        var args = arguments;
+        _this.tryCatch(function () {
+            if (args.length === 0)
+                return;
             else if (typeof value === 'string')
                 _this.parse(value);
             else if (typeof value === 'number') {
@@ -1036,12 +1054,8 @@ var Percentage = /** @class */ (function (_super) {
                 _this.valid = true;
             }
             else
-                throw new TypeError('Wrong constructor param type');
-        }
-        catch (e) {
-            if (_this.options.throwErrors)
-                throw e;
-        }
+                throw new TypeError('Wrong type or excessive arguments');
+        });
         return _this;
     }
     Percentage.prototype.init = function () {
@@ -1050,7 +1064,6 @@ var Percentage = /** @class */ (function (_super) {
     };
     Percentage.prototype.parse = function (value) {
         value = value.trim();
-        this.init();
         try {
             var found = partialRE.exec(value);
             if (!found)
@@ -1135,17 +1148,22 @@ var SubProperty;
  */
 var Background = /** @class */ (function (_super) {
     __extends(Background, _super);
-    function Background() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
+    function Background(value) {
+        var _this = _super.call(this) || this;
         _this._type = 'background';
-        _this._inherited = false;
+        _this._parseDepth = 0 /* shorthand */;
+        _this.init();
+        var args = arguments;
+        _this.tryCatch(function () {
+            if (args.length === 0)
+                return;
+            else if (args.length === 1)
+                _this.parse(value);
+            else
+                throw new TypeError('Wrong type or excessive arguments');
+        });
         return _this;
     }
-    // constructor(value?: string) {
-    //     super();
-    //     // this._type = 'background';
-    //     this.parse(value);
-    // }
     Background.prototype.init = function () {
         _super.prototype.init.call(this);
         this._state = { boxCount: 0 };
@@ -1359,9 +1377,19 @@ var BackgroundPositionKeyword;
 })(BackgroundPositionKeyword || (BackgroundPositionKeyword = {}));
 var BackgroundPosition = /** @class */ (function (_super) {
     __extends(BackgroundPosition, _super);
-    function BackgroundPosition() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
+    function BackgroundPosition(value) {
+        var _this = _super.call(this) || this;
         _this._type = 'background-position';
+        _this.init();
+        var args = arguments;
+        _this.tryCatch(function () {
+            if (args.length === 0)
+                return;
+            else if (args.length === 1)
+                _this.parse(value);
+            else
+                throw new TypeError('Wrong type or excessive arguments');
+        });
         return _this;
     }
     BackgroundPosition.prototype.init = function () {
@@ -1692,23 +1720,21 @@ var BackgroundRepeat = /** @class */ (function (_super) {
     function BackgroundRepeat(x, y) {
         var _this = _super.call(this) || this;
         _this._type = 'background-repeat';
-        try {
-            if (arguments.length === 0)
-                return _this;
-            else if (arguments.length === 1 && typeof x === 'string')
+        _this.init();
+        var args = arguments;
+        _this.tryCatch(function () {
+            if (args.length === 0)
+                return;
+            else if (args.length === 1 && typeof x === 'string')
                 _this.parse(x);
-            else if (arguments.length === 2) {
+            else if (args.length === 2) {
                 _this.x = x;
                 _this.y = y;
                 _this.valid = true;
             }
             else
-                throw new TypeError("Excessive arguments " + arguments);
-        }
-        catch (e) {
-            if (_this.options.throwErrors)
-                throw e;
-        }
+                throw new TypeError('Wrong type or excessive arguments');
+        });
         return _this;
     }
     BackgroundRepeat.prototype.init = function () {
@@ -1808,23 +1834,22 @@ var BackgroundSize = /** @class */ (function (_super) {
     function BackgroundSize(width, height) {
         var _this = _super.call(this) || this;
         _this._type = 'background-size';
-        try {
-            if (arguments.length === 0)
-                return _this;
-            else if (arguments.length === 1 && typeof width === 'string')
+        _this._type = 'background-size';
+        _this.init();
+        var args = arguments;
+        _this.tryCatch(function () {
+            if (args.length === 0)
+                return;
+            else if (args.length === 1 && typeof width === 'string')
                 _this.parse(width);
-            else if (arguments.length === 2) {
+            else if (args.length === 2) {
                 _this.width = width;
                 _this.height = height;
                 _this.valid = true;
             }
             else
-                throw new TypeError("Excessive arguments " + arguments);
-        }
-        catch (e) {
-            if (_this.options.throwErrors)
-                throw e;
-        }
+                throw new TypeError('Wrong type or excessive arguments');
+        });
         return _this;
     }
     BackgroundSize.prototype.init = function () {
@@ -1924,9 +1949,20 @@ var __extends = (undefined && undefined.__extends) || (function () {
 ;
 var Margin = /** @class */ (function (_super) {
     __extends(Margin, _super);
-    function Margin() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
+    function Margin(value) {
+        var _this = _super.call(this) || this;
         _this._type = 'margin';
+        _this._parseDepth = 0 /* shorthand */;
+        _this.init();
+        var args = arguments;
+        _this.tryCatch(function () {
+            if (args.length === 0)
+                return;
+            else if (args.length === 1)
+                _this.parse(value);
+            else
+                throw new TypeError('Wrong type or excessive arguments');
+        });
         return _this;
     }
     Margin.prototype.init = function () {
@@ -2008,9 +2044,20 @@ var __extends = (undefined && undefined.__extends) || (function () {
 ;
 var Padding = /** @class */ (function (_super) {
     __extends(Padding, _super);
-    function Padding() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this._type = 'background-repeat';
+    function Padding(value) {
+        var _this = _super.call(this) || this;
+        _this._type = 'padding';
+        _this._parseDepth = 0 /* shorthand */;
+        _this.init();
+        var args = arguments;
+        _this.tryCatch(function () {
+            if (args.length === 0)
+                return;
+            else if (args.length === 1)
+                _this.parse(value);
+            else
+                throw new TypeError('Wrong type or excessive arguments');
+        });
         return _this;
     }
     Padding.prototype.init = function () {

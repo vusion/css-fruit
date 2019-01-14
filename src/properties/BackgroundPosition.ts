@@ -16,10 +16,27 @@ export interface BackgroundPositionValue {
 }
 
 export default class BackgroundPosition extends Fruit {
-    protected _type: string = 'background-position';
     protected _state: { count: number, lastType: string };
     x: BackgroundPositionValue;
     y: BackgroundPositionValue;
+
+    constructor();
+    constructor(value: string);
+    constructor(value?: string) {
+        super();
+        this._type = 'background-position';
+        this.init();
+
+        const args = arguments;
+        this.tryCatch(() => {
+            if (args.length === 0)
+                return;
+            else if (args.length === 1)
+                this.parse(value);
+            else
+                throw new TypeError('Wrong type or excessive arguments');
+        });
+    }
 
     protected init() {
         super.init();

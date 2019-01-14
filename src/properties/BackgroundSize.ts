@@ -10,24 +10,26 @@ export default class BackgroundSize extends Fruit {
 
     constructor();
     constructor(value: string);
-    constructor(width: Length | Percentage | string, height: Length | Percentage | string);
+    constructor(width: string, height: string);
+    constructor(width: Length | Percentage, height: Length | Percentage);
     constructor(width?: Length | Percentage | string, height?: Length | Percentage | string) {
         super();
-        try {
-            if (arguments.length === 0)
+        this._type = 'background-size';
+        this.init();
+
+        const args = arguments;
+        this.tryCatch(() => {
+            if (args.length === 0)
                 return;
-            else if (arguments.length === 1 && typeof width === 'string')
+            else if (args.length === 1 && typeof width === 'string')
                 this.parse(width);
-            else if (arguments.length === 2) {
+            else if (args.length === 2) {
                 this.width = width;
                 this.height = height;
                 this.valid = true;
             } else
-                throw new TypeError(`Excessive arguments ${arguments}`);
-        } catch (e) {
-            if (this.options.throwErrors)
-                throw e;
-        }
+            throw new TypeError('Wrong type or excessive arguments');
+        });
     }
 
     protected init() {

@@ -1,9 +1,7 @@
-import Fruit, { ValueNode, ValueNodeType, ParseDeepLevel, Stem } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, ParsedDepth, Stem } from '../Fruit';
 import URL from './URL';
 
 export default class Image extends Fruit {
-    protected _type: string = 'image';
-    protected _parseDeepLevelBoundary: ParseDeepLevel = ParseDeepLevel.dataTypes;
     protected _state: { count: number };
     value: URL | string;
 
@@ -11,8 +9,13 @@ export default class Image extends Fruit {
     constructor(value: string | URL);
     constructor(value?: string | URL) {
         super();
-        try {
-            if (arguments.length === 0)
+        this._type = 'image';
+        this._parseDepth = ParsedDepth.dataType;
+        this.init();
+
+        const args = arguments;
+        this.tryCatch(() => {
+            if (args.length === 0)
                 return;
             else if (typeof value === 'string')
                 this.parse(value);
@@ -20,11 +23,9 @@ export default class Image extends Fruit {
                 // @矛盾: 赋值给`this.value`时，应不应该检查 URL 本身的合法性？
                 this.value = value.toResult() as URL | string;
                 this.valid = value.valid;
-            }
-        } catch (e) {
-            if (this.options.throwErrors)
-                throw e;
-        }
+            } else
+                throw new TypeError('Wrong type or excessive arguments');
+        });
     }
 
     protected init() {

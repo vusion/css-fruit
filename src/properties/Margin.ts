@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, ParsedDepth } from '../Fruit';
 import Length from '../dataTypes/Length';
 import Percentage from '../dataTypes/Percentage';
 
@@ -10,13 +10,31 @@ const enum ValueType {
 };
 
 export default class Margin extends Fruit {
-    protected _type: string = 'margin';
     protected _state: { count: number };
 
     top: Length | Percentage | string;
     right: Length | Percentage | string;
     bottom: Length | Percentage | string;
     left: Length | Percentage | string;
+
+    constructor();
+    constructor(value: string);
+    constructor(value?: string) {
+        super();
+        this._type = 'margin';
+        this._parseDepth = ParsedDepth.shorthand;
+        this.init();
+
+        const args = arguments;
+        this.tryCatch(() => {
+            if (args.length === 0)
+                return;
+            else if (args.length === 1)
+                this.parse(value);
+            else
+                throw new TypeError('Wrong type or excessive arguments');
+        })
+    }
 
     protected init() {
         super.init();

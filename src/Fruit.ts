@@ -57,12 +57,26 @@ export const enum IrrelevantProperty {
     error = 'error',
 }
 
-export const enum ParseDeepLevel {
+
+/* @example:
+background === '20px top'; // Keep shorthand
+background.position === '20px top'; // Keep primaryLonghand | completeLonghand
+background.position.x === '20px'; // Keep virtualLonghand
+background.position.x.offset === '20px'; // Keep dataType
+background.position.x.offset.number = 20; // Keep dataTypeProperty
+
+border = '2px solid color'; // Keep shorthand
+border.left = '20px solid color'; // Keep primaryLonghand
+border.left.width = '20px'; // Keep completeLonghand | virtualLonghand | dataType
+border.left.width.number = 20; // Keep dataTypeProperty
+*/
+export const enum ParsedDepth {
     shorthand,
     primaryLonghand,
     completeLonghand,
     virtualLonghand,
-    dataTypes,
+    dataType,
+    dataTypeProperty,
 }
 
 export const enum FruitKind {
@@ -81,7 +95,7 @@ export const enum FruitKind {
 
 interface ConfigOptions {
     irrelevantProperty: IrrelevantProperty;
-    parseDeepLevel: ParseDeepLevel;
+    depthParseTo: ParsedDepth;
     forceParsing: { [prop: string]: boolean };
     throwErrors: boolean;
 }
@@ -90,7 +104,7 @@ export default class Fruit {
     options: ConfigOptions;
     protected _type: string = 'fruit';
     protected _inherited: boolean = false;
-    protected _parseDeepLevelBoundary = ParseDeepLevel.virtualLonghand;
+    protected _parseDepth = ParsedDepth.virtualLonghand;
     raw: string;
     valid: boolean = false;
 
@@ -105,6 +119,15 @@ export default class Fruit {
             this.parse(args.join(' '));
     }
 
+    protected tryCatch(func: Function): void {
+        try {
+            func();
+        } catch (e) {
+            if (this.options.throwErrors)
+                throw e;
+        }
+    }
+
     protected init(): void {
         this.valid = false;
     }
@@ -114,23 +137,20 @@ export default class Fruit {
         value = value.trim();
 
         const stem = new Stem(value);
-        try {
+        this.tryCatch(() => {
             this.analyze(stem);
             if (stem.head()) {
                 this.valid = false;
                 throw SyntaxError('Nodes of value cannot be fully analyzed: ' + value);
             }
-        } catch (e) {
-            if (this.options.throwErrors)
-                throw e;
-        }
+        });
         return this.toResult();
     }
 
     toResult(): Fruit | string {
         if (!this.valid)
             return undefined;
-        if (this.options.parseDeepLevel >= this._parseDeepLevelBoundary || this.options.forceParsing[this._type])
+        if (this.options.depthParseTo > this._parseDepth || this.options.forceParsing[this._type])
             return this;
         else
             return this.toString();
@@ -138,7 +158,6 @@ export default class Fruit {
 
     analyze(stem: Stem): void {
         let node;
-        this.init();
         while (node = stem.head()) {
             let control: boolean;
             try {
@@ -224,7 +243,7 @@ export default class Fruit {
 
 Fruit.prototype.options = {
     irrelevantProperty: IrrelevantProperty.ignore,
-    parseDeepLevel: ParseDeepLevel.virtualLonghand,
+    depthParseTo: ParsedDepth.dataType,
     forceParsing: {},
     throwErrors: false,
 };

@@ -10,7 +10,6 @@ export enum BackgroundRepeatKeyword {
 const partialRE = /^(?:repeat-x|repeat-y|repeat|space|round|no-repeat)$/;
 
 export default class BackgroundRepeat extends Fruit {
-    protected _type: string = 'background-repeat';
     protected _state: { count: number };
     x: BackgroundRepeatKeyword;
     y: BackgroundRepeatKeyword;
@@ -20,21 +19,22 @@ export default class BackgroundRepeat extends Fruit {
     constructor(x: BackgroundRepeatKeyword, y: BackgroundRepeatKeyword);
     constructor(x?: BackgroundRepeatKeyword | string, y?: BackgroundRepeatKeyword) {
         super();
-        try {
-            if (arguments.length === 0)
+        this._type = 'background-repeat';
+        this.init();
+
+        const args = arguments;
+        this.tryCatch(() => {
+            if (args.length === 0)
                 return;
-            else if (arguments.length === 1 && typeof x === 'string')
+            else if (args.length === 1 && typeof x === 'string')
                 this.parse(x);
-            else if (arguments.length === 2) {
+            else if (args.length === 2) {
                 this.x = x as BackgroundRepeatKeyword;
                 this.y = y;
                 this.valid = true;
             } else
-                throw new TypeError(`Excessive arguments ${arguments}`);
-        } catch (e) {
-            if (this.options.throwErrors)
-                throw e;
-        }
+                throw new TypeError('Wrong type or excessive arguments');
+        })
     }
 
     protected init() {

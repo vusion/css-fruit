@@ -1,19 +1,22 @@
-import Fruit, { ValueNode, ValueNodeType, ParseDeepLevel } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, ParsedDepth } from '../Fruit';
 import { numberRE } from './Number';
 
 const partialRE = new RegExp(`^(${String(numberRE).slice(2, -3)})%$`, 'i');
 
 export default class Percentage extends Fruit {
-    protected _type: string = 'percentage';
-    protected _parseDeepLevelBoundary = ParseDeepLevel.dataTypes;
     number: number;
 
     constructor();
     constructor(value: string | number);
     constructor(value?: string | number) {
         super();
-        try {
-            if (arguments.length === 0)
+        this._type = 'percentage';
+        this._parseDepth = ParsedDepth.dataType;
+        this.init();
+
+        const args = arguments;
+        this.tryCatch(() => {
+            if (args.length === 0)
                 return;
             else if (typeof value === 'string')
                 this.parse(value);
@@ -21,11 +24,8 @@ export default class Percentage extends Fruit {
                 this.number = value;
                 this.valid = true;
             } else
-                throw new TypeError('Wrong constructor param type');
-        } catch (e) {
-            if (this.options.throwErrors)
-                throw e;
-        }
+                throw new TypeError('Wrong type or excessive arguments');
+        });
     }
 
     init() {
@@ -35,7 +35,6 @@ export default class Percentage extends Fruit {
 
     parse(value: string): Fruit | string {
         value = value.trim();
-        this.init();
 
         try {
             const found = partialRE.exec(value);

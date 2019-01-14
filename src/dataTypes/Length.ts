@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType, ParseDeepLevel } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, ParsedDepth } from '../Fruit';
 import { numberRE } from './Number';
 
 const unitRE = /^ch|em|ex|rem|vh|vw|vmin|vmax|px|cm|mm|in|pc|pt$/i;
@@ -8,8 +8,6 @@ const partialRE = new RegExp(`^(${String(numberRE).slice(2, -3)})(ch|em|ex|rem|v
 // const partialRE = new RegExp(`^(${String(numberRE).slice(2, -3)})(${String(unitRE).slice(2, -3)})?$`, 'i');
 
 export default class Length extends Fruit {
-    protected _type: string = 'length';
-    protected _parseDeepLevelBoundary = ParseDeepLevel.dataTypes;
     number: number;
     unit: string;
 
@@ -18,10 +16,15 @@ export default class Length extends Fruit {
     constructor(number: number, unit: string);
     constructor(value?: string | number, unit?: string) {
         super();
-        try {
-            if (arguments.length === 0)
+        this._type = 'length';
+        this._parseDepth = ParsedDepth.dataType;
+        this.init();
+
+        const args = arguments;
+        this.tryCatch(() => {
+            if (args.length === 0)
                 return;
-            else if (typeof value === 'string' && arguments.length === 1)
+            else if (typeof value === 'string' && args.length === 1)
                 this.parse(value);
             else if (typeof value === 'number') {
                 if (!unit && value === 0) {
@@ -35,11 +38,8 @@ export default class Length extends Fruit {
                 } else
                     throw new SyntaxError(`Invalid unit '${unit}'`);
             } else
-                throw new TypeError('Wrong constructor param type');
-        } catch (e) {
-            if (this.options.throwErrors)
-                throw e;
-        }
+                throw new TypeError('Wrong type or excessive arguments');
+        });
     }
 
     init() {
@@ -50,7 +50,6 @@ export default class Length extends Fruit {
 
     parse(value: string): Fruit | string {
         value = value.trim();
-        this.init();
 
         try {
             const found = partialRE.exec(value);

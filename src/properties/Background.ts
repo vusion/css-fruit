@@ -1,4 +1,4 @@
-import Fruit, { ValueNode, ValueNodeType, Stem } from '../Fruit';
+import Fruit, { ValueNode, ValueNodeType, Stem, ParsedDepth } from '../Fruit';
 import Color from '../dataTypes/Color';
 import Image from '../dataTypes/Image';
 import BackgroundPosition from './BackgroundPosition';
@@ -23,8 +23,6 @@ enum SubProperty {
  * Unsupport two backgrounds
  */
 export default class Background extends Fruit {
-    protected _type: string = 'background';
-    protected _inherited: boolean = false;
     protected _state: { boxCount: number };
     attachment: string;
     clip: string;
@@ -35,11 +33,24 @@ export default class Background extends Fruit {
     repeat: BackgroundRepeat | string;
     size: BackgroundSize | string;
 
-    // constructor(value?: string) {
-    //     super();
-    //     // this._type = 'background';
-    //     this.parse(value);
-    // }
+    constructor();
+    constructor(value: string);
+    constructor(value?: string) {
+        super();
+        this._type = 'background';
+        this._parseDepth = ParsedDepth.shorthand;
+        this.init();
+
+        const args = arguments;
+        this.tryCatch(() => {
+            if (args.length === 0)
+                return;
+            else if (args.length === 1)
+                this.parse(value);
+            else
+                throw new TypeError('Wrong type or excessive arguments');
+        })
+    }
 
     protected init() {
         super.init();
