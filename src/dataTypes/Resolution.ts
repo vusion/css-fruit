@@ -79,9 +79,9 @@ export default class Resolution extends Fruit {
         if (this.unit === 'dppx' || this.unit === 'x')
             return this.number + unit;
         else if (this.unit === 'dpi')
-            return (this.number / 96) + unit;
+            return +(this.number / 96).toFixed(3) + unit;
         else if (this.unit === 'dpcm')
-            return (this.number * 2.54 / 96) + unit;
+            return +(this.number * 2.54 / 96).toFixed(3) + unit;
     }
 
     toDpi() {
@@ -90,11 +90,11 @@ export default class Resolution extends Fruit {
 
         const unit = 'dpi';
         if (this.unit === 'dppx' || this.unit === 'x')
-            return (this.number * 96) + unit;
+            return +(this.number * 96).toFixed(3) + unit;
         else if (this.unit === 'dpi')
             return this.number + unit;
         else if (this.unit === 'dpcm')
-            return (this.number * 2.54) + unit;
+            return +(this.number * 2.54).toFixed(3) + unit;
     }
 
     toDpcm() {
@@ -103,9 +103,9 @@ export default class Resolution extends Fruit {
 
         const unit = 'dpcm';
         if (this.unit === 'dppx' || this.unit === 'x')
-            return (this.number * 96 / 2.54) + unit;
+            return +(this.number * 96 / 2.54).toFixed(3) + unit;
         else if (this.unit === 'dpi')
-            return (this.number / 2.54) + unit;
+            return +(this.number / 2.54).toFixed(3) + unit;
         else if (this.unit === 'dpcm')
             return this.number + unit;
     }
