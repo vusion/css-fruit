@@ -3,9 +3,7 @@ import { numberRE } from './Number';
 
 const unitRE = /^ch|em|ex|rem|vh|vw|vmin|vmax|px|cm|mm|in|pc|pt$/i;
 const experimentalUnitRE = /^cap|ch|em|ex|ic|lh|rem|rlh|vh|vw|vi|vb|vmin|vmax|px|cm|mm|Q|in|pc|pt$/i;
-const partialRE = new RegExp(`^(${String(numberRE).slice(2, -3)})(ch|em|ex|rem|vh|vw|vmin|vmax|px|cm|mm|in|pc|pt)?$`, 'i');
-
-// const partialRE = new RegExp(`^(${String(numberRE).slice(2, -3)})(${String(unitRE).slice(2, -3)})?$`, 'i');
+const partialRE = new RegExp(`^(${String(numberRE).slice(2, -3)})(${String(unitRE).slice(2, -3)})?$`, 'i');
 
 export default class Length extends Fruit {
     number: number;

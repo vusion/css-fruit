@@ -1,9 +1,10 @@
 import Fruit, { ValueNode, ValueNodeType, ParsedDepth, Stem } from '../Fruit';
 import URL from './URL';
+import Resolution from './Resolution';
 
 export default class ImageSet extends Fruit {
     prefix: string;
-    resolutions: { [prop: string]: URL | string };
+    values: { [prop: string]: URL | string };
 
     constructor();
     constructor(value: string);
@@ -27,7 +28,7 @@ export default class ImageSet extends Fruit {
     protected init() {
         super.init();
         this.prefix = '';
-        this.resolutions = {};
+        this.values = {};
     }
 
     protected analyzeInLoop(node: ValueNode): boolean {
@@ -62,13 +63,16 @@ export default class ImageSet extends Fruit {
                     } else if (subNode.type === ValueNodeType.string) {
                         currentURL = URL.parse(`url(${subNode.quote}${subNode.value}${subNode.quote})`) as URL | string;
                     } else if (subNode.type === ValueNodeType.word) {
-                        // @TODO: if (xxx) Validate resolution
-                        this.resolutions[subNode.value] = currentURL;
+                        const resolution = new Resolution(subNode.value);
+                        if (!resolution.valid)
+                            throw new TypeError(`Invalid <resolution> '${subNode.value}'`);
+                        // Overwrite if same resolution
+                        this.values[resolution.toDppx()] = currentURL;
                     } else
                         throw new SyntaxError(`Unknown node type '${subNode.value}'`);
                 });
 
-                if (Object.keys(this.resolutions).length)
+                if (Object.keys(this.values).length)
                     return this.valid = true;
                 else
                     return undefined;
@@ -77,8 +81,8 @@ export default class ImageSet extends Fruit {
     }
 
     toString(): string {
-        return this.prefix + 'image-set(' + Object.keys(this.resolutions).map((resolution) => {
-            return this.resolutions[resolution].toString() + ' ' + resolution;
+        return this.prefix + 'image-set(' + Object.keys(this.values).map((resolution) => {
+            return this.values[resolution].toString() + ' ' + resolution;
         }).join(', ') + ')';
     }
 }
