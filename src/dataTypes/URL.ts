@@ -72,10 +72,12 @@ export default class URL extends Fruit {
                 } // else valid
                 this.url = url;
                 const found = urlRE.exec(url);
-                this.path = found[1] ? decodeURIComponent(found[1]) : '';
+                this.path = found[1] || '';
+                // this.path = found[1] ? decodeURIComponent(found[1]) : '';
                 if (found[2])
                     this.query = parseQuery(found[2]);
-                this.hash = found[3] ? decodeURIComponent(found[3].slice(1)) : '';
+                this.hash = found[3] ? found[3].slice(1) : '';
+                // this.hash = found[3] ? decodeURIComponent(found[3].slice(1)) : '';
                 return this.valid = true;
             }
         }
@@ -87,6 +89,7 @@ export default class URL extends Fruit {
 
         const quote = "'";
         const queryString = this.query ? stringifyQuery(this.query) : '';
-        return `url(${quote}${encodeURIComponent(this.path)}${queryString}${this.hash ? '#' + encodeURIComponent(this.hash) : ''}${quote})`;
+        // return `url(${quote}${encodeURIComponent(this.path)}${queryString}${this.hash ? '#' + encodeURIComponent(this.hash) : ''}${quote})`;
+        return `url(${quote}${this.path}${queryString}${this.hash ? '#' + this.hash : ''}${quote})`;
     }
 }

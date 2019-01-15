@@ -822,10 +822,12 @@ var URL = /** @class */ (function (_super) {
                 } // else valid
                 this.url = url;
                 var found = urlRE.exec(url);
-                this.path = found[1] ? decodeURIComponent(found[1]) : '';
+                this.path = found[1] || '';
+                // this.path = found[1] ? decodeURIComponent(found[1]) : '';
                 if (found[2])
                     this.query = Object(_utils__WEBPACK_IMPORTED_MODULE_1__["parseQuery"])(found[2]);
-                this.hash = found[3] ? decodeURIComponent(found[3].slice(1)) : '';
+                this.hash = found[3] ? found[3].slice(1) : '';
+                // this.hash = found[3] ? decodeURIComponent(found[3].slice(1)) : '';
                 return this.valid = true;
             }
         }
@@ -835,7 +837,8 @@ var URL = /** @class */ (function (_super) {
             return _super.prototype.toString.call(this);
         var quote = "'";
         var queryString = this.query ? Object(_utils__WEBPACK_IMPORTED_MODULE_1__["stringifyQuery"])(this.query) : '';
-        return "url(" + quote + encodeURIComponent(this.path) + queryString + (this.hash ? '#' + encodeURIComponent(this.hash) : '') + quote + ")";
+        // return `url(${quote}${encodeURIComponent(this.path)}${queryString}${this.hash ? '#' + encodeURIComponent(this.hash) : ''}${quote})`;
+        return "url(" + quote + this.path + queryString + (this.hash ? '#' + this.hash : '') + quote + ")";
     };
     return URL;
 }(_Fruit__WEBPACK_IMPORTED_MODULE_0__["default"]));
@@ -903,13 +906,21 @@ function stringifyQuery(query) {
     return '?' + Object.keys(query).map(function (key) {
         var value = query[key];
         if (Array.isArray(value))
-            return value.map(function (subValue) { return encodeURIComponent(key) + "[]=" + encodeURIComponent(subValue); }).join('&');
+            return value.map(function (subValue) { return key + "[]=" + subValue; }).join('&');
         else if (value === true)
-            return "" + encodeURIComponent(key);
+            return "" + key;
         else if (value === false || value === null)
-            return encodeURIComponent(key) + "=" + value;
+            return key + "=" + value;
         else
-            return encodeURIComponent(key) + "=" + encodeURIComponent(query[key]);
+            return key + "=" + query[key];
+        // if (Array.isArray(value))
+        //     return value.map((subValue) => `${encodeURIComponent(key)}[]=${encodeURIComponent(subValue)}`).join('&');
+        // else if (value === true)
+        //     return `${encodeURIComponent(key)}`;
+        // else if (value === false || value === null)
+        //     return `${encodeURIComponent(key)}=${value}`;
+        // else
+        //     return `${encodeURIComponent(key)}=${encodeURIComponent(query[key] as string)}`;
     }).join('&');
 }
 
@@ -1362,7 +1373,7 @@ var Background = /** @class */ (function (_super) {
         else if (node.type === "function" /* function */) {
             if (node.unclosed)
                 throw new SyntaxError("Unclosed function '" + node.value + "'");
-            if (node.value === 'url') {
+            if (node.value === 'url' || node.value === 'image-set' || node.value === '-webkit-image-set') {
                 var image = new _dataTypes_Image__WEBPACK_IMPORTED_MODULE_2__["default"]();
                 image.analyze(stem);
                 if (!image.valid)

@@ -11,6 +11,15 @@ describe('Background', () => {
         expect(background.repeat.toString()).to.equal('no-repeat');
     });
 
+    it('#constructor(~image-set~)', () => {
+        const background = new Background(`red center top -webkit-image-set(url('./angry-birds.png') 1x, url('./angry-birds@2x.png') 2x) border-box no-repeat`);
+
+        expect(background.color.toString()).to.equal(`red`);
+        expect(background.image.toString()).to.equal(`-webkit-image-set(url('./angry-birds.png') 1x, url('./angry-birds@2x.png') 2x)`);
+        expect(background.position.toString()).to.equal('center top');
+        expect(background.repeat.toString()).to.equal('no-repeat');
+    });
+
     it('(value) -> valid', () => {
         expect(Background.validate('red url(abc.png) center top / auto 20px border-box no-repeat')).to.be.true;
         expect(Background.validate('red url(abc.png) padding-box 50% bottom / auto border-box space')).to.be.true;

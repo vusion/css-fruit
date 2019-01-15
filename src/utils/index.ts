@@ -63,12 +63,20 @@ export function stringifyQuery(query: Query): string {
         const value = query[key];
 
         if (Array.isArray(value))
-            return value.map((subValue) => `${encodeURIComponent(key)}[]=${encodeURIComponent(subValue)}`).join('&');
+        return value.map((subValue) => `${key}[]=${subValue}`).join('&');
         else if (value === true)
-            return `${encodeURIComponent(key)}`;
+            return `${key}`;
         else if (value === false || value === null)
-            return `${encodeURIComponent(key)}=${value}`;
+            return `${key}=${value}`;
         else
-            return `${encodeURIComponent(key)}=${encodeURIComponent(query[key] as string)}`;
+            return `${key}=${query[key] as string}`;
+        // if (Array.isArray(value))
+        //     return value.map((subValue) => `${encodeURIComponent(key)}[]=${encodeURIComponent(subValue)}`).join('&');
+        // else if (value === true)
+        //     return `${encodeURIComponent(key)}`;
+        // else if (value === false || value === null)
+        //     return `${encodeURIComponent(key)}=${value}`;
+        // else
+        //     return `${encodeURIComponent(key)}=${encodeURIComponent(query[key] as string)}`;
     }).join('&');
 }

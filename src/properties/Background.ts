@@ -132,7 +132,7 @@ export default class Background extends Fruit {
         } else if (node.type === ValueNodeType.function) {
             if (node.unclosed)
                 throw new SyntaxError(`Unclosed function '${node.value}'`);
-            if (node.value === 'url') {
+            if (node.value === 'url' || node.value === 'image-set' || node.value === '-webkit-image-set') {
                 const image = new Image();
                 image.analyze(stem);
                 if (!image.valid)
