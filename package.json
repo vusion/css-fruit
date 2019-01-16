@@ -1,7 +1,7 @@
 {
   "name": "css-fruit",
   "description": "A Parser and Analysis of CSS Declaration",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": "Rainfore <rainforest92@126.com>",
   "scripts": {
     "lint": "eslint ./src --fix",
@@ -11,7 +11,7 @@
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha --require ts-node/register test/unit.test.ts",
     "test:one": "TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\"}' mocha --require ts-node/register",
     "test:integration": "mocha test/integration/css-fruit.js",
-    "docs": "typedoc --out docs ./src"
+    "docs": "typedoc --out docs ./src --mode file --excludePrivate --excludeProtected --name 'CSS Fruit'"
   },
   "main": "./dist/css-fruit.js",
   "repository": "vusion/css-fruit",
