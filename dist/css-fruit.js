@@ -7,7 +7,7 @@
 		exports["cssFruit"] = factory(require("postcss-value-parser"), require("json5"));
 	else
 		root["cssFruit"] = factory(root["postcss-value-parser"], root["json5"]);
-})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__7__) {
+})(global, function(__WEBPACK_EXTERNAL_MODULE__2__, __WEBPACK_EXTERNAL_MODULE__8__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -104,37 +104,37 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _src_dataTypes_Color__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Color", function() { return _src_dataTypes_Color__WEBPACK_IMPORTED_MODULE_1__["default"]; });
 
-/* harmony import */ var _src_dataTypes_Image__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
+/* harmony import */ var _src_dataTypes_Image__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Image", function() { return _src_dataTypes_Image__WEBPACK_IMPORTED_MODULE_2__["default"]; });
 
-/* harmony import */ var _src_dataTypes_Length__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(11);
+/* harmony import */ var _src_dataTypes_Length__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(12);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Length", function() { return _src_dataTypes_Length__WEBPACK_IMPORTED_MODULE_3__["default"]; });
 
-/* harmony import */ var _src_dataTypes_Number__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(10);
+/* harmony import */ var _src_dataTypes_Number__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(11);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Number", function() { return _src_dataTypes_Number__WEBPACK_IMPORTED_MODULE_4__["default"]; });
 
-/* harmony import */ var _src_dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(12);
+/* harmony import */ var _src_dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(13);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Percentage", function() { return _src_dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_5__["default"]; });
 
-/* harmony import */ var _src_dataTypes_URL__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(5);
+/* harmony import */ var _src_dataTypes_URL__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(6);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "URL", function() { return _src_dataTypes_URL__WEBPACK_IMPORTED_MODULE_6__["default"]; });
 
-/* harmony import */ var _src_properties_Background__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(13);
+/* harmony import */ var _src_properties_Background__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(14);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Background", function() { return _src_properties_Background__WEBPACK_IMPORTED_MODULE_7__["default"]; });
 
-/* harmony import */ var _src_properties_BackgroundPosition__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(14);
+/* harmony import */ var _src_properties_BackgroundPosition__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(15);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BackgroundPosition", function() { return _src_properties_BackgroundPosition__WEBPACK_IMPORTED_MODULE_8__["default"]; });
 
-/* harmony import */ var _src_properties_BackgroundRepeat__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(15);
+/* harmony import */ var _src_properties_BackgroundRepeat__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(16);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BackgroundRepeat", function() { return _src_properties_BackgroundRepeat__WEBPACK_IMPORTED_MODULE_9__["default"]; });
 
-/* harmony import */ var _src_properties_BackgroundSize__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(16);
+/* harmony import */ var _src_properties_BackgroundSize__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(17);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BackgroundSize", function() { return _src_properties_BackgroundSize__WEBPACK_IMPORTED_MODULE_10__["default"]; });
 
-/* harmony import */ var _src_properties_Margin__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(17);
+/* harmony import */ var _src_properties_Margin__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(18);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Margin", function() { return _src_properties_Margin__WEBPACK_IMPORTED_MODULE_11__["default"]; });
 
-/* harmony import */ var _src_properties_Padding__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(18);
+/* harmony import */ var _src_properties_Padding__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(19);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Padding", function() { return _src_properties_Padding__WEBPACK_IMPORTED_MODULE_12__["default"]; });
 
 // import Parser from './src/Parser';
@@ -242,6 +242,7 @@ var Fruit = /** @class */ (function () {
     };
     Fruit.prototype.parse = function (value) {
         var _this = this;
+        this.valid = false;
         this.raw = value;
         value = value.trim();
         var stem = new Stem(value);
@@ -263,6 +264,7 @@ var Fruit = /** @class */ (function () {
             return this.toString();
     };
     Fruit.prototype.analyze = function (stem) {
+        this.valid = false;
         var node;
         while (node = stem.head()) {
             var control = void 0;
@@ -359,9 +361,9 @@ module.exports = __WEBPACK_EXTERNAL_MODULE__2__;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "namedColorRE", function() { return namedColorRE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hexColorRE", function() { return hexColorRE; });
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _NamedColor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -377,72 +379,316 @@ var __extends = (undefined && undefined.__extends) || (function () {
 })();
 
 var ValueParser = __webpack_require__(2);
-;
-var namedColorRE = /^(?:black|silver|gray|white|maroon|red|purple|fuchsia|green|lime|olive|yellow|navy|blue|teal|aqua|orange|aliceblue|antiquewhite|aquamarine|azure|beige|bisque|blanchedalmond|blueviolet|brown|burlywood|cadetblue|chartreuse|chocolate|coral|cornflowerblue|cornsilk|crimson|cyan|aqua|darkblue|darkcyan|darkgoldenrod|darkgray|darkgreen|darkgrey|darkkhaki|darkmagenta|darkolivegreen|darkorange|darkorchid|darkred|darksalmon|darkseagreen|darkslateblue|darkslategray|darkslategrey|darkturquoise|darkviolet|deeppink|deepskyblue|dimgray|dimgrey|dodgerblue|firebrick|floralwhite|forestgreen|gainsboro|ghostwhite|gold|goldenrod|greenyellow|grey|honeydew|hotpink|indianred|indigo|ivory|khaki|lavender|lavenderblush|lawngreen|lemonchiffon|lightblue|lightcoral|lightcyan|lightgoldenrodyellow|lightgray|lightgreen|lightgrey|lightpink|lightsalmon|lightseagreen|lightskyblue|lightslategray|lightslategrey|lightsteelblue|lightyellow|limegreen|linen|magenta|fuchsia|mediumaquamarine|mediumblue|mediumorchid|mediumpurple|mediumseagreen|mediumslateblue|mediumspringgreen|mediumturquoise|mediumvioletred|midnightblue|mintcream|mistyrose|moccasin|navajowhite|oldlace|olivedrab|orangered|orchid|palegoldenrod|palegreen|paleturquoise|palevioletred|papayawhip|peachpuff|peru|pink|plum|powderblue|rosybrown|royalblue|saddlebrown|salmon|sandybrown|seagreen|seashell|sienna|skyblue|slateblue|slategray|slategrey|snow|springgreen|steelblue|tan|thistle|tomato|turquoise|violet|wheat|whitesmoke|yellowgreen|rebeccapurple)$/i;
+
 var hexColorRE = /^#(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
+/* eslint-disable no-sequences, no-unused-expressions, prefer-const, new-cap */
+/**
+ * Converts an RGB color value to HSL. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes r, g, and b are contained in the set [0, 255] and
+ * returns h, s, and l in the set [0, 100].
+ *
+ * @param {number} r       The red color value
+ * @param {number} g       The green color value
+ * @param {number} b       The blue color value
+ * @return  Array           The HSL representation
+ */
+function RGB2HSL(r, g, b) {
+    r /= 255, g /= 255, b /= 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+    if (max === min) {
+        h = s = 0; // achromatic
+    }
+    else {
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+            case r:
+                h = (g - b) / d + (g < b ? 6 : 0);
+                break;
+            case g:
+                h = (b - r) / d + 2;
+                break;
+            case b:
+                h = (r - g) / d + 4;
+                break;
+        }
+        h /= 6;
+    }
+    return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+}
+/**
+   * Converts an HSL color value to RGB. Conversion formula
+   * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+   * Assumes h, s, and l are contained in the set [0, 100] and
+   * returns r, g, and b in the set [0, 255].
+   *
+   * @param {number} h       The hue
+   * @param {number} s       The saturation
+   * @param {number} l       The lightness
+   * @return  Array           The RGB representation
+   */
+function HSL2RGB(h, s, l) {
+    h /= 360, s /= 100, l /= 100;
+    var r, g, b;
+    function HUE2RGB(p, q, t) {
+        if (t < 0)
+            t += 1;
+        if (t > 1)
+            t -= 1;
+        if (t < 1 / 6)
+            return p + (q - p) * 6 * t;
+        if (t < 1 / 2)
+            return q;
+        if (t < 2 / 3)
+            return p + (q - p) * (2 / 3 - t) * 6;
+        return p;
+    }
+    if (s === 0) {
+        r = g = b = l; // achromatic
+    }
+    else {
+        var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        var p = 2 * l - q;
+        r = HUE2RGB(p, q, h + 1 / 3);
+        g = HUE2RGB(p, q, h);
+        b = HUE2RGB(p, q, h - 1 / 3);
+    }
+    return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) };
+}
+/**
+   * Converts an RGB color value to HSV. Conversion formula
+   * adapted from http://en.wikipedia.org/wiki/HSV_color_space.
+   * Assumes r, g, and b are contained in the set [0, 255] and
+   * returns h, s, and v in the set [0, 100].
+   *
+   * @param {number} r       The red color value
+   * @param {number} g       The green color value
+   * @param {number} b       The blue color value
+   * @return  Array           The HSV representation
+   */
+function RGB2HSV(r, g, b) {
+    r /= 255, g /= 255, b /= 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, v = max;
+    var d = max - min;
+    s = max === 0 ? 0 : d / max;
+    if (max === min) {
+        h = 0; // achromatic
+    }
+    else {
+        switch (max) {
+            case r:
+                h = (g - b) / d + (g < b ? 6 : 0);
+                break;
+            case g:
+                h = (b - r) / d + 2;
+                break;
+            case b:
+                h = (r - g) / d + 4;
+                break;
+        }
+        h /= 6;
+    }
+    return { h: Math.round(h * 360), s: Math.round(s * 100), v: Math.round(v * 100) };
+}
+/**
+   * Converts an HSV color value to RGB. Conversion formula
+   * adapted from http://en.wikipedia.org/wiki/HSV_color_space.
+   * Assumes h, s, and v are contained in the set [0, 100] and
+   * returns r, g, and b in the set [0, 255].
+   *
+   * @param {number} h       The hue
+   * @param {number} s       The saturation
+   * @param {number} v       The value
+   * @return  Array           The RGB representation
+   */
+function HSV2RGB(h, s, v) {
+    h /= 360, s /= 100, v /= 100;
+    var r, g, b;
+    var i = Math.floor(h * 6);
+    var f = h * 6 - i;
+    var p = v * (1 - s);
+    var q = v * (1 - f * s);
+    var t = v * (1 - (1 - f) * s);
+    switch (i % 6) {
+        case 0:
+            r = v, g = t, b = p;
+            break;
+        case 1:
+            r = q, g = v, b = p;
+            break;
+        case 2:
+            r = p, g = v, b = t;
+            break;
+        case 3:
+            r = p, g = q, b = v;
+            break;
+        case 4:
+            r = t, g = p, b = v;
+            break;
+        case 5:
+            r = v, g = p, b = q;
+            break;
+    }
+    return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) };
+}
 var Color = /** @class */ (function (_super) {
     __extends(Color, _super);
     function Color(r, g, b, a) {
-        if (r === void 0) { r = 0; }
-        if (g === void 0) { g = 0; }
-        if (b === void 0) { b = 0; }
-        if (a === void 0) { a = 1; }
         var _this = _super.call(this) || this;
+        _this.valid = false;
         _this._type = 'color';
         _this._parseDepth = 4 /* dataType */;
         _this.init();
-        _this.r = r;
-        _this.g = g;
-        _this.b = b;
-        _this.a = a;
-        // 将hsv也缓存下来好了，省事
-        /* eslint-disable new-cap */
-        Object.assign(_this, Color.RGB2HSV(_this.r, _this.g, _this.b));
+        var args = arguments;
+        _this.tryCatch(function () {
+            if (args.length === 0)
+                return;
+            else if (args.length === 1 && typeof r === 'string') {
+                _this.parse(r);
+            }
+            else if (args.length === 3) {
+                if (typeof r === 'number' && typeof g === 'number' && typeof b === 'number') {
+                    _this.r = r;
+                    _this.g = g;
+                    _this.b = b;
+                    _this.valid = true;
+                }
+                else
+                    throw new TypeError('Wrong type of arguments');
+            }
+            else if (args.length === 4) {
+                if (typeof r === 'number' && typeof g === 'number' && typeof b === 'number' && typeof a === 'number') {
+                    _this.r = r;
+                    _this.g = g;
+                    _this.b = b;
+                    _this.a = a;
+                    _this.valid = true;
+                }
+                else
+                    throw new TypeError('Wrong type of arguments');
+            }
+            else
+                throw new TypeError('Wrong type or excessive arguments');
+        });
         return _this;
     }
+    Object.defineProperty(Color.prototype, "r", {
+        // get valid() {
+        //     return this.valid;
+        // }
+        get: function () { return this._r; },
+        set: function (r) {
+            if (r < 0 || r > 255)
+                throw new RangeError('Red is a number between 0 and 255');
+            this._r = Math.round(r);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Color.prototype, "g", {
+        get: function () { return this._g; },
+        set: function (g) {
+            if (g < 0 || g > 255)
+                throw new RangeError('Green is a number between 0 and 255');
+            this._g = Math.round(g);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Color.prototype, "b", {
+        get: function () { return this._b; },
+        set: function (b) {
+            if (b < 0 || b > 255)
+                throw new RangeError('Blue is a number between 0 and 255');
+            this._b = Math.round(b);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Color.prototype, "a", {
+        get: function () { return this._a; },
+        set: function (a) {
+            if (a < 0 || a > 1)
+                throw new RangeError('Alpha is a number between 0 and 1');
+            this._a = a;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Color.prototype.init = function () {
         _super.prototype.init.call(this);
-        this.value = undefined;
-        this.r = 0;
-        this.g = 0;
-        this.b = 0;
-        this.a = 0;
-        this.h = 0;
-        this.s = 0;
-        this.v = 0;
+        this._value = undefined;
+        this._r = 0;
+        this._g = 0;
+        this._b = 0;
+        this._a = 1;
+        this.valid = true;
+        // @TODO
     };
     Color.prototype.analyzeInLoop = function (node, stem) {
         if (node.type === "space" /* space */ || node.type === "comment" /* comment */)
             return true;
         else if (node.type === "word" /* word */) {
             if (node.value === 'currentColor') {
-                if (this.value)
+                if (this._value)
                     throw new SyntaxError("Excessive value '" + node.value + "'");
-                this.value = 'currentColor';
+                this._value = 'currentColor';
                 return this.valid = true;
             }
-            else if (namedColorRE.test(node.value)) {
-                if (this.value)
+            else if (node.value === 'transparent') {
+                this._r = 0;
+                this._g = 0;
+                this._b = 0;
+                this._a = 0;
+                return this.valid = true;
+            }
+            else if (_NamedColor__WEBPACK_IMPORTED_MODULE_1__["default"][node.value]) {
+                if (this._value)
                     throw new SyntaxError("Excessive value '" + node.value + "'");
-                this.value = node.value;
-                // @TODO parse named value;
+                // this._value = node.value;
+                var hex = _NamedColor__WEBPACK_IMPORTED_MODULE_1__["default"][node.value];
+                var color = Color.fromHEX(hex);
+                this._r = color._r;
+                this._g = color._g;
+                this._b = color._b;
+                this._a = color._a;
                 return this.valid = true;
             }
             else if (hexColorRE.test(node.value)) {
-                if (this.value)
+                if (this._value)
                     throw new SyntaxError("Excessive value '" + node.value + "'");
-                this.value = node.value;
-                // @TODO parse named value;
+                // this._value = node.value;
+                this.setHEX(node.value);
                 return this.valid = true;
             }
         }
         else if (node.type === "function" /* function */) {
             if (node.unclosed)
                 throw new SyntaxError("Unclosed function '" + node.value + "'");
+            // if (node.value === 'rgb' || node.value === 'rgba') {
+            //     let count = 0;
+            //     let type = 'number';
+            //     node.nodes.forEach((subNode) => {
+            //         if (subNode.type === ValueNodeType.comment)
+            //             return;
+            //         else if (subNode.type === ValueNodeType.word) {
+            //             const percentage = new Percentage(subNode.value);
+            //             if (percentage.valid) {
+            //                 this.a = Math.floor(percentage.number * 2.55);
+            //             }
+            //             const number = +subNode.value;
+            //             if (number < 0 || number > )
+            //         } else
+            //             throw new SyntaxError(`Unexcepted type in ${node.value} function '${subNode.type}'`);
+            //     });
+            // } else
             if (node.value === 'rgb' || node.value === 'rgba' || node.value === 'hsl' || node.value === 'hsla') {
-                if (this.value)
+                if (this._value)
                     throw new SyntaxError("Excessive value '" + node.value + "'");
-                this.value = ValueParser.stringify(node);
+                this._value = ValueParser.stringify(node);
                 return this.valid = true;
             }
         }
@@ -450,186 +696,163 @@ var Color = /** @class */ (function (_super) {
     Color.prototype.toString = function () {
         if (!this.valid)
             return _super.prototype.toString.call(this);
-        return this.value;
+        if (this._value)
+            return this._value;
+        else if (this._a === 1)
+            return this.toHEX();
+        else
+            return this.toRGBA();
     };
-    Color.prototype.toTuple = function () {
-        return [this.r, this.g, this.b, this.a];
+    /**
+     * To a Tuple (Array)
+     * @param alpha - Show alpha
+     */
+    Color.prototype.toTuple = function (alpha) {
+        if (alpha)
+            return [this._r, this._g, this._b, this._a];
+        else
+            return [this._r, this._g, this._b];
     };
+    /**
+     * Set color values by Hexadecimal
+     * @param hex - Hexadecimal number
+     */
+    Color.prototype.setHEX = function (hex) {
+        hex = hex.slice(1);
+        if (hex.length === 6 || hex.length === 8) { }
+        else if (hex.length === 3)
+            hex = "" + hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+        else if (hex.length === 4)
+            hex = "" + hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
+        else
+            throw new SyntaxError("Unexpected length of hex number '" + hex + "'");
+        this.r = parseInt(hex.slice(0, 2), 16);
+        this.g = parseInt(hex.slice(2, 4), 16);
+        this.b = parseInt(hex.slice(4, 6), 16);
+        this.a = parseInt(hex.slice(6, 8) || 'ff', 16) / 255;
+    };
+    /**
+     * To a Hexadecimal string
+     * @param alpha - Show alpha
+     */
     Color.prototype.toHEX = function (alpha) {
-        var fix = function (num) { return (num.length === 1 ? '0' + num : num).toUpperCase(); };
-        return '#' + fix(this.r.toString(16)) + fix(this.g.toString(16)) + fix(this.b.toString(16));
+        var fix = function (num) { return num.length === 1 ? '0' + num : num; };
+        if (alpha)
+            return '#' + fix(this.r.toString(16)) + fix(this.g.toString(16)) + fix(this.b.toString(16)) + fix((this.a * 255).toString(16));
+        else
+            return '#' + fix(this.r.toString(16)) + fix(this.g.toString(16)) + fix(this.b.toString(16));
     };
+    /**
+     * Get RGB values of the color
+     */
     Color.prototype.getRGB = function () {
-        return { r: this.r, g: this.g, b: this.b };
+        return { r: this._r, g: this._g, b: this._b };
     };
+    /**
+     * Set color values by RGB representation
+     * @param r - Red, in the set [0, 255]
+     * @param g - Green, in the set [0, 255]
+     * @param b - Blue, in the set [0, 255]
+     */
     Color.prototype.setRGB = function (r, g, b) {
-        Object.assign(this, { r: r, g: g, b: b }, Color.RGB2HSV(r, g, b));
+        Object.assign(this, { r: r, g: g, b: b });
     };
-    Color.prototype.toRGB = function () {
-        return "rgb(" + this.r + ", " + this.g + ", " + this.b + ")";
+    /**
+     * To a RGB function string
+     * @param percentage - Represent in percentage or not
+     */
+    Color.prototype.toRGB = function (percentage) {
+        if (percentage)
+            return "rgb(" + Math.round(this._r / 255 * 100) + "%, " + Math.round(this._g / 255 * 100) + "%, " + Math.round(this._b / 255 * 100) + "%)";
+        else
+            return "rgb(" + this._r + ", " + this._g + ", " + this._b + ")";
     };
-    Color.prototype.toRGBA = function () {
-        return "rgba(" + this.r + ", " + this.g + ", " + this.b + ", " + this.a + ")";
+    /**
+     * To a RGBA function string
+     * @param percentage - Represent in percentage or not
+     */
+    Color.prototype.toRGBA = function (percentage) {
+        if (percentage)
+            return "rgba(" + Math.round(this._r / 255 * 100) + "%, " + Math.round(this._g / 255 * 100) + "%, " + Math.round(this._b / 255 * 100) + "%, " + Math.round(this._a * 100) + "%)";
+        else
+            return "rgba(" + this._r + ", " + this._g + ", " + this._b + ", " + this._a + ")";
     };
+    /**
+     * Get HSV values of the color
+     */
     Color.prototype.getHSV = function () {
-        /* eslint-disable new-cap */
-        return { h: this.h, s: this.s, v: this.v };
+        return RGB2HSV(this._r, this._g, this._b);
     };
-    // toHSV()
-    // CSS不支持，先不做了。其实就两句话的事
+    /**
+     * Set color values by HSV representation
+     * @param h - Hue, in the set [0, 360]
+     * @param s - Saturation, in the set [0, 100]
+     * @param v - Value, in the set [0, 100]
+     */
     Color.prototype.setHSV = function (h, s, v) {
-        Object.assign(this, { h: h, s: s, v: v }, Color.HSV2RGB(h, s, v));
+        Object.assign(this, { h: h, s: s, v: v }, HSV2RGB(h, s, v));
     };
+    // CSS不支持，先不做了。其实就两句话的事
+    // toHSV()
+    /**
+     * Get HSL values of the color
+     */
     Color.prototype.getHSL = function () {
-        /* eslint-disable new-cap */
-        return Color.HSV2HSL(this.h, this.s, this.v);
+        return RGB2HSL(this._r, this._g, this._b);
     };
+    /**
+     * Create a new color from HSL representation
+     * @param h - Hue, in the set [0, 360]
+     * @param s - Saturation, in the set [0, 100]
+     * @param l - Lightness, in the set [0, 100]
+     */
     Color.prototype.setHSL = function (h, s, l) {
-        //
+        Object.assign(this, HSL2RGB(h, s, l));
     };
+    /**
+     * To a HSL function string
+     */
     Color.prototype.toHSL = function () {
         var hsl = this.getHSL();
-        return "hsl(" + hsl.h + ", " + Math.round(hsl.s * 100) + "%, " + Math.round(hsl.l * 100) + "%)";
+        return "hsl(" + hsl.h + ", " + hsl.s + "%, " + hsl.l + "%)";
     };
+    /**
+     * To a HSLA function string
+     */
     Color.prototype.toHSLA = function () {
         var hsl = this.getHSL();
-        return "hsl(" + hsl.h + ", " + Math.round(hsl.s * 100) + "%, " + Math.round(hsl.l * 100) + "%, " + this.a + ")";
-    };
-    Color.fromHEX = function (value) {
-        value = value.trim().slice(1);
-        if (value.length !== 6 && value.length !== 3)
-            throw new SyntaxError("Unexpected length of hex number '" + value + "'");
-        else if (value.length === 3)
-            value = "" + value[0] + value[0] + value[1] + value[1] + value[2] + value[2];
-        return new Color(parseInt(value.slice(0, 2), 16), parseInt(value.slice(2, 4), 16), parseInt(value.slice(4, 6), 16));
-    };
-    Color.fromRGB = function (value) {
-        value = value.trim().slice(4, -1);
-        var arr = value.split(',').map(function (num) { return +num; });
-        if (arr.length !== 4)
-            throw new SyntaxError("Unexpected params of rgba function '" + value + "'");
-        return new (Color.bind.apply(Color, [void 0].concat(arr)))();
-    };
-    Color.fromRGBA = function (value) {
-        value = value.trim().slice(5, -1);
-        var arr = value.split(',').map(function (num) { return +num; });
-        if (arr.length !== 4)
-            throw new SyntaxError("Unexpected params of rgba function '" + value + "'");
-        return new (Color.bind.apply(Color, [void 0].concat(arr)))();
-    };
-    /** @TODO: fromHSL */
-    Color.parse = function (value) {
-        value = value.trim();
-        if (value[0] === '#')
-            return this.fromHEX(value);
-        else if (value.startsWith('rgba('))
-            return this.fromRGBA(value);
-        else if (value.startsWith('rgb('))
-            return this.fromRGB(value);
-        // else if (value.startsWith('hsla('))
-        //     return this.fromHSLA(value);
-        // else if (value.startsWith('hsl('))
-        //     return this.fromHSL(value);
-        // else
-        // return this.fromNAME(value);
+        return "hsla(" + hsl.h + ", " + hsl.s + "%, " + hsl.l + "%, " + this.a + ")";
     };
     /**
-     * Converts an RGB color value to HSV. Conversion formula
-     * adapted from http://en.wikipedia.org/wiki/HSV_color_space.
-     *
-     * @param   Number  r       The red, [0, 255]
-     * @param   Number  g       The green, [0, 255]
-     * @param   Number  b       The blue, [0, 255]
-     * @return  Object          The HSV representation
+     * Create a new color from Hexadecimal
+     * @param hex - Hexadecimal number
      */
-    Color.RGB2HSV = function (r, g, b) {
-        r = r / 255;
-        g = g / 255;
-        b = b / 255;
-        var max = Math.max(r, g, b);
-        var min = Math.min(r, g, b);
-        var h;
-        var v = max;
-        var d = max - min;
-        var s = max === 0 ? 0 : d / max;
-        if (max === min)
-            h = 0; // achromatic
-        else {
-            if (max === r)
-                h = (g - b) / d + (g < b ? 6 : 0);
-            else if (max === g)
-                h = (b - r) / d + 2;
-            else if (max === b)
-                h = (r - g) / d + 4;
-            h /= 6;
-        }
-        return { h: h * 360 >> 0, s: s * 100 >> 0, v: v * 100 >> 0 };
+    Color.fromHEX = function (hex) {
+        var color = new Color();
+        color.setHEX(hex);
+        return color;
     };
     /**
-     * Converts an HSV color value to RGB. Conversion formula
-     * adapted from http://en.wikipedia.org/wiki/HSV_color_space.
-     * returns r, g, and b in the set [0, 255].
-     *
-     * @param   Number  h       The hue, [0, 360]
-     * @param   Number  s       The saturation, [0, 100]
-     * @param   Number  v       The value, [0, 100]
-     * @return  Object          The RGB representation
+     * Create a new color from HSV representation
+     * @param h - Hue, in the set [0, 360]
+     * @param s - Saturation, in the set [0, 100]
+     * @param v - Value, in the set [0, 100]
      */
-    Color.HSV2RGB = function (h, s, v) {
-        h = h / 360;
-        s = s / 100;
-        v = v / 100;
-        var r, g, b;
-        var i = Math.floor(h * 6);
-        var f = h * 6 - i;
-        var p = v * (1 - s);
-        var q = v * (1 - f * s);
-        var t = v * (1 - (1 - f) * s);
-        /* eslint-disable chai-friendly/no-unused-expressions, no-sequences */
-        switch (i % 6) {
-            case 0:
-                r = v, g = t, b = p;
-                break;
-            case 1:
-                r = q, g = v, b = p;
-                break;
-            case 2:
-                r = p, g = v, b = t;
-                break;
-            case 3:
-                r = p, g = q, b = v;
-                break;
-            case 4:
-                r = t, g = p, b = v;
-                break;
-            case 5:
-                r = v, g = p, b = q;
-                break;
-        }
-        return { r: r * 255 >> 0, g: g * 255 >> 0, b: b * 255 >> 0 };
+    Color.fromHSV = function (h, s, v) {
+        var color = new Color();
+        color.setHSV(h, s, v);
+        return color;
     };
-    Color.HSV2HSL = function (h, s, v) {
-        return {
-            h: h,
-            s: (s * v / ((h = (2 - s) * v) < 1 ? h : 2 - h)) >> 0 || 0,
-            l: h / 2 >> 0,
-        };
-    };
-    Color.HSL2HSV = function (h, s, l) {
-        s = s / 100;
-        l = l / 100;
-        var smin = s;
-        var lmin = Math.max(l, 0.01);
-        l *= 2;
-        s *= (l <= 1) ? l : 2 - l;
-        smin *= lmin <= 1 ? lmin : 2 - lmin;
-        var v = (l + s) / 2;
-        var sv = l === 0 ? (2 * smin) / (lmin + smin) : (2 * s) / (l + s);
-        return {
-            h: h,
-            s: sv * 100 >> 0,
-            v: v * 100 >> 0,
-        };
+    /**
+     * Create a new color from HSL representation
+     * @param h - Hue, in the set [0, 360]
+     * @param s - Saturation, in the set [0, 100]
+     * @param l - Lightness, in the set [0, 100]
+     */
+    Color.fromHSL = function (h, s, l) {
+        var color = new Color();
+        color.setHSL(h, s, l);
+        return color;
     };
     return Color;
 }(_Fruit__WEBPACK_IMPORTED_MODULE_0__["default"]));
@@ -642,9 +865,168 @@ var Color = /** @class */ (function (_super) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+var NamedColor = {
+    black: '#000000',
+    silver: '#c0c0c0',
+    gray: '#808080',
+    white: '#ffffff',
+    maroon: '#800000',
+    red: '#ff0000',
+    purple: '#800080',
+    fuchsia: '#ff00ff',
+    green: '#008000',
+    lime: '#00ff00',
+    olive: '#808000',
+    yellow: '#ffff00',
+    navy: '#000080',
+    blue: '#0000ff',
+    teal: '#008080',
+    aqua: '#00ffff',
+    orange: '#ffa500',
+    aliceblue: '#f0f8ff',
+    antiquewhite: '#faebd7',
+    aquamarine: '#7fffd4',
+    azure: '#f0ffff',
+    beige: '#f5f5dc',
+    bisque: '#ffe4c4',
+    blanchedalmond: '#ffebcd',
+    blueviolet: '#8a2be2',
+    brown: '#a52a2a',
+    burlywood: '#deb887',
+    cadetblue: '#5f9ea0',
+    chartreuse: '#7fff00',
+    chocolate: '#d2691e',
+    coral: '#ff7f50',
+    cornflowerblue: '#6495ed',
+    cornsilk: '#fff8dc',
+    crimson: '#dc143c',
+    cyan: '#00ffff',
+    darkblue: '#00008b',
+    darkcyan: '#008b8b',
+    darkgoldenrod: '#b8860b',
+    darkgray: '#a9a9a9',
+    darkgreen: '#006400',
+    darkgrey: '#a9a9a9',
+    darkkhaki: '#bdb76b',
+    darkmagenta: '#8b008b',
+    darkolivegreen: '#556b2f',
+    darkorange: '#ff8c00',
+    darkorchid: '#9932cc',
+    darkred: '#8b0000',
+    darksalmon: '#e9967a',
+    darkseagreen: '#8fbc8f',
+    darkslateblue: '#483d8b',
+    darkslategray: '#2f4f4f',
+    darkslategrey: '#2f4f4f',
+    darkturquoise: '#00ced1',
+    darkviolet: '#9400d3',
+    deeppink: '#ff1493',
+    deepskyblue: '#00bfff',
+    dimgray: '#696969',
+    dimgrey: '#696969',
+    dodgerblue: '#1e90ff',
+    firebrick: '#b22222',
+    floralwhite: '#fffaf0',
+    forestgreen: '#228b22',
+    gainsboro: '#dcdcdc',
+    ghostwhite: '#f8f8ff',
+    gold: '#ffd700',
+    goldenrod: '#daa520',
+    greenyellow: '#adff2f',
+    grey: '#808080',
+    honeydew: '#f0fff0',
+    hotpink: '#ff69b4',
+    indianred: '#cd5c5c',
+    indigo: '#4b0082',
+    ivory: '#fffff0',
+    khaki: '#f0e68c',
+    lavender: '#e6e6fa',
+    lavenderblush: '#fff0f5',
+    lawngreen: '#7cfc00',
+    lemonchiffon: '#fffacd',
+    lightblue: '#add8e6',
+    lightcoral: '#f08080',
+    lightcyan: '#e0ffff',
+    lightgoldenrodyellow: '#fafad2',
+    lightgray: '#d3d3d3',
+    lightgreen: '#90ee90',
+    lightgrey: '#d3d3d3',
+    lightpink: '#ffb6c1',
+    lightsalmon: '#ffa07a',
+    lightseagreen: '#20b2aa',
+    lightskyblue: '#87cefa',
+    lightslategray: '#778899',
+    lightslategrey: '#778899',
+    lightsteelblue: '#b0c4de',
+    lightyellow: '#ffffe0',
+    limegreen: '#32cd32',
+    linen: '#faf0e6',
+    magenta: '#ff00ff',
+    mediumaquamarine: '#66cdaa',
+    mediumblue: '#0000cd',
+    mediumorchid: '#ba55d3',
+    mediumpurple: '#9370db',
+    mediumseagreen: '#3cb371',
+    mediumslateblue: '#7b68ee',
+    mediumspringgreen: '#00fa9a',
+    mediumturquoise: '#48d1cc',
+    mediumvioletred: '#c71585',
+    midnightblue: '#191970',
+    mintcream: '#f5fffa',
+    mistyrose: '#ffe4e1',
+    moccasin: '#ffe4b5',
+    navajowhite: '#ffdead',
+    oldlace: '#fdf5e6',
+    olivedrab: '#6b8e23',
+    orangered: '#ff4500',
+    orchid: '#da70d6',
+    palegoldenrod: '#eee8aa',
+    palegreen: '#98fb98',
+    paleturquoise: '#afeeee',
+    palevioletred: '#db7093',
+    papayawhip: '#ffefd5',
+    peachpuff: '#ffdab9',
+    peru: '#cd853f',
+    pink: '#ffc0cb',
+    plum: '#dda0dd',
+    powderblue: '#b0e0e6',
+    rosybrown: '#bc8f8f',
+    royalblue: '#4169e1',
+    saddlebrown: '#8b4513',
+    salmon: '#fa8072',
+    sandybrown: '#f4a460',
+    seagreen: '#2e8b57',
+    seashell: '#fff5ee',
+    sienna: '#a0522d',
+    skyblue: '#87ceeb',
+    slateblue: '#6a5acd',
+    slategray: '#708090',
+    slategrey: '#708090',
+    snow: '#fffafa',
+    springgreen: '#00ff7f',
+    steelblue: '#4682b4',
+    tan: '#d2b48c',
+    thistle: '#d8bfd8',
+    tomato: '#ff6347',
+    turquoise: '#40e0d0',
+    violet: '#ee82ee',
+    wheat: '#f5deb3',
+    whitesmoke: '#f5f5f5',
+    yellowgreen: '#9acd32',
+    rebeccapurple: '#663399',
+};
+/* harmony default export */ __webpack_exports__["default"] = (NamedColor);
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _URL__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
-/* harmony import */ var _ImageSet__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8);
+/* harmony import */ var _URL__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
+/* harmony import */ var _ImageSet__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -739,14 +1121,14 @@ var Image = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "urlRE", function() { return urlRE; });
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -846,14 +1228,14 @@ var URL = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "parseQuery", function() { return parseQuery; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "stringifyQuery", function() { return stringifyQuery; });
-/* harmony import */ var json5__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(7);
+/* harmony import */ var json5__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8);
 /* harmony import */ var json5__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(json5__WEBPACK_IMPORTED_MODULE_0__);
 
 var specialValues = {
@@ -926,20 +1308,20 @@ function stringifyQuery(query) {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__7__;
+module.exports = __WEBPACK_EXTERNAL_MODULE__8__;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _URL__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
-/* harmony import */ var _Resolution__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(9);
+/* harmony import */ var _URL__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
+/* harmony import */ var _Resolution__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -1043,13 +1425,13 @@ var ImageSet = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _Number__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
+/* harmony import */ var _Number__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -1161,7 +1543,7 @@ var Resolution = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1172,13 +1554,13 @@ var numberRE = /^[+-]?(?:\.?\d+|\d+\.\d+)(?:e[+-]?\d+)?$/i;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _Number__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
+/* harmony import */ var _Number__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -1208,7 +1590,7 @@ var Length = /** @class */ (function (_super) {
         _this.tryCatch(function () {
             if (args.length === 0)
                 return;
-            else if (typeof value === 'string' && args.length === 1)
+            else if (args.length === 1 && typeof value === 'string')
                 _this.parse(value);
             else if (typeof value === 'number') {
                 if (!unit && value === 0) {
@@ -1267,13 +1649,13 @@ var Length = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _Number__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(10);
+/* harmony import */ var _Number__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -1348,7 +1730,7 @@ var Percentage = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1357,10 +1739,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "boxRE", function() { return boxRE; });
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 /* harmony import */ var _dataTypes_Color__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var _dataTypes_Image__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
-/* harmony import */ var _BackgroundPosition__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14);
-/* harmony import */ var _BackgroundRepeat__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(15);
-/* harmony import */ var _BackgroundSize__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(16);
+/* harmony import */ var _dataTypes_Image__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
+/* harmony import */ var _BackgroundPosition__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(15);
+/* harmony import */ var _BackgroundRepeat__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(16);
+/* harmony import */ var _BackgroundSize__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(17);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -1510,6 +1892,7 @@ var Background = /** @class */ (function (_super) {
                 if (color.valid) {
                     this.setColor(color.toResult());
                     this.valid = true;
+                    return false;
                 }
             }
         }
@@ -1593,15 +1976,15 @@ var Background = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BackgroundPositionKeyword", function() { return BackgroundPositionKeyword; });
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
-/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
+/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
+/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -1937,7 +2320,7 @@ var BackgroundPosition = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2056,14 +2439,14 @@ var BackgroundRepeat = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
-/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
+/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
+/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -2173,14 +2556,14 @@ var BackgroundSize = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
-/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
+/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
+/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -2268,14 +2651,14 @@ var Margin = /** @class */ (function (_super) {
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Fruit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11);
-/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(12);
+/* harmony import */ var _dataTypes_Length__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(12);
+/* harmony import */ var _dataTypes_Percentage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||

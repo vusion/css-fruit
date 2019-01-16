@@ -1,6 +1,7 @@
 import './dataTypes/Number';
 import './dataTypes/Length';
 import './dataTypes/Percentage';
+import './dataTypes/Color';
 import './dataTypes/URL';
 import './dataTypes/Image';
 import './dataTypes/ImageSet';

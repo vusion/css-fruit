@@ -22,7 +22,7 @@ export default class Length extends Fruit {
         this.tryCatch(() => {
             if (args.length === 0)
                 return;
-            else if (typeof value === 'string' && args.length === 1)
+            else if (args.length === 1 && typeof value === 'string')
                 this.parse(value);
             else if (typeof value === 'number') {
                 if (!unit && value === 0) {

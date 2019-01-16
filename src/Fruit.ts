@@ -133,6 +133,7 @@ export default class Fruit {
     }
 
     parse(value: string): Fruit | string {
+        this.valid = false;
         this.raw = value;
         value = value.trim();
 
@@ -157,6 +158,7 @@ export default class Fruit {
     }
 
     analyze(stem: Stem): void {
+        this.valid = false;
         let node;
         while (node = stem.head()) {
             let control: boolean;

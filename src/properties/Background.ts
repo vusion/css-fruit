@@ -146,6 +146,7 @@ export default class Background extends Fruit {
                 if (color.valid) {
                     this.setColor(color.toResult() as Color | string);
                     this.valid = true;
+                    return false;
                 }
             }
         }
