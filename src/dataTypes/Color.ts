@@ -264,7 +264,7 @@ export default class Color extends Fruit {
                 // this._value = node.value;
 
                 const hex = NamedColor[node.value];
-                const color = Color.fromHEX(hex);
+                const color = Color.fromHex(hex);
                 this._r = color._r;
                 this._g = color._g;
                 this._b = color._b;
@@ -275,7 +275,7 @@ export default class Color extends Fruit {
                     throw new SyntaxError(`Excessive value '${node.value}'`);
                 // this._value = node.value;
 
-                this.setHEX(node.value);
+                this.setHex(node.value);
                 return this.valid = true;
             }
         } else if (node.type === ValueNodeType.function) {
@@ -318,7 +318,7 @@ export default class Color extends Fruit {
         if (this._value)
             return this._value;
         else if (this._a === 1)
-            return this.toHEX();
+            return this.toHex();
         else
             return this.toRGBA();
     }
@@ -338,7 +338,7 @@ export default class Color extends Fruit {
      * Set color values by Hexadecimal
      * @param hex - Hexadecimal number
      */
-    setHEX(hex: string) {
+    setHex(hex: string) {
         hex = hex.slice(1);
         if (hex.length === 6 || hex.length === 8) {}
         else if (hex.length === 3)
@@ -358,7 +358,7 @@ export default class Color extends Fruit {
      * To a Hexadecimal string
      * @param alpha - Show alpha
      */
-    toHEX(alpha?: boolean): string {
+    toHex(alpha?: boolean): string {
         const fix = (num: string) => num.length === 1 ? '0' + num : num;
 
         if (alpha)
@@ -463,9 +463,9 @@ export default class Color extends Fruit {
      * Create a new color from Hexadecimal
      * @param hex - Hexadecimal number
      */
-    static fromHEX(hex: string) {
+    static fromHex(hex: string) {
         const color = new Color();
-        color.setHEX(hex);
+        color.setHex(hex);
         return color;
     }
 

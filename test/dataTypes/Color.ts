@@ -48,9 +48,9 @@ describe('Color', () => {
         expect(color.valid).to.be.true;
     });
 
-    it('#toHEX', () => {
+    it('#toHex', () => {
         const color = new Color('violet');
-        expect(color.toHEX()).to.equal('#ee82ee');
+        expect(color.toHex()).to.equal('#ee82ee');
     });
 
     it('#toRGB', () => {
