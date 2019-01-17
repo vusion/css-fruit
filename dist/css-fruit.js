@@ -650,7 +650,7 @@ var Color = /** @class */ (function (_super) {
                     throw new SyntaxError("Excessive value '" + node.value + "'");
                 // this._value = node.value;
                 var hex = _NamedColor__WEBPACK_IMPORTED_MODULE_1__["default"][node.value];
-                var color = Color.fromHEX(hex);
+                var color = Color.fromHex(hex);
                 this._r = color._r;
                 this._g = color._g;
                 this._b = color._b;
@@ -661,7 +661,7 @@ var Color = /** @class */ (function (_super) {
                 if (this._value)
                     throw new SyntaxError("Excessive value '" + node.value + "'");
                 // this._value = node.value;
-                this.setHEX(node.value);
+                this.setHex(node.value);
                 return this.valid = true;
             }
         }
@@ -699,7 +699,7 @@ var Color = /** @class */ (function (_super) {
         if (this._value)
             return this._value;
         else if (this._a === 1)
-            return this.toHEX();
+            return this.toHex();
         else
             return this.toRGBA();
     };
@@ -717,7 +717,7 @@ var Color = /** @class */ (function (_super) {
      * Set color values by Hexadecimal
      * @param hex - Hexadecimal number
      */
-    Color.prototype.setHEX = function (hex) {
+    Color.prototype.setHex = function (hex) {
         hex = hex.slice(1);
         if (hex.length === 6 || hex.length === 8) { }
         else if (hex.length === 3)
@@ -735,7 +735,7 @@ var Color = /** @class */ (function (_super) {
      * To a Hexadecimal string
      * @param alpha - Show alpha
      */
-    Color.prototype.toHEX = function (alpha) {
+    Color.prototype.toHex = function (alpha) {
         var fix = function (num) { return num.length === 1 ? '0' + num : num; };
         if (alpha)
             return '#' + fix(this.r.toString(16)) + fix(this.g.toString(16)) + fix(this.b.toString(16)) + fix((this.a * 255).toString(16));
@@ -827,9 +827,9 @@ var Color = /** @class */ (function (_super) {
      * Create a new color from Hexadecimal
      * @param hex - Hexadecimal number
      */
-    Color.fromHEX = function (hex) {
+    Color.fromHex = function (hex) {
         var color = new Color();
-        color.setHEX(hex);
+        color.setHex(hex);
         return color;
     };
     /**
